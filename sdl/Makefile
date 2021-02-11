@@ -18,7 +18,7 @@ all:    $(NAME)
 
 $(NAME):
 			make -C lib/
-			gcc -o $(NAME) $(SRC) $(CFLAGS) $(CPPFLAGS) -L./lib -lmy
+			gcc -o $(NAME) $(SRC) $(CFLAGS) $(CPPFLAGS) -L./lib -lmy `sdl2-config --cflags --libs`
 
 clean:
 			make clean -C lib/
