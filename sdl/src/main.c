@@ -1,5 +1,9 @@
-// Lesson 1
-// Open a SDL window and fill the background with red
+/*
+** ETNA PROJECT, 05/07/2020 by vignan_q
+** main
+** File description:
+**      main
+*/
 
 #include <stdio.h>
 #include <stdlib.h>
