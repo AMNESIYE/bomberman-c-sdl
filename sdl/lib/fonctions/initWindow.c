@@ -16,8 +16,8 @@ void exit_SDL(SDL_Window *win , SDL_Renderer *render) {
 }
 void drawRectangle(SDL_Renderer *render) {
     SDL_Rect rect;
-    rect.x = 250;
-    rect.y = 150;
+    rect.x = 100;
+    rect.y = 350;
     rect.w = 200;
     rect.h = 200;
     SDL_SetRenderDrawColor(render, 255, 255, 255, 255);
