@@ -8,10 +8,16 @@
 #include <stdio.h>
 #include <SDL2/SDL.h>
 
+void exit_SDL(SDL_Window *win , SDL_Renderer *render) {
+    SDL_DestroyRenderer(render);
+    SDL_DestroyWindow(win);
+    SDL_Quit();
+    return;
+}
 
-void initWindow (int xSize , int ySize) {
+int initWindow (int xSize , int ySize) {
     SDL_Init(SDL_INIT_VIDEO);
-    SDL_Window *window = SDL_CreateWindow("Hello SDL", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, xSize, ySize, SDL_WINDOW_OPENGL);
+    SDL_Window *window = SDL_CreateWindow("My first window SDL", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, xSize, ySize, SDL_WINDOW_OPENGL);
     SDL_Renderer *renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
     SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);
     int running = 1;
@@ -23,12 +29,12 @@ void initWindow (int xSize , int ySize) {
             if(event.type == SDL_QUIT)
             {
                 running = 0;
+                exit_SDL(window , renderer);
             }
         }
         SDL_RenderClear(renderer);
         SDL_RenderPresent(renderer);
     }
-    SDL_DestroyRenderer(renderer);
-    SDL_DestroyWindow(window);
-    SDL_Quit();
+    return 0;
 }
+
