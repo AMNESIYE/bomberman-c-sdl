@@ -14,6 +14,18 @@ void exit_SDL(SDL_Window *win , SDL_Renderer *render) {
     SDL_Quit();
     return;
 }
+void drawRectangle(SDL_Renderer *render) {
+    SDL_Rect rect;
+    rect.x = 250;
+    rect.y = 150;
+    rect.w = 200;
+    rect.h = 200;
+    SDL_SetRenderDrawColor(render, 255, 255, 255, 255);
+    SDL_RenderFillRect(render, &rect);
+    SDL_SetRenderDrawColor(render, 0, 0, 0, 255);
+    SDL_RenderPresent(render);
+    return;
+}
 
 int initWindow (int xSize , int ySize) {
     SDL_Init(SDL_INIT_VIDEO);
@@ -32,9 +44,12 @@ int initWindow (int xSize , int ySize) {
                 exit_SDL(window , renderer);
             }
         }
+        drawRectangle(renderer);
         SDL_RenderClear(renderer);
         SDL_RenderPresent(renderer);
     }
     return 0;
 }
+
+
 
