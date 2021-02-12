@@ -34,6 +34,7 @@ int initWindow (int xSize , int ySize) {
     SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);
     int running = 1;
     SDL_Event event;
+    
     while(running == 1)
     {
         while(SDL_PollEvent(&event))
@@ -45,8 +46,6 @@ int initWindow (int xSize , int ySize) {
             }
         }
         drawRectangle(renderer);
-        SDL_RenderClear(renderer);
-        SDL_RenderPresent(renderer);
     }
     return 0;
 }
