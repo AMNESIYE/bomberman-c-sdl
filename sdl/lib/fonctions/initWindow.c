@@ -39,10 +39,14 @@ int initWindow (int xSize , int ySize) {
     {
         while(SDL_PollEvent(&event))
         {
-            if(event.type == SDL_QUIT)
-            {
-                running = 0;
-                exit_SDL(window , renderer);
+            switch (event.type) {
+                case SDL_QUIT:
+                    running = 0;
+                    exit_SDL(window , renderer);
+                    break;
+                case SDL_KEYUP:
+                    printf("je suis le haut");
+                    break;
             }
         }
         drawRectangle(renderer);
