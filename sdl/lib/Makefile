@@ -8,6 +8,8 @@
 NAME	=		libmy.a
 
 SRC		=		fonctions/initWindow.c \
+				fonctions/draw.c \
+				fonctions/keyboard.c \
 
 				
 

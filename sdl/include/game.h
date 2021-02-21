@@ -11,6 +11,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-void initWindow(int xSize , int ySize);
+int initWindow(int xSize , int ySize);
+void drawRectangle(SDL_Renderer *render , int Xpos , int Ypos , int Wlength , int Hlength);
 
 #endif

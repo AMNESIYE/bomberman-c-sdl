@@ -7,6 +7,7 @@
 
 #include <stdio.h>
 #include <SDL2/SDL.h>
+#include "../../include/game.h"
 
 void exit_SDL(SDL_Window *win , SDL_Renderer *render) {
     SDL_DestroyRenderer(render);
@@ -14,18 +15,7 @@ void exit_SDL(SDL_Window *win , SDL_Renderer *render) {
     SDL_Quit();
     return;
 }
-void drawRectangle(SDL_Renderer *render) {
-    SDL_Rect rect;
-    rect.x = 100;
-    rect.y = 350;
-    rect.w = 250;
-    rect.h = 250;
-    SDL_SetRenderDrawColor(render, 255, 255, 255, 255);
-    SDL_RenderFillRect(render, &rect);
-    SDL_SetRenderDrawColor(render, 0, 0, 0, 255);
-    SDL_RenderPresent(render);
-    return;
-}
+
 
 int initWindow (int xSize , int ySize) {
     SDL_Init(SDL_INIT_VIDEO);
@@ -56,7 +46,11 @@ int initWindow (int xSize , int ySize) {
                     break;
             }
         }
-        drawRectangle(renderer);
+        drawRectangle(renderer , 20 , 20 , 50 , 50);
+        drawRectangle(renderer , (xSize - 70) , 20 , 50 , 50);
+        drawRectangle(renderer , 20 , (ySize - 70) , 50 , 50);
+        drawRectangle(renderer , (xSize - 70) , (ySize - 70), 50 , 50);
+        
     }
     return 0;
 }
