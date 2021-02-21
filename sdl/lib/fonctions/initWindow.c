@@ -45,7 +45,14 @@ int initWindow (int xSize , int ySize) {
                     exit_SDL(window , renderer);
                     break;
                 case SDL_KEYUP:
-                    printf("je suis le haut");
+                    printf("keyUp\n");
+                    break;
+                case SDL_KEYDOWN:
+                    switch (event.key.keysym.sym) {
+                        case SDLK_z:
+                            printf("je presse le boutton z");
+                            break;
+                    }
                     break;
             }
         }
