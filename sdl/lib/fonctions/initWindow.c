@@ -24,7 +24,8 @@ int initWindow (int xSize , int ySize) {
     SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);
     int running = 1;
     SDL_Event event;
-    
+    SDL_Rect player;
+    player = initPlayer(player);
     while(running == 1)
     {
         while(SDL_PollEvent(&event))
@@ -34,18 +35,12 @@ int initWindow (int xSize , int ySize) {
                     running = 0;
                     exit_SDL(window , renderer);
                     break;
-                case SDL_KEYUP:
-                    printf("keyUp\n");
-                    break;
                 case SDL_KEYDOWN:
-                    switch (event.key.keysym.sym) {
-                        case SDLK_z:
-                            printf("je presse le boutton z");
-                            break;
-                    }
+                    player = playerDetectionKey( event , player , renderer);
                     break;
             }
         }
+        player = drawPlayer(player , renderer);
         drawRectangle(renderer , 20 , 20 , 50 , 50);
         drawRectangle(renderer , (xSize - 70) , 20 , 50 , 50);
         drawRectangle(renderer , 20 , (ySize - 70) , 50 , 50);
