@@ -14,15 +14,19 @@
 SDL_Rect playerDetectionKey(SDL_Event event , SDL_Rect player, SDL_Renderer *render) {
     switch (event.key.keysym.sym) {
         case SDLK_z:
+            clearPosPlayer(player , render);
             player = verticalPlayerMove(player , render , 'h');
             break;
         case SDLK_s:
+            clearPosPlayer(player , render);
             player = verticalPlayerMove(player , render, 'b');
             break;
         case SDLK_q:
+            clearPosPlayer(player , render);
             player = horizontalPlayerMove(player , render, 'g');
             break;
         case SDLK_d:
+            clearPosPlayer(player , render);
             player = horizontalPlayerMove(player , render , 'd');
             break;
         default:

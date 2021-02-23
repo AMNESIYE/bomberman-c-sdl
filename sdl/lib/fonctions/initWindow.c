@@ -18,6 +18,8 @@ void exit_SDL(SDL_Window *win , SDL_Renderer *render) {
 
 
 int initWindow (int xSize , int ySize) {
+    int doubleBuffering;
+    SDL_GL_GetAttribute(SDL_GL_DOUBLEBUFFER, &doubleBuffering);
     SDL_Init(SDL_INIT_VIDEO);
     SDL_Window *window = SDL_CreateWindow("My first window SDL", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, xSize, ySize, SDL_WINDOW_OPENGL);
     SDL_Renderer *renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
