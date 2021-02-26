@@ -28,7 +28,6 @@ int initWindow (int xSize , int ySize) {
     SDL_Event event;
     SDL_Rect player;
     player = initPlayer(player);
-    SDL_Rect bomb;
     while(running == 1)
     {
         while(SDL_PollEvent(&event))
