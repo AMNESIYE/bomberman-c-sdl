@@ -11,6 +11,7 @@ SRC		=		fonctions/initWindow.c \
 				fonctions/draw.c \
 				fonctions/keyboard.c \
 				fonctions/player.c \
+				fonctions/bomb.c    \
 
 				
 

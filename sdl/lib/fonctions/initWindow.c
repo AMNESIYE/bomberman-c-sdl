@@ -28,6 +28,7 @@ int initWindow (int xSize , int ySize) {
     SDL_Event event;
     SDL_Rect player;
     player = initPlayer(player);
+    SDL_Rect bomb;
     while(running == 1)
     {
         while(SDL_PollEvent(&event))
@@ -42,11 +43,11 @@ int initWindow (int xSize , int ySize) {
                     break;
             }
         }
-        player = drawPlayer(player , renderer);
-        drawRectangle(renderer , 20 , 20 , 50 , 50);
-        drawRectangle(renderer , (xSize - 70) , 20 , 50 , 50);
-        drawRectangle(renderer , 20 , (ySize - 70) , 50 , 50);
-        drawRectangle(renderer , (xSize - 70) , (ySize - 70), 50 , 50);
+        player = drawPlayer(player , renderer , bomb);
+        drawRectangle(renderer , 0 , 40 , 40 , 40);
+        /*drawRectangle(renderer , (xSize - 40) , 0 , 40 , 40);
+        drawRectangle(renderer , 0 , (ySize - 40) , 40 , 40);
+        drawRectangle(renderer , (xSize - 40) , (ySize - 40), 40 , 40);*/
         
     }
     return 0;

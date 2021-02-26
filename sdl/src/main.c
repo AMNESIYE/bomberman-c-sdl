@@ -12,6 +12,6 @@
 
 int main()
 {
-    initWindow(800 , 600);
+    initWindow(800 , 800);
     return 0;
 }

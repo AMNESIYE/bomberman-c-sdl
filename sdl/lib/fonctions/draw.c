@@ -14,7 +14,7 @@
 void drawRectangle(SDL_Renderer *render , int Xpos , int Ypos , int Wlength , int Hlength) {
     SDL_Rect rect;
     rect.x = Xpos;
-    rect.y = Ypos;
+    rect.y = -Ypos + 800;
     rect.w = Wlength;
     rect.h = Hlength;
     SDL_SetRenderDrawColor(render, 255, 255, 255, 255);
