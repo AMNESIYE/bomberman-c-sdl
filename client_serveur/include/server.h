@@ -12,4 +12,7 @@
 #include <stdio.h>
 
 
+void clientInit();
+int validatePort(char *portNb);
+
 #endif

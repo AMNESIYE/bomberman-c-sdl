@@ -5,7 +5,7 @@
 ##      Makefile for lib
 ##
 
-NAME    =   sdl
+NAME    =   bomberman
 
 SRC     =   src/main.c
 

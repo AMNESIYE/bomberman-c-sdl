@@ -1,16 +1,15 @@
 /*
 ** ETNA PROJECT, 05/07/2020 by vignan_q
-** main
+** CreateClient
 ** File description:
-**      main
+**      CreateClient
 */
 
 #include <stdio.h>
 #include <stdlib.h>
 #include <SDL2/SDL.h>
-#include "server.h"
+#include <sys/socket.h>
+#include <arpa/inet.h>
 
-int main()
-{
-    return 0;
+void clientInit() {
 }
