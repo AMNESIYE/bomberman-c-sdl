@@ -14,8 +14,12 @@ int serverInit (char *portNb) {
     if (validatePort(portNb) == -1) {
         return -1;
     }
+    int port = my_atoi(portNb);
+    if (port == -1) {
+        return -1;
+    }
 
-    int socketSrv;
+    int socketSrv; 
     int client;
     socklen_t client_addr_len;
     struct sockaddr_in server;
@@ -25,7 +29,7 @@ int serverInit (char *portNb) {
         return -1;
     }
 
-    server.sin_port = htons(1234);
+    server.sin_port = htons(port);
     server.sin_family = AF_INET;
     server.sin_addr.s_addr = inet_addr("0.0.0.0"); 
 

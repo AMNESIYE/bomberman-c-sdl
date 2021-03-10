@@ -12,5 +12,5 @@
 #include <arpa/inet.h>
 
 void clientInit() {
-    
+    printf("test");
 }

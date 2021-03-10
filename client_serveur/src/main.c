@@ -10,9 +10,8 @@
 #include <SDL2/SDL.h>
 #include "server.h"
 
-int main()
+int main(int argc, char *argv[])
 {
-    int res = serverInit("1234");
-    printf("%i" , res);
+    argumentGest(argc , argv);
     return 0;
 }

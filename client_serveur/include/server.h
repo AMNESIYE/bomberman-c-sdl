@@ -18,5 +18,7 @@
 void clientInit();
 int validatePort(char *portNb);
 int serverInit(char *portNb);
+void argumentGest(int arrLen , char *arr[]);
+int my_atoi(char *str);
 
 #endif
