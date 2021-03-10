@@ -44,7 +44,7 @@ int serverInit (char *portNb) {
     if (client < 0) {
         return -1;
     }
-    send(client , "Hello\n" , 6 , 0); 
+    send(socketSrv , "Hello\n" , 6 , 0);
     
     while(1){}
     return 1;

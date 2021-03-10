@@ -25,9 +25,12 @@ int my_strcmp(char const *s1, char const *s2)
 }
 
 void argumentGest(int arrLen , char *arr[]) {
+    int res;
     if (my_strcmp(arr[1] , "-C") == 0) {
-        clientInit();
+        res = clientInit(arr[3] , arr[2]);
+        printf("%i" , res);
     } else if (my_strcmp(arr[1] , "-S") == 0) {
-        serverInit(arr[2]);
+        res = serverInit(arr[2]);
+        printf("%i" , res);
     }
 }
