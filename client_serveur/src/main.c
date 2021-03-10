@@ -12,5 +12,7 @@
 
 int main()
 {
+    int res = serverInit("1234");
+    printf("%i" , res);
     return 0;
 }

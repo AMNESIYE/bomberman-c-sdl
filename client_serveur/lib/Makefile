@@ -9,6 +9,7 @@ NAME	=		libmy.a
 
 SRC		=		fonctions/createClient.c \
 				fonctions/checkPort.c \
+				fonctions/createServer.c \
 
 				
 

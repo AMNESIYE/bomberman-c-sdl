@@ -8,11 +8,15 @@
 #ifndef MY_H_
 #define MY_H_
 
-#include <stdlib.h>
 #include <stdio.h>
+#include <stdlib.h>
+#include <SDL2/SDL.h>
+#include <sys/socket.h>
+#include <arpa/inet.h>
 
 
 void clientInit();
 int validatePort(char *portNb);
+int serverInit(char *portNb);
 
 #endif
