@@ -5,9 +5,6 @@
 **      createServer
 */
 
-#include <sys/socket.h>
-#include <sys/types.h>
-#include <arpa/inet.h>
 #include "../../include/server.h"
 
 int serverInit (char *portNb) {

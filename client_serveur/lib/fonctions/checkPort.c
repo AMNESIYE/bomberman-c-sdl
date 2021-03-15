@@ -5,11 +5,8 @@
 **      checkPort
 */
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <SDL2/SDL.h>
-#include <sys/socket.h>
-#include <arpa/inet.h>
+
+#include "../../include/server.h"
 
 
 int my_atoi(char *str)
