@@ -20,6 +20,8 @@ int serverInit (char *portNb) {
     int client;
     socklen_t client_addr_len;
     struct sockaddr_in server;
+    char buffer[128];
+    int n;
 
     socketSrv = socket(AF_INET , SOCK_STREAM , 0);
     if (socketSrv < 0) {
@@ -37,15 +39,22 @@ int serverInit (char *portNb) {
         return -1;
     }
 
-    client = accept(socketSrv , (struct sockaddr *)&server , &client_addr_len);
-    if (client < 0) {
-        return -1;
+    memset(buffer, '\0', 128);
+
+    puts("En attente de clients...");
+    while(1){
+        puts("En attente de reponse du client...");
+        client = accept(socketSrv , (struct sockaddr *)&server , &client_addr_len);
+        if (client < 0) {
+            puts("Le client n'a pas répondu...");
+            return -1;
+        }
+        puts("Nouveau client connecté.");
+        while((n = read(client , buffer , 128)) > 0) {
+            printf("Reçu : \'%s\'", buffer);
+            memset(buffer, '\0', 128);
+        }
     }
-    send(client , "Hello\n" , 6 , MSG_NOSIGNAL);
-
-    puts("en attente");
-    while(1){}
-
     close(socketSrv);
     return 1;
 }
