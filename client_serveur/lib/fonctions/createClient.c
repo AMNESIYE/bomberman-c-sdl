@@ -37,15 +37,25 @@ int clientInit(char *portNb , char *ipAddr) {
 
     while(1) {
         memset(buffer , '\n' , 128);
+        //
+        fgets(buffer, 128, stdin);
         n = read(0 , buffer , 128);
-        if (n == 0) {
+        //fgets(buffer, 128, stdin);
+        /*if (n == 0) {
             return -1;
         }
         if (n < 0) {
             return -1;
+        }*/
+        if (send(socketCli , buffer , n , MSG_NOSIGNAL) < 0) {
+            puts("send failed");
+            close(socketCli);
+            return 0;
         }
-        send(socketCli , buffer , n , 0);
+        printf("sent \'%s\'\n", buffer);
+        read(socketCli, buffer, 128);
     }
+    close(socketCli);
     return 0;
 
 

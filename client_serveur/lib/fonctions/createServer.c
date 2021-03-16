@@ -41,8 +41,11 @@ int serverInit (char *portNb) {
     if (client < 0) {
         return -1;
     }
-    send(client , "Hello\n" , 6 , 0);
-    
+    send(client , "Hello\n" , 6 , MSG_NOSIGNAL);
+
+    puts("en attente");
     while(1){}
+
+    close(socketSrv);
     return 1;
 }
