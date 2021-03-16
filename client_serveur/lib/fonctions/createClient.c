@@ -34,20 +34,16 @@ int clientInit(char *portNb) {
         return -1;
     }
 
-
     while(1) {
         memset(buffer, '\0', 128);
-        n = read(0, buffer, 128);
-        if (n <= 0) {
-            return -1;
-        }
-        if (send(socketCli , buffer , n + 1 , MSG_NOSIGNAL) < 0) {
+        fgets(buffer, 128, stdin);
+        if (send(socketCli, buffer, strlen(buffer), MSG_NOSIGNAL) < 0) {
             puts("L'envoi a échoué.");
             close(socketCli);
             return -1;
         }
-        printf("Envoyé: %s\n", buffer);
-        //read(socketCli, buffer, 128);
+        printf("\tEnvoyé: %s\n", buffer);
+        recv(socketCli, buffer, 128, MSG_DONTWAIT);
     }
     close(socketCli);
     return 0;

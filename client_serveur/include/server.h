@@ -15,6 +15,8 @@
 #include <sys/socket.h>
 #include <sys/types.h>
 #include <arpa/inet.h>
+#include <sys/select.h>
+#include <sys/time.h>
 
 int clientInit(char *portNb);
 int validatePort(char *portNb);
