@@ -12,6 +12,6 @@
 
 int main(int argc, char *argv[])
 {
-    argumentGest(argc , argv);
+    argumentGest(argc, argv);
     return 0;
 }

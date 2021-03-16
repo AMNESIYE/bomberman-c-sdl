@@ -51,8 +51,11 @@ int serverInit (char *portNb) {
         }
         puts("Nouveau client connecté.");
         while((n = read(client , buffer , 128)) > 0) {
-            printf("Reçu : \'%s\'", buffer);
+            printf("Reçu: %s", buffer);
             memset(buffer, '\0', 128);
+        }
+        if (n <= 0){
+            puts("Client fermé.");
         }
     }
     close(socketSrv);

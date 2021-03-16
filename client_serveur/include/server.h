@@ -16,10 +16,10 @@
 #include <sys/types.h>
 #include <arpa/inet.h>
 
-int clientInit(char *portNb , char *ipAddr);
+int clientInit(char *portNb);
 int validatePort(char *portNb);
 int serverInit(char *portNb);
-void argumentGest(int arrLen , char *arr[]);
+void argumentGest(int arrLen, char *arr[]);
 int my_atoi(char *str);
 
 #endif

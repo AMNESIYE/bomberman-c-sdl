@@ -8,7 +8,7 @@
 #include "../../include/server.h"
 
 
-int clientInit(char *portNb , char *ipAddr) {
+int clientInit(char *portNb) {
     if (validatePort(portNb) == -1) {
         return -1;
     }
@@ -17,7 +17,7 @@ int clientInit(char *portNb , char *ipAddr) {
         return -1;
     }
 
-    int n = 0;
+    int n;
     char buffer[128];
     int socketCli;
     struct sockaddr_in addr;
@@ -28,7 +28,7 @@ int clientInit(char *portNb , char *ipAddr) {
 
     addr.sin_port = htons(port);
     addr.sin_family = AF_INET;
-    addr.sin_addr.s_addr = inet_addr(ipAddr);
+    addr.sin_addr.s_addr = inet_addr("127.0.0.1");
 
     if (connect(socketCli , (struct sockaddr *)&addr , sizeof(addr)) < 0) {
         return -1;
@@ -36,24 +36,18 @@ int clientInit(char *portNb , char *ipAddr) {
 
 
     while(1) {
-        memset(buffer , '\n' , 128);
-        //
-        fgets(buffer, 128, stdin);
-        //n = read(0 , buffer , 128);
-        //fgets(buffer, 128, stdin);
-        /*if (n == 0) {
+        memset(buffer, '\0', 128);
+        n = read(0, buffer, 128);
+        if (n <= 0) {
             return -1;
         }
-        if (n < 0) {
-            return -1;
-        }*/
-        if (send(socketCli , buffer , strlen(buffer) , MSG_NOSIGNAL) < 0) {
-            puts("send failed");
+        if (send(socketCli , buffer , n + 1 , MSG_NOSIGNAL) < 0) {
+            puts("L'envoi a échoué.");
             close(socketCli);
-            return 0;
+            return -1;
         }
-        printf("sent \'%s\'\n", buffer);
-        read(socketCli, buffer, 128);
+        printf("Envoyé: %s\n", buffer);
+        //read(socketCli, buffer, 128);
     }
     close(socketCli);
     return 0;

@@ -19,13 +19,15 @@ int my_strcmp(char const *s1, char const *s2)
 	return (0);
 }
 
-void argumentGest(int arrLen , char *arr[]) {
-    int res;
-    if (my_strcmp(arr[1] , "-C") == 0) {
-        res = clientInit(arr[3] , arr[2]);
-        printf("%i" , res);
-    } else if (my_strcmp(arr[1] , "-S") == 0) {
-        res = serverInit(arr[2]);
-        printf("%i" , res);
+void argumentGest(int arrlen, char *arr[]) {
+    if (arrlen == 3) {
+        if (my_strcmp(arr[1] , "-C") == 0) {
+            clientInit(arr[2]);
+        } else if (my_strcmp(arr[1] , "-S") == 0) {
+            serverInit(arr[2]);
+        }
+    } else {
+        printf("INCORRECT.\nFormat attendu : \"./bomberman -C/-S -numéroDePort\"\n");
     }
+
 }
