@@ -7,31 +7,47 @@
 
 #include "../../include/server.h"
 
+int write_client(int client, char* bufferS) {
+
+    /*char bufferS[BUFFER_SIZE];
+    strcpy(bufferS, "OK\n");*/
+
+    if (send(client, bufferS, BUFFER_SIZE, MSG_DONTWAIT) >= 0) {
+        printf("\tEnvoyé: %s", bufferS);
+        return 1;
+    } else {
+        puts("\tLe retour d'envoi a échoué.");
+        return -1;
+    }
+}
+
 int read_client(int client) {
     int n;
-    char buffer[128];
+    char bufferC[BUFFER_SIZE];
 
     if (client == -1) {
         return 1;
     }
 
     n = 0;
-    memset(buffer, '\0', 128);
-    while((n = recv(client , buffer , 128, 0)) >= 0) {
-        if(n == 0) {
+    memset(bufferC, '\0', BUFFER_SIZE);
+    while ((n = recv(client, bufferC, BUFFER_SIZE, 0)) >= 0) {
+        if (n == 0) {
             return -1;
         }
-        printf("\tReçu: %s", buffer);
+        printf("\tReçu: %s", bufferC);
 
-        if (buffer[n - 1] == '\n') {
-            memset(buffer, '\0', 128);
+        //write_client(client, bufferC);
+
+        if (bufferC[n - 1] == '\n') {
+            memset(bufferC, '\0', BUFFER_SIZE);
             break;
         }
     }
     return 0;
 }
 
-int serverInit (char *portNb) {
+int serverInit(char *portNb) {
     if (validatePort(portNb) == -1) {
         return -1;
     }
@@ -40,7 +56,7 @@ int serverInit (char *portNb) {
         return -1;
     }
 
-    int socketSrv; 
+    int socketSrv;
     int client1;
     int client2;
     //int client3;
@@ -51,36 +67,36 @@ int serverInit (char *portNb) {
     fd_set readfs;
     struct timeval tick;
 
-    socketSrv = socket(AF_INET , SOCK_STREAM , 0);
+    socketSrv = socket(AF_INET, SOCK_STREAM, 0);
     if (socketSrv < 0) {
         return -1;
     }
 
     server.sin_port = htons(port);
     server.sin_family = AF_INET;
-    server.sin_addr.s_addr = inet_addr("0.0.0.0"); 
+    server.sin_addr.s_addr = inet_addr("0.0.0.0");
 
-    if (bind(socketSrv , (struct sockaddr *)&server , sizeof(server)) < 0) {
+    if (bind(socketSrv, (struct sockaddr *) &server, sizeof(server)) < 0) {
         return -1;
     }
-    if (listen(socketSrv , 5) < 0) {
+    if (listen(socketSrv, 5) < 0) {
         return -1;
     }
 
     puts("En attente de clients...");
-    while(1){
+    while (1) {
         puts("En attente de reponse du premier client...");
-        client1 = accept(socketSrv , (struct sockaddr *)&server , &client_addr_len);
+        client1 = accept(socketSrv, (struct sockaddr *) &server, &client_addr_len);
         puts("Nouveau client connecté.");
         puts("En attente de reponse du deuxième client...");
-        client2 = accept(socketSrv , (struct sockaddr *)&server , &client_addr_len);
+        client2 = accept(socketSrv, (struct sockaddr *) &server, &client_addr_len);
         if (client1 < 0 || client2 < 0) {
             puts("L'un des clients n'a pas répondu...");
             return -1;
         }
         puts("Nouveau client connecté.");
         puts("La partie démarre !");
-        while(1) {
+        while (1) {
             tick.tv_sec = 1;
             tick.tv_usec = 0;
             FD_ZERO(&readfs);
@@ -102,7 +118,6 @@ int serverInit (char *portNb) {
                     client2 = -1;
                 }
             }
-
 
             if (client1 == -1 && client2 == -1) {
                 break;

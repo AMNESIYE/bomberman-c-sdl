@@ -7,6 +7,7 @@
 
 #ifndef MY_H_
 #define MY_H_
+#define BUFFER_SIZE 128
 
 #include <stdio.h>
 #include <stdlib.h>
