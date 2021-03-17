@@ -18,10 +18,10 @@ int clientInit(char *portNb) {
     }
 
     int n;
-    char buffer[128];
+    char bufferC[BUFFER_SIZE], bufferS[BUFFER_SIZE];
     int socketCli;
     struct sockaddr_in addr;
-    socketCli = socket(AF_INET , SOCK_STREAM , 0);
+    socketCli = socket(AF_INET, SOCK_STREAM, 0);
     if (socketCli < 0) {
         return -1;
     }
@@ -30,20 +30,23 @@ int clientInit(char *portNb) {
     addr.sin_family = AF_INET;
     addr.sin_addr.s_addr = inet_addr("127.0.0.1");
 
-    if (connect(socketCli , (struct sockaddr *)&addr , sizeof(addr)) < 0) {
+    if (connect(socketCli, (struct sockaddr *) &addr, sizeof(addr)) < 0) {
         return -1;
     }
 
-    while(1) {
-        memset(buffer, '\0', 128);
-        fgets(buffer, 128, stdin);
-        if (send(socketCli, buffer, strlen(buffer), MSG_NOSIGNAL) < 0) {
+    while (1) {
+        memset(bufferC, '\0', BUFFER_SIZE);
+        fgets(bufferC, BUFFER_SIZE, stdin);
+        if (send(socketCli, bufferC, strlen(bufferC), MSG_NOSIGNAL) < 0) {
             puts("L'envoi a échoué.");
             close(socketCli);
             return -1;
         }
-        printf("\tEnvoyé: %s\n", buffer);
-        recv(socketCli, buffer, 128, MSG_DONTWAIT);
+        printf("\tEnvoyé: %s\n", bufferC);
+        if (recv(socketCli, bufferS, BUFFER_SIZE, 0) >= 0) {
+            printf("\tReçu: %s", bufferS);
+        }
+        memset(bufferS, '\0', BUFFER_SIZE);
     }
     close(socketCli);
     return 0;
