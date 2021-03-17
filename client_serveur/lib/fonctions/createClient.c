@@ -37,17 +37,16 @@ int clientInit(char *portNb) {
     while (1) {
         memset(bufferC, '\0', BUFFER_SIZE);
         fgets(bufferC, BUFFER_SIZE, stdin);
-        if (send(socketCli, bufferC, BUFFER_SIZE, MSG_NOSIGNAL) < 0) {
+        if (send(socketCli, bufferC, strlen(bufferC), MSG_NOSIGNAL) < 0) {
             puts("L'envoi a échoué.");
             close(socketCli);
             return -1;
         }
         printf("\tEnvoyé: %s\n", bufferC);
-        /*if (recv(socketCli, bufferS, BUFFER_SIZE, 0) >= 0) {
+        if (recv(socketCli, bufferS, BUFFER_SIZE, 0) >= 0) {
             printf("\tReçu: %s", bufferS);
         }
-        memset(bufferS, '\0', BUFFER_SIZE);*/
-        recv(socketCli, bufferC, 128, MSG_DONTWAIT);
+        memset(bufferS, '\0', BUFFER_SIZE);
     }
     close(socketCli);
     return 0;

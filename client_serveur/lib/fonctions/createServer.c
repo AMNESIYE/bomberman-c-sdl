@@ -12,7 +12,7 @@ int write_client(int client, char* bufferS) {
     /*char bufferS[BUFFER_SIZE];
     strcpy(bufferS, "OK\n");*/
 
-    if (send(client, bufferS, BUFFER_SIZE, MSG_DONTWAIT) >= 0) {
+    if (send(client, bufferS, strlen(bufferS), MSG_DONTWAIT) >= 0) {
         printf("\tEnvoyé: %s", bufferS);
         return 1;
     } else {
@@ -37,7 +37,7 @@ int read_client(int client) {
         }
         printf("\tReçu: %s", bufferC);
 
-        //write_client(client, bufferC);
+        write_client(client, bufferC);
 
         if (bufferC[n - 1] == '\n') {
             memset(bufferC, '\0', BUFFER_SIZE);
