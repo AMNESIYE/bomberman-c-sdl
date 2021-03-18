@@ -20,6 +20,9 @@ int my_strcmp(char const *s1, char const *s2)
 }
 
 void argumentGest(int arrlen, char *arr[]) {
+    if (my_strcmp(arr[1] , "-G") == 0) {
+            init_SDL(800 , 600);
+    }
     if (arrlen == 3) {
         if (my_strcmp(arr[1] , "-C") == 0) {
             clientInit(arr[2]);

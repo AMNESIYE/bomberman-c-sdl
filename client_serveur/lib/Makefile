@@ -11,6 +11,7 @@ SRC		=		fonctions/createClient.c \
 				fonctions/checkPort.c \
 				fonctions/createServer.c \
 				fonctions/gestionArg.c \
+				fonctions/sdl/windowsGest.c \
 
 				
 

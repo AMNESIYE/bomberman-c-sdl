@@ -25,4 +25,8 @@ int serverInit(char *portNb);
 void argumentGest(int arrLen, char *arr[]);
 int my_atoi(char *str);
 
+
+void exit_SDL(SDL_Window *win , SDL_Renderer *render);
+int init_SDL(int sizeX , int sizeY);
+
 #endif
