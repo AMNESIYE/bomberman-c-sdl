@@ -7,7 +7,7 @@
 
 #include "../../include/server.h"
 
-int write_client(int client, char* bufferS) {
+int write_client(int client, char *bufferS) {
 
     /*char bufferS[BUFFER_SIZE];
     strcpy(bufferS, "OK\n");*/
@@ -31,6 +31,7 @@ int read_client(int client) {
 
     n = 0;
     memset(bufferC, '\0', BUFFER_SIZE);
+    puts("read1");
     while ((n = recv(client, bufferC, BUFFER_SIZE, 0)) >= 0) {
         if (n == 0) {
             return -1;
@@ -43,8 +44,23 @@ int read_client(int client) {
             memset(bufferC, '\0', BUFFER_SIZE);
             break;
         }
+        puts("read2");
     }
     return 0;
+}
+
+int askClientNumber() {
+    return 1;
+}
+
+int nbDisconnectedClient(int *clients[], int nbClient) {
+    for (int i = 0, y = 0; i < nbClient; i++) {
+        if (*clients[i] == -1)
+            y++;
+        if (y == nbClient)
+            return -1;
+    }
+    return 1;
 }
 
 int serverInit(char *portNb) {
@@ -58,9 +74,10 @@ int serverInit(char *portNb) {
 
     int socketSrv;
     int client1;
-    int client2;
-    //int client3;
-    //int client4;
+    int client2, client3, client4;
+    int nbClient;
+    int *clients[] = {&client1, &client2, &client3, &client4};
+
     socklen_t client_addr_len;
     struct sockaddr_in server;
 
@@ -85,41 +102,51 @@ int serverInit(char *portNb) {
 
     puts("En attente de clients...");
     while (1) {
-        puts("En attente de reponse du premier client...");
+        puts("En attente de reponse du client hôte...");
         client1 = accept(socketSrv, (struct sockaddr *) &server, &client_addr_len);
-        puts("Nouveau client connecté.");
-        puts("En attente de reponse du deuxième client...");
-        client2 = accept(socketSrv, (struct sockaddr *) &server, &client_addr_len);
-        if (client1 < 0 || client2 < 0) {
-            puts("L'un des clients n'a pas répondu...");
-            return -1;
+        puts("Client hôte connecté.");
+
+        nbClient = 4; // A bind pour choisir le nombre de clients
+
+        for (int i = 1; i < nbClient; i++) {
+            *clients[i] = accept(socketSrv, (struct sockaddr *) &server, &client_addr_len);
+            puts("Nouveau client connecté.");
+            if (i < nbClient) {
+                puts("En attente de reponse d'un nouveau client...");
+            } else {
+                puts("La partie démarre !");
+            }
         }
-        puts("Nouveau client connecté.");
-        puts("La partie démarre !");
+
+        for (int i = 0; i < nbClient; i++) {
+            if (*clients[i] < 0) {
+                printf("Le client n°%i n'a pas répondu...", i);
+                return -1;
+            }
+        }
+
         while (1) {
             tick.tv_sec = 1;
             tick.tv_usec = 0;
             FD_ZERO(&readfs);
-            FD_SET(client1, &readfs);
-            FD_SET(client2, &readfs);
 
-            select(client2 + 1, &readfs, NULL, NULL, &tick);
+            for (int i = 0; i < nbClient; i++) {
+                FD_SET(*clients[i], &readfs);
+            }
 
-            if (FD_ISSET(client1, &readfs)) {
-                if (read_client(client1) == -1) {
-                    puts("Premier client déconnecté");
-                    close(client1);
-                    client1 = -1;
-                }
-            } else if (FD_ISSET(client2, &readfs)) {
-                if (read_client(client2) == -1) {
-                    puts("Deuxième client déconnecté");
-                    close(client2);
-                    client2 = -1;
+            select(*clients[nbClient - 1] + 1, &readfs, NULL, NULL, &tick);
+
+            for (int i = 0; i < nbClient; i++) {
+                if (FD_ISSET(*clients[i], &readfs)) {
+                    if (read_client(*clients[i]) == -1) {
+                        printf("Client n°%i déconnecté", i);
+                        close(*clients[i]);
+                        *clients[i] = -1;
+                    }
                 }
             }
 
-            if (client1 == -1 && client2 == -1) {
+            if (*clients[0] == -1 || nbDisconnectedClient(clients, nbClient) == -1) {
                 break;
             }
             puts("tick");
