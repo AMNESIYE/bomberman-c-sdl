@@ -5,13 +5,13 @@
 **      main
 */
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <SDL2/SDL.h>
 #include "game.h"
+#include "serveur.h"
+#include "client.h"
+#include "basical.h"
 
 int main()
 {
-    initWindow(800 , 800);
+    my_createWindows(800 , 600);
     return 0;
 }
