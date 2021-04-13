@@ -18,8 +18,8 @@ int my_createGame(SDL_Window *window) {
                     my_exitWindows(window);
                     return 0;
                 case SDL_MOUSEBUTTONDOWN:
-                    if (event.button.x >= 330 && event.button.x <= 330 + 250 && event.button.y >= 305 &&
-                        event.button.y <= 305 + 75) {
+                    if (event.button.x >= 30 && event.button.x <= 30 + 250 && event.button.y >= 605 &&
+                        event.button.y <= 605 + 75) {
                         return 4;
                     } else if (event.button.x >= 330 && event.button.x <= 330 + 250 && event.button.y >= 605 &&
                                event.button.y <= 605 + 75){
@@ -30,8 +30,9 @@ int my_createGame(SDL_Window *window) {
         }
         my_drawText(window, 0, 0, 600, 700, 255, 0, 0, "It's createGame Scene");
         //Play button
-        my_drawRectangle(window, 330, 305, 250, 75, 150, 0, 0);
-        my_drawText(window, -430, -325, 600, 700, 0, 0, 0, "Play");
+        my_drawRectangle(window, 30, 605, 250, 75, 0, 0, 150);
+        my_drawText(window, -130, -625, 600, 700, 0, 0, 0, "Play");
+        my_drawText(window, -130, -625, 600, 700, 0, 0, 0, "Play");
         // Back button
         my_drawRectangle(window, 330, 605, 250, 75, 150, 0, 0);
         my_drawText(window, -430, -625, 600, 700, 0, 0, 0, "Back");
