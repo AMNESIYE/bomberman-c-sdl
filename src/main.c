@@ -12,6 +12,6 @@
 
 int main()
 {
-    my_createWindows(800 , 600);
+    my_createWindows(600 , 700);
     return 0;
 }

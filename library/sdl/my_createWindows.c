@@ -20,37 +20,45 @@ int my_createWindows (int sizeX , int sizeY)
     surfaceScreen = SDL_GetWindowSurface( window );
     SDL_FillRect(surfaceScreen, NULL, SDL_MapRGB(surfaceScreen->format, 255, 255, 255));
     SDL_UpdateWindowSurface(window);
+    SDL_Log("Initialisation réussie.");
     int run = 1;
     while(run > 0) {
         while(SDL_PollEvent(&event))
         {
             switch (event.type) {
                 case SDL_QUIT:
+                    SDL_Log("Fermeture de la fenêtre.");
                     my_exitWindows(window);
                     run = 0;
                     return 0;
-                    break;
             }
         }
         switch (run) {
             case 0:
                 my_exitWindows(window);
                 return 0;
-                break;
             case 1:
+                SDL_Log("Choix -> Menu.");
                 run = my_mainMenu(window);
                 break;
             case 2:
-                run = my_playGame(window);
+                SDL_Log("Choix -> Join a game.");
+                run = my_joinGame(window);
                 break;
             case 3:
+                SDL_Log("Choix -> Create a game.");
                 run = my_createGame(window);
                 break;
+            case 4:
+                SDL_Log("Choix -> Play.");
+                run = my_playGame(window);
+                break;
+
         }
         SDL_UpdateWindowSurface(window);
     }
 
-    
+    SDL_Log("Fermeture de la fenêtre.");
     my_exitWindows(window);
     return 0;
 }

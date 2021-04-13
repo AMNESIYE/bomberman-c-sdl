@@ -10,6 +10,7 @@ NAME	=		libmy.a
 SRC		=	basical/my_portCheck.c	\
 			basical/my_atoi.c \
 			basical/my_checkColor.c \
+			basical/my_initObjects.c \
 			sdl/my_createWindows.c \
 			sdl/my_exitWindows.c \
 			sdl/draws/my_drawRectangle.c \
@@ -18,8 +19,9 @@ SRC		=	basical/my_portCheck.c	\
 			sdl/draws/my_drawText.c \
 			sdl/my_clearWindows.c \
 			sdl/scenes/my_mainMenu.c \
-			sdl/scenes/my_playGame.c \
+			sdl/scenes/my_joinGame.c \
 			sdl/scenes/my_createGame.c \
+			sdl/scenes/my_playGame.c \
 
 				
 
