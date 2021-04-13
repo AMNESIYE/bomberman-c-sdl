@@ -20,14 +20,14 @@ int my_createWindows (int sizeX , int sizeY)
     surfaceScreen = SDL_GetWindowSurface( window );
     SDL_FillRect(surfaceScreen, NULL, SDL_MapRGB(surfaceScreen->format, 255, 255, 255));
     SDL_UpdateWindowSurface(window);
-    SDL_Log("Initialisation réussie.");
+    SDL_Log("SDL -> Initialisation reussie.");
     int run = 1;
     while(run > 0) {
         while(SDL_PollEvent(&event))
         {
             switch (event.type) {
                 case SDL_QUIT:
-                    SDL_Log("Fermeture de la fenêtre.");
+                    SDL_Log("SDL -> Fermeture de la fenêtre.");
                     my_exitWindows(window);
                     run = 0;
                     return 0;

@@ -14,7 +14,7 @@ int my_mainMenu(SDL_Window* window)
     SDL_Event event;
     SDL_Log("Main Menu -> Generate button.");
     SDL_Log("Main Menu -> Generate text.");
-    SDL_Log("Main Menu -> Generate text.");
+    SDL_Log("Main Menu -> Generate image");
     while (1) {
         while(SDL_PollEvent(&event))
         {
