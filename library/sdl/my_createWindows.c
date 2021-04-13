@@ -58,7 +58,7 @@ int my_createWindows (int sizeX , int sizeY)
         SDL_UpdateWindowSurface(window);
     }
 
-    SDL_Log("Fermeture de la fenetre.");
+    SDL_Log("SDL -> Fermeture de la fenetre.");
     my_exitWindows(window);
     return 0;
 }
