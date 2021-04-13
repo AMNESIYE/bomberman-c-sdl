@@ -24,6 +24,7 @@ void my_drawText(SDL_Window* window, int posX , int posY , int width , int heigh
 void my_clearWindows(SDL_Window* window);
 int my_mainMenu(SDL_Window* window);
 int my_createGame(SDL_Window* window);
-int my_playGame(SDL_Window* window);
+int my_joinGame(SDL_Window* window);
+int my_playGame(SDL_Window *window);
 
 #endif

@@ -18,8 +18,9 @@ SRC		=	basical/my_portCheck.c	\
 			sdl/draws/my_drawText.c \
 			sdl/my_clearWindows.c \
 			sdl/scenes/my_mainMenu.c \
-			sdl/scenes/my_playGame.c \
+			sdl/scenes/my_joinGame.c \
 			sdl/scenes/my_createGame.c \
+			sdl/scenes/my_playGame.c \
 
 				
 

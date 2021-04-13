@@ -21,24 +21,24 @@ int my_mainMenu(SDL_Window* window)
                     return 0;
                     break;
                 case SDL_MOUSEBUTTONDOWN:
-                    if (event.button.x >= 250 && event.button.x <= 500 && event.button.y >= 150 && event.button.y <= 225) {
-                        return 2;
-                    }
-                    else if (event.button.x >= 250 && event.button.x <= 500 && event.button.y >= 250 && event.button.y <= 325) {
+                    if (event.button.x >= 150 && event.button.x <= 150 + 300 && event.button.y >= 150 && event.button.y <= 150 + 75) {
                         return 3;
                     }
-                    else if (event.button.x >= 250 && event.button.x <= 500 && event.button.y >= 350 && event.button.y <= 425) {
+                    else if (event.button.x >= 150 && event.button.x <= 150 + 300 && event.button.y >= 250 && event.button.y <= 250 + 75) {
+                        return 2;
+                    }
+                    else if (event.button.x >= 150 && event.button.x <= 150 + 300 && event.button.y >= 350 && event.button.y <= 350 + 75) {
                         return 0;
                     }
                     break;
             }
         }
-        my_drawRectangle(window , 250 , 150 , 250 , 75 , 0 , 150 , 0);
-        my_drawText(window , -340 , -170 , 800 , 600 , 0 , 0 , 0 , "Jouer");
-        my_drawRectangle(window , 250 , 250 , 250 , 75 , 0 , 0 , 150);
-        my_drawText(window , -320 , -270 , 800 , 600 , 0 , 0 , 0 , "Rejoindre");
-        my_drawRectangle(window , 250 , 350 , 250 , 75 , 150 , 0 , 0);
-        my_drawText(window , -330 , -370 , 800 , 600 , 0 , 0 , 0 , "Quitter");
+        my_drawRectangle(window , 150 , 150 , 300 , 75 , 0 , 150 , 0);
+        my_drawText(window , -265 , -170 , 600 , 700 , 0 , 0 , 0 , "Create");
+        my_drawRectangle(window , 150 , 250 , 300 , 75 , 0 , 0 , 150);
+        my_drawText(window , -275 , -270 , 600 , 700 , 0 , 0 , 0 , "Join");
+        my_drawRectangle(window , 150 , 350 , 300 , 75 , 150 , 0 , 0);
+        my_drawText(window , -275 , -370 , 600 , 700 , 0 , 0 , 0 , "Quit");
         SDL_UpdateWindowSurface(window);
 
     }
