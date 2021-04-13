@@ -6,8 +6,8 @@
 */
 
 
-#ifndef MY_H_
-#define MY_H_
+#ifndef MY_H_BASICAL
+#define MY_H_BASICAL
 
 #include <stdlib.h>
 #include <stdio.h>

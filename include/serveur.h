@@ -6,8 +6,8 @@
 */
 
 
-#ifndef MY_H_
-#define MY_H_
+#ifndef MY_H_CLIENT
+#define MY_H_CLIENT
 
 #define BUFFER_SIZE 128
 

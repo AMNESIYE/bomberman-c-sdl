@@ -14,7 +14,6 @@ SRC		=	basical/my_portCheck.c	\
 			sdl/my_createWindows.c \
 			sdl/my_exitWindows.c \
 			sdl/draws/my_drawRectangle.c \
-			sdl/draws/my_drawSquare.c \
 			sdl/draws/my_drawImage.c \
 			sdl/draws/my_drawText.c \
 			sdl/my_clearWindows.c \

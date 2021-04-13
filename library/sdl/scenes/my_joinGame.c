@@ -7,15 +7,30 @@
 
 #include "../../../include/game.h"
 
-int my_joinGame(SDL_Window *window) {
+void my_initializeJoinGame(SDL_Renderer *renderer) {
+    my_clearWindows(renderer);
+    SDL_Rect buttonBack[2] = {{330, 605, 250, 75},
+                              {430, 625, 50,  30}};
+
+    // Button Back
+    my_drawRectangle(renderer, buttonBack[0], 150, 0, 0);
+    my_drawText(renderer, buttonBack[1], 0, 0, 0, "Back");
+
+    SDL_RenderPresent(renderer);
+}
+
+int my_joinGame(SDL_Window *window, SDL_Renderer *renderer) {
     TTF_Init();
-    my_clearWindows(window);
     SDL_Event event;
+    my_initializeJoinGame(renderer);
+
     while (1) {
         while (SDL_PollEvent(&event)) {
             switch (event.type) {
                 case SDL_QUIT:
-                    my_exitWindows(window);
+                    my_clearWindows(renderer);
+                    SDL_RenderPresent(renderer);
+                    my_exitWindows(window, renderer);
                     return 0;
                 case SDL_MOUSEBUTTONDOWN:
                     if (event.button.x >= 330 && event.button.x <= 330 + 250 && event.button.y >= 605 &&
@@ -25,12 +40,6 @@ int my_joinGame(SDL_Window *window) {
                     break;
             }
         }
-        my_drawText(window, 0, 0, 800, 600, 255, 0, 0, "It's joinGame Scene");
-        // Button Back
-        my_drawRectangle(window, 330, 605, 250, 75, 150, 0, 0);
-        my_drawText(window, -430, -625, 600, 700, 0, 0, 0, "Back");
-        SDL_UpdateWindowSurface(window);
-
     }
     return 0;
 }

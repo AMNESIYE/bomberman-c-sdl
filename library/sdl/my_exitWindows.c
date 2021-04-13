@@ -7,8 +7,10 @@
 
 #include "../../include/game.h"
 
-int my_exitWindows(SDL_Window* window)
+int my_exitWindows(SDL_Window *window, SDL_Renderer *renderer)
 {
+    SDL_Log("SDL -> Closing window.");
+    SDL_DestroyRenderer(renderer);
     SDL_DestroyWindow(window);
     TTF_Quit();
     SDL_Quit();
