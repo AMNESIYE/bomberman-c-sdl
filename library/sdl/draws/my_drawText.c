@@ -8,19 +8,16 @@
 
 #include "../../../include/game.h"
 
-void my_drawText(SDL_Window* window, int posX , int posY , int width , int height , int red , int green , int blue ,char *str) {
-    SDL_Surface* surface = NULL;
-    surface = SDL_GetWindowSurface(window);
-    TTF_Font * font = TTF_OpenFont("./library/assets/text.ttf", 25);
-    red = my_checkColor(red);
-    green = my_checkColor(green);
-    blue = my_checkColor(blue);
-    SDL_Color color = { red, green, blue };
-    SDL_Surface * text = TTF_RenderText_Solid(font, str , color);
-    SDL_Rect rectangle = { posX , posY , width , height};
-    SDL_BlitSurface(text, &rectangle , surface, NULL);
+void my_drawText(SDL_Renderer *renderer, SDL_Rect rectangle, int red, int green, int blue, char* message) {
+    TTF_Font* font = TTF_OpenFont("./library/assets/text.ttf", 25);
+    SDL_Color color = {red, green, blue, 255};
+    SDL_Texture* texture = NULL;
+    SDL_Surface* surface = TTF_RenderText_Solid(font, message, color);
+
+    texture = SDL_CreateTextureFromSurface(renderer, surface);
+    SDL_RenderCopy(renderer, texture, NULL, &rectangle);
+
+    SDL_DestroyTexture(texture);
     SDL_FreeSurface(surface);
-    SDL_FreeSurface(text);
-    TTF_CloseFont(font);
     return;
 }

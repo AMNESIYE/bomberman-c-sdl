@@ -6,8 +6,8 @@
 */
 
 
-#ifndef MY_H_
-#define MY_H_
+#ifndef MY_H_GAME
+#define MY_H_GAME
 
 #include <stdlib.h>
 #include <stdio.h>
@@ -15,16 +15,16 @@
 #include <SDL2/SDL_ttf.h>
 
 int my_createWindows (int sizeX , int sizeY);
-int my_exitWindows(SDL_Window* window);
-void my_drawRectangle(SDL_Window* window, int posX , int posY , int width , int height , int red , int green , int blue);
+int my_exitWindows(SDL_Window *window, SDL_Renderer *renderer);
+void my_drawRectangle(SDL_Renderer *renderer, SDL_Rect rectangle, int red , int green , int blue);
 void my_drawSquare(SDL_Window* window, int posX , int posY , int width , int red , int green , int blue);
 int my_checkColor(int colorNb);
-void my_drawImage(SDL_Window* window, int posX , int posY , int width , int height , char* path);
-void my_drawText(SDL_Window* window, int posX , int posY , int width , int height , int red , int green , int blue ,char *str);
-void my_clearWindows(SDL_Window* window);
-int my_mainMenu(SDL_Window* window);
-int my_createGame(SDL_Window* window);
-int my_joinGame(SDL_Window* window);
-int my_playGame(SDL_Window *window);
+void my_drawImage(SDL_Renderer *renderer, SDL_Rect image, char* path);
+void my_drawText(SDL_Renderer *renderer, SDL_Rect rectangle, int red, int green, int blue, char* message);
+void my_clearWindows(SDL_Renderer *renderer);
+int my_mainMenu(SDL_Window* window, SDL_Renderer* renderer);
+int my_createGame(SDL_Window* window, SDL_Renderer *renderer);
+int my_joinGame(SDL_Window *window, SDL_Renderer *renderer);
+int my_playGame(SDL_Window *window, SDL_Renderer *renderer);
 
 #endif

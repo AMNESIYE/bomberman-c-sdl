@@ -8,13 +8,14 @@
 
 #include "../../../include/game.h"
 
-void my_drawImage(SDL_Window* window, int posX , int posY , int width , int height , char* path) {
-    SDL_Surface* surface = NULL;
-    surface = SDL_GetWindowSurface(window);
-    SDL_Surface* img = SDL_LoadBMP(path);
-    SDL_Rect rectangle = { posX , posY , width , height};
-    SDL_BlitSurface(img, &rectangle , surface, NULL);
-    SDL_FreeSurface(img);
+void my_drawImage(SDL_Renderer *renderer, SDL_Rect image, char* path) {
+    SDL_Texture* texture = NULL;
+    SDL_Surface* surface = SDL_LoadBMP(path);
+
+    texture = SDL_CreateTextureFromSurface(renderer, surface);
+    SDL_RenderCopy(renderer, texture, NULL, &image);
+
+    SDL_DestroyTexture(texture);
     SDL_FreeSurface(surface);
     return;
 }

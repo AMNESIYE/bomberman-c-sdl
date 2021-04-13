@@ -8,8 +8,8 @@
 
 #include "./../../include/game.h"
 
-void my_clearWindows(SDL_Window* window) {
-    SDL_Surface* surfaceScreen = SDL_GetWindowSurface( window );
-    SDL_FillRect(surfaceScreen, NULL, SDL_MapRGB(surfaceScreen->format, 255, 255, 255));  
-    return; 
+void my_clearWindows(SDL_Renderer *renderer) {
+    SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
+    SDL_RenderClear(renderer);
+    return;
 }

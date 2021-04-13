@@ -7,37 +7,45 @@
 
 #include "../../../include/game.h"
 
-int my_createGame(SDL_Window *window) {
+void my_initializeCreateGame(SDL_Renderer
+                             *renderer) {
+    my_clearWindows(renderer);
+    SDL_Rect buttonBack[2] = {{330, 605, 250, 75},
+                              {430, 625, 50,  30}};
+    SDL_Rect buttonPlay[2] = {{30, 605, 250, 75},
+                              {130, 625, 50,  30}};
+
+    // Button Back
+    my_drawRectangle(renderer, buttonBack[0], 150, 0, 0);
+    my_drawRectangle(renderer, buttonPlay[0], 0, 150, 0);
+    my_drawText(renderer, buttonBack[1], 0, 0, 0, "Back");
+    my_drawText(renderer, buttonPlay[1], 0, 0, 0, "Play");
+
+    SDL_RenderPresent(renderer);
+}
+
+int my_createGame(SDL_Window *window, SDL_Renderer *renderer) {
     TTF_Init();
-    my_clearWindows(window);
+    my_clearWindows(renderer);
     SDL_Event event;
+    my_initializeCreateGame(renderer);
     while (1) {
         while (SDL_PollEvent(&event)) {
             switch (event.type) {
                 case SDL_QUIT:
-                    my_exitWindows(window);
+                    my_exitWindows(window, renderer);
                     return 0;
                 case SDL_MOUSEBUTTONDOWN:
                     if (event.button.x >= 30 && event.button.x <= 30 + 250 && event.button.y >= 605 &&
                         event.button.y <= 605 + 75) {
                         return 4;
                     } else if (event.button.x >= 330 && event.button.x <= 330 + 250 && event.button.y >= 605 &&
-                               event.button.y <= 605 + 75){
+                               event.button.y <= 605 + 75) {
                         return 1;
                     }
                     break;
             }
         }
-        my_drawText(window, 0, 0, 600, 700, 255, 0, 0, "It's createGame Scene");
-        //Play button
-        my_drawRectangle(window, 30, 605, 250, 75, 0, 0, 150);
-        my_drawText(window, -130, -625, 600, 700, 0, 0, 0, "Play");
-        my_drawText(window, -130, -625, 600, 700, 0, 0, 0, "Play");
-        // Back button
-        my_drawRectangle(window, 330, 605, 250, 75, 150, 0, 0);
-        my_drawText(window, -430, -625, 600, 700, 0, 0, 0, "Back");
-        SDL_UpdateWindowSurface(window);
-
     }
     return 0;
 }

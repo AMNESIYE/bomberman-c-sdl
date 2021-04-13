@@ -12,10 +12,12 @@
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_ttf.h>
 
-struct character my_initBaseCharacter(struct character character) {
+/*struct character my_initBaseCharacter(struct character character) {
     character.hitbox.charHeight = 30;
     character.hitbox.charWidth = 30;
     character.stats.lifePoints = 10;
+    character.position.x = 0;
+    character.position.y = 0;
     return character;
 }
 
@@ -39,6 +41,15 @@ struct character my_initEnemyCharacter()
     return character;
 }
 
+struct character my_initBlankCharacter() {
+    struct character character;
+    character = my_initBaseCharacter(character);
+    character.colors.red = 255;
+    character.colors.green = 255;
+    character.colors.blue = 255;
+    return character;
+}
+
 struct character my_initCharacter(enum _characterType characterType) {
     switch (characterType) {
         case 0:
@@ -47,5 +58,8 @@ struct character my_initCharacter(enum _characterType characterType) {
         case 1:
             SDL_Log("Enemy Character initialized with base stats.");
             return my_initEnemyCharacter();
+        case 2:
+            SDL_Log("Blank Character initialized with base stats.");
+            return my_initBlankCharacter();
     }
-}
+}*/

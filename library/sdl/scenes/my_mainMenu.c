@@ -7,49 +7,68 @@
 
 #include "../../../include/game.h"
 
-int my_mainMenu(SDL_Window* window)
-{
-    TTF_Init();
-    my_clearWindows(window);
-    SDL_Event event;
+void my_initializeMainMenu(SDL_Renderer *renderer) {
     SDL_Log("Main Menu -> Generate button.");
     SDL_Log("Main Menu -> Generate text.");
     SDL_Log("Main Menu -> Generate image");
+    my_clearWindows(renderer);
+
+    //drawImage
+    SDL_Rect image[2] = {{400, 400, 150, 200}, {0, 0, 600, 150}};
+    my_drawImage(renderer, image[0] , "./library/assets/logo.bmp");
+    my_drawImage(renderer, image[1] , "./library/assets/title.bmp");
+
+    //drawRectangle
+    SDL_Rect rect[3] = {{50, 250, 250, 75},
+                        {50, 350, 250, 75},
+                        {50, 450, 250, 75}};
+    my_drawRectangle(renderer, rect[0], 0, 150, 0);
+    my_drawRectangle(renderer, rect[1], 0, 0, 150);
+    my_drawRectangle(renderer, rect[2], 150, 0, 0);
+
+    //drawText
+    SDL_Rect text[3] = {{140, 270, 70, 30},
+                        {150, 370, 50, 30},
+                        {150, 470, 50, 30}};
+    my_drawText(renderer, text[0], 0, 0, 0, "Create");
+    my_drawText(renderer, text[1], 0, 0, 0, "Join");
+    my_drawText(renderer, text[2], 0, 0, 0, "Quit");
+
+    SDL_RenderPresent(renderer);
+}
+
+int my_mainMenu(SDL_Window *window, SDL_Renderer *renderer) {
+    TTF_Init();
+    SDL_Event event;
+    my_initializeMainMenu(renderer);
     while (1) {
-        while(SDL_PollEvent(&event))
-        {
+        while (SDL_PollEvent(&event)) {
             switch (event.type) {
                 case SDL_QUIT:
-                    my_exitWindows(window);
+                    my_clearWindows(renderer);
+                    SDL_RenderPresent(renderer);
+                    my_exitWindows(window, renderer);
                     return 0;
-                    break;
                 case SDL_MOUSEBUTTONDOWN:
-                    if (event.button.x >= 50 && event.button.x <= 50 + 250 && event.button.y >= 250 && event.button.y <= 250 + 75) {
+                    if (event.button.x >= 50 && event.button.x <= 50 + 250 && event.button.y >= 250 &&
+                        event.button.y <= 250 + 75) {
+                        my_clearWindows(renderer);
+                        SDL_RenderPresent(renderer);
                         return 3;
-                    }
-                    else if (event.button.x >= 50 && event.button.x <= 150 + 250 && event.button.y >= 350 && event.button.y <= 350 + 75) {
+                    } else if (event.button.x >= 50 && event.button.x <= 150 + 250 && event.button.y >= 350 &&
+                               event.button.y <= 350 + 75) {
+                        my_clearWindows(renderer);
+                        SDL_RenderPresent(renderer);
                         return 2;
-                    }
-                    else if (event.button.x >= 50 && event.button.x <= 150 + 250 && event.button.y >= 450 && event.button.y <= 450 + 75) {
+                    } else if (event.button.x >= 50 && event.button.x <= 150 + 250 && event.button.y >= 450 &&
+                               event.button.y <= 450 + 75) {
+                        my_clearWindows(renderer);
+                        SDL_RenderPresent(renderer);
                         return 0;
                     }
                     break;
             }
         }
-
-        //drawRectangle
-        my_drawRectangle(window , 50 , 250 , 250 , 75 , 0 , 150 , 0);
-        my_drawRectangle(window , 50 , 350 , 250 , 75 , 0 , 0 , 150);
-        my_drawRectangle(window , 50 , 450 , 250 , 75 , 150 , 0 , 0);
-        //drawText
-        my_drawText(window , -75 , -270 , 600 , 700 , 0 , 0 , 0 , "Create");
-        my_drawText(window , -75 , -370 , 600 , 700 , 0 , 0 , 0 , "Join");
-        my_drawText(window , -75 , -470 , 600 , 700 , 0 , 0 , 0 , "Quit");
-        //drawImage
-        my_drawImage(window , 0 , 0 , 600 , 150 , "./library/assets/title.bmp");
-        my_drawImage(window , -400 , -400 ,600 , 700 , "./library/assets/logo.bmp");
-        SDL_UpdateWindowSurface(window);
-
     }
     return 0;
 }

@@ -11,7 +11,7 @@ SRC     =   src/main.c
 
 CFLAGS= -Wall -Wextra -Werror -std=c11
 
-LFLAGS=  `sdl2-config --cflags --libs` -lSDL2 -lSDL2_ttf
+LFLAGS=  `sdl2-config --cflags --libs` -lSDL2 -lSDL2_ttf -lm
 
 CPPFLAGS    =	-I./include/
 
