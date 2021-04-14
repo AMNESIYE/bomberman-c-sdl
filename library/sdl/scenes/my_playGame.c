@@ -8,6 +8,20 @@
 #include "../../../include/game.h"
 #include "../../../include/objects.h"
 
+#define FPS 60
+
+static int TestThread()
+{
+    int count = 0;
+
+    /*for (count = 0; count < 10; ++count) {
+        //SDL_Log("Thread tick");
+        SDL_Delay(50);
+    }*/
+
+    return count;
+}
+
 void my_setupOverlay(SDL_Renderer *renderer) {
     my_drawLine(renderer, 0, 99, 600, 99, 0, 0, 0);
 }
@@ -45,6 +59,7 @@ void my_initializeCharactersPosition(struct character charTable[]) {
 }
 
 int my_playGame(SDL_Window *window, SDL_Renderer *renderer) {
+    SDL_Thread *thread = NULL;
     int playersNumber = 2; // A variabiliser
 
     struct character charTable[] = {my_initCharacter(MY_CHARACTER), my_initCharacter(ENEMY_CHARACTER),
@@ -58,19 +73,17 @@ int my_playGame(SDL_Window *window, SDL_Renderer *renderer) {
 
     SDL_Event event;
 
+    int baseTick;
+
     while (1) {
-        int start = SDL_GetTicks();
+        thread = SDL_CreateThread(TestThread, "Game", NULL);
+        baseTick= SDL_GetTicks();
+
         while (SDL_PollEvent(&event)) {
             switch (event.type) {
                 case SDL_QUIT:
                     my_exitWindows(window, renderer);
-                    return 0;
-            }
-        }
-        while (SDL_PollEvent(&event)) {
-            switch (event.type) {
-                case SDL_QUIT:
-                    my_exitWindows(window, renderer);
+                    SDL_WaitThread(thread, NULL);
                     return 0;
                 case SDL_KEYDOWN:
                     switch (event.key.keysym.sym) {
@@ -102,11 +115,9 @@ int my_playGame(SDL_Window *window, SDL_Renderer *renderer) {
             my_refreshPlayScene(renderer, charTableI, playersNumber);
             thereIsAChange--;
         }
-        int end = SDL_GetTicks() - start;
-        int sleep = end - start;
-        if (sleep > 0)
-            SDL_Delay(sleep);
-
+        if ((1000 / FPS) > SDL_GetTicks() - baseTick) {
+            SDL_Delay(1000 / FPS - (SDL_GetTicks() - baseTick));
+        }
     }
     return 0;
 }

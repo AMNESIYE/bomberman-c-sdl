@@ -13,6 +13,7 @@
 #include <stdio.h>
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_ttf.h>
+#include <SDL2/SDL_thread.h>
 
 int my_createWindows(int sizeX, int sizeY);
 
