@@ -6,6 +6,7 @@
 */
 
 #include "../../include/server.h"
+#include "../../include/basical.h"
 
 int write_client(int client, char *bufferS) {
 
@@ -63,8 +64,8 @@ int nbDisconnectedClient(int *clients[], int nbClient) {
     return 1;
 }
 
-int serverInit(char *portNb) {
-    if (validatePort(portNb) == -1) {
+int serverInit(char* portNb) {
+    if (my_portCheck(portNb) == -1) {
         return -1;
     }
     int port = my_atoi(portNb);

@@ -9,6 +9,8 @@
 
 int my_movement(struct character character)
 {
+    //Event handling
+
     //
     return 0;
 }

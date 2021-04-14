@@ -6,12 +6,18 @@
 */
 
 #include "game.h"
-#include "serveur.h"
+#include "server.h"
 #include "client.h"
 #include "basical.h"
 
-int main()
+int main(int argc, char *argv[])
 {
-    my_createWindows(600 , 700);
+    if (argc == 2 && strcmp(argv[0], "./bomberman") == 0 && strcmp(argv[1], "--serv") == 0) {
+        serverInit("25565");
+    } else if (argc == 1 && strcmp(argv[0], "./bomberman") == 0) {
+        my_createWindows(600 , 700);
+    } else {
+        puts("Main -> Erreur : Paramètres invalides.");
+    }
     return 0;
 }

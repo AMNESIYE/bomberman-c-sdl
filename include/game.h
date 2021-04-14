@@ -9,11 +9,14 @@
 #ifndef MY_H_GAME
 #define MY_H_GAME
 
+#define FPS 60
+
 #include <stdlib.h>
 #include <stdio.h>
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_ttf.h>
 #include <SDL2/SDL_thread.h>
+
 
 int my_createWindows(int sizeX, int sizeY);
 
@@ -39,6 +42,6 @@ int my_createGame(SDL_Window *window, SDL_Renderer *renderer);
 
 int my_joinGame(SDL_Window *window, SDL_Renderer *renderer);
 
-int my_playGame(SDL_Window *window, SDL_Renderer *renderer);
+int my_playGameClient(SDL_Window *window, SDL_Renderer *renderer);
 
 #endif

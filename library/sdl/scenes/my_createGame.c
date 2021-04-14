@@ -7,28 +7,34 @@
 
 #include "../../../include/game.h"
 
-void my_initializeCreateGame(SDL_Renderer
-                             *renderer) {
+void my_refreshCreateGame(SDL_Renderer* renderer, SDL_Rect buttonBack[], SDL_Rect buttonPlay[], SDL_Rect buttonServer[], int colorPlay[]) {
     my_clearWindows(renderer);
-    SDL_Rect buttonBack[2] = {{330, 605, 250, 75},
-                              {430, 625, 50,  30}};
-    SDL_Rect buttonPlay[2] = {{30, 605, 250, 75},
-                              {130, 625, 50,  30}};
-
-    // Button Back
     my_drawRectangle(renderer, buttonBack[0], 150, 0, 0);
-    my_drawRectangle(renderer, buttonPlay[0], 0, 150, 0);
+    my_drawRectangle(renderer, buttonPlay[0], colorPlay[0], colorPlay[1], colorPlay[2]);
+    my_drawRectangle(renderer, buttonServer[0], 240, 240, 240);
+
     my_drawText(renderer, buttonBack[1], 0, 0, 0, "Back");
     my_drawText(renderer, buttonPlay[1], 0, 0, 0, "Play");
-
+    my_drawText(renderer, buttonServer[1], 0, 0, 0, "Serv");
     SDL_RenderPresent(renderer);
 }
 
 int my_createGame(SDL_Window *window, SDL_Renderer *renderer) {
     TTF_Init();
-    my_clearWindows(renderer);
     SDL_Event event;
-    my_initializeCreateGame(renderer);
+
+    int colorPlay[3] = {169, 169, 169};
+
+    SDL_Rect buttonBack[2] = {{330, 605, 250, 75},
+                              {430, 625, 50,  30}};
+    SDL_Rect buttonPlay[2] = {{30,  605, 250, 75},
+                              {130, 625, 50,  30}};
+    SDL_Rect buttonServer[2] = {{330, 305, 250, 75},
+                                {430, 325, 50,  30}};
+    my_refreshCreateGame(renderer, buttonBack, buttonPlay, buttonServer, colorPlay);
+
+    int serverInitialized = 0;
+
     while (1) {
         while (SDL_PollEvent(&event)) {
             switch (event.type) {
@@ -36,12 +42,22 @@ int my_createGame(SDL_Window *window, SDL_Renderer *renderer) {
                     my_exitWindows(window, renderer);
                     return 0;
                 case SDL_MOUSEBUTTONDOWN:
-                    if (event.button.x >= 30 && event.button.x <= 30 + 250 && event.button.y >= 605 &&
+                    if (serverInitialized == 1 && event.button.x >= 30 && event.button.x <= 30 + 250 &&
+                        event.button.y >= 605 &&
                         event.button.y <= 605 + 75) {
                         return 4;
                     } else if (event.button.x >= 330 && event.button.x <= 330 + 250 && event.button.y >= 605 &&
                                event.button.y <= 605 + 75) {
                         return 1;
+                    } else if (event.button.x >= 330 && event.button.x <= 330 + 250 &&
+                               event.button.y >= 305 &&
+                               event.button.y <= 305 + 75) {
+                        colorPlay[0] = 0;
+                        colorPlay[1] = 150;
+                        colorPlay[2] = 0;
+                        serverInitialized++;
+                        system("gnome-terminal -- ./bomberman --serv");
+                        my_refreshCreateGame(renderer, buttonBack, buttonPlay, buttonServer, colorPlay);
                     }
                     break;
             }

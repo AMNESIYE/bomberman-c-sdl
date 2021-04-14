@@ -18,6 +18,7 @@ struct character my_initBaseCharacter(struct character character) {
     character.stats.lifePoints = 10;
     character.hitbox.x = 0;
     character.hitbox.y = 0;
+    character.skin = "./library/assets/mini-bomberman.bmp";
     return character;
 }
 
@@ -53,13 +54,13 @@ struct character my_initBlankCharacter() {
 struct character my_initCharacter(enum _characterType characterType) {
     switch (characterType) {
         case 0:
-            SDL_Log("My Character initialized with base stats.");
+            SDL_Log("InitObjectis -> My Character initialized with base stats.");
             return my_initMyCharacter();
         case 1:
-            SDL_Log("Enemy Character initialized with base stats.");
+            SDL_Log("InitObjectis -> Enemy Character initialized with base stats.");
             return my_initEnemyCharacter();
         case 2:
-            SDL_Log("Blank Character initialized with base stats.");
+            SDL_Log("InitObjectis -> Blank Character initialized with base stats.");
             return my_initBlankCharacter();
     }
 }
