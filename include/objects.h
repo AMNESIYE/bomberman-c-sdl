@@ -32,6 +32,7 @@ struct character {
     struct characterColors colors;
     struct characterStats stats;
     char* skin;
+    char* name;
 };
 
 struct character my_initCharacter(enum _characterType characterType);

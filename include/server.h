@@ -9,7 +9,8 @@
 #ifndef MY_H_CLIENT
 #define MY_H_CLIENT
 
-#define BUFFER_SIZE 128
+#define BUFFER_SIZE 1024
+#define PORT 25565
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -22,7 +23,8 @@
 #include <pthread.h>
 #include <string.h>
 
-int serverInit(char *portNb);
+int serverInit();
+int clientInit();
 
 
 #endif

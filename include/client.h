@@ -9,7 +9,8 @@
 #ifndef MY_H_CLIENT
 #define MY_H_CLIENT
 
-#define BUFFER_SIZE 128
+#define BUFFER_SIZE 1024
+#define PORT 25565
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -20,6 +21,8 @@
 #include <sys/select.h>
 #include <sys/time.h>
 #include <pthread.h>
+
+
 
 
 #endif

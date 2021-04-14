@@ -23,6 +23,7 @@ SRC		=	basical/my_portCheck.c	\
 			sdl/scenes/my_createGame.c \
 			sdl/scenes/my_playGameClient.c \
 			server/createServer.c \
+			client/createClient.c \
 
 				
 
