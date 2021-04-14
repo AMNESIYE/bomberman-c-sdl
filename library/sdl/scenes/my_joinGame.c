@@ -8,13 +8,16 @@
 #include "../../../include/game.h"
 
 void my_initializeJoinGame(SDL_Renderer *renderer) {
+    SDL_Log("Main Menu -> Generate button.");
+    SDL_Log("Main Menu -> Generate text.");
     my_clearWindows(renderer);
     SDL_Rect buttonBack[2] = {{330, 605, 250, 75},
                               {430, 625, 50,  30}};
-
-    // Button Back
     my_drawRectangle(renderer, buttonBack[0], 150, 0, 0);
     my_drawText(renderer, buttonBack[1], 0, 0, 0, "Back");
+
+   
+
 
     SDL_RenderPresent(renderer);
 }
