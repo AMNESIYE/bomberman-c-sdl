@@ -31,9 +31,9 @@ struct character {
     SDL_Rect hitbox;
     struct characterColors colors;
     struct characterStats stats;
-    SDL_Surface* skin;
+    SDL_Surface *skin;
 };
 
-//struct character my_initCharacter(enum _characterType characterType);
+struct character my_initCharacter(enum _characterType characterType);
 
 #endif
