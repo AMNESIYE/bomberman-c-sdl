@@ -18,6 +18,12 @@ void my_initializeMainMenu(SDL_Renderer *renderer) {
     my_drawImage(renderer, image[0] , "./library/assets/logo.bmp");
     my_drawImage(renderer, image[1] , "./library/assets/title.bmp");
 
+
+    SDL_Rect blockPos = {550 , 625 , 50 , 75};
+    for (int i = 0; i < 12; i++) {
+        my_drawImage(renderer, blockPos , "./library/assets/block/block (75).bmp");
+        blockPos.x = blockPos.x - 50;
+    }
     //drawRectangle
     SDL_Rect rect[3] = {{50, 250, 250, 75},
                         {50, 350, 250, 75},
