@@ -21,5 +21,7 @@
 #include <sys/time.h>
 #include <pthread.h>
 
+int serverInit(char *portNb);
+
 
 #endif

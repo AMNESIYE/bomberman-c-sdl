@@ -46,7 +46,7 @@ int my_createWindows(int sizeX, int sizeY) {
                 break;
             case 4:
                 SDL_Log("Redirection -> Play.");
-                run = my_playGame(window, renderer);
+                run = my_playGameClient(window, renderer);
                 break;
 
         }

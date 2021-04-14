@@ -21,7 +21,8 @@ SRC		=	basical/my_portCheck.c	\
 			sdl/scenes/my_mainMenu.c \
 			sdl/scenes/my_joinGame.c \
 			sdl/scenes/my_createGame.c \
-			sdl/scenes/my_playGame.c \
+			sdl/scenes/my_playGameClient.c \
+			server/createServer.c \
 
 				
 

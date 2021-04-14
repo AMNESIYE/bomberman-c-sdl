@@ -8,16 +8,11 @@
 #include "../../../include/game.h"
 #include "../../../include/objects.h"
 
-#define FPS 60
-
 static int TestThread()
 {
     int count = 0;
 
-    /*for (count = 0; count < 10; ++count) {
-        //SDL_Log("Thread tick");
-        SDL_Delay(50);
-    }*/
+    // Si un truc à faire/compter pour le thread
 
     return count;
 }
@@ -27,14 +22,18 @@ void my_setupOverlay(SDL_Renderer *renderer) {
 }
 
 void my_refreshPlayScene(SDL_Renderer *renderer, struct character charTable[], int playersNumber) {
-    SDL_Log("Entering refresh scene");
+    SDL_Log("PlayScene -> Entering refresh scene");
 
     my_clearWindows(renderer);
     my_setupOverlay(renderer);
     for (int i = 0; i < playersNumber; i++) {
         if (charTable[i].hitbox.w == 30 && charTable[i].hitbox.h == 30) {
-            my_drawRectangle(renderer, charTable[i].hitbox, charTable[i].colors.red, charTable[i].colors.green,
-                             charTable[i].colors.blue);
+            if(charTable[i].skin != NULL) {
+                my_drawImage(renderer, charTable[i].hitbox, charTable[i].skin);
+            } else {
+                my_drawRectangle(renderer, charTable[i].hitbox, charTable[i].colors.red, charTable[i].colors.green,
+                                 charTable[i].colors.blue);
+            }
         }
     }
     SDL_RenderPresent(renderer);
@@ -58,7 +57,7 @@ void my_initializeCharactersPosition(struct character charTable[]) {
     }
 }
 
-int my_playGame(SDL_Window *window, SDL_Renderer *renderer) {
+int my_playGameClient(SDL_Window *window, SDL_Renderer *renderer) {
     SDL_Thread *thread = NULL;
     int playersNumber = 2; // A variabiliser
 
@@ -88,22 +87,22 @@ int my_playGame(SDL_Window *window, SDL_Renderer *renderer) {
                 case SDL_KEYDOWN:
                     switch (event.key.keysym.sym) {
                         case SDLK_RIGHT:
-                            SDL_Log("Go right.");
+                            SDL_Log("PlayScene -> Go right.");
                             charTableI[0].hitbox.x += 30;
                             thereIsAChange++;
                             break;
                         case SDLK_LEFT:
-                            SDL_Log("Go left.");
+                            SDL_Log("PlayScene -> Go left.");
                             charTableI[0].hitbox.x -= 30;
                             thereIsAChange++;
                             break;
                         case SDLK_UP:
-                            SDL_Log("Go up.");
+                            SDL_Log("PlayScene -> Go up.");
                             charTableI[0].hitbox.y -= 30;
                             thereIsAChange++;
                             break;
                         case SDLK_DOWN:
-                            SDL_Log("Go down.");
+                            SDL_Log("PlayScene -> Go down.");
                             charTableI[0].hitbox.y += 30;
                             thereIsAChange++;
                             break;

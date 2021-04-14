@@ -9,7 +9,7 @@
 
 
 int clientInit(char *portNb) {
-    if (validatePort(portNb) == -1) {
+    if (my_portCheck(portNb) == -1) {
         return -1;
     }
     int port = my_atoi(portNb);
