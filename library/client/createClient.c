@@ -8,16 +8,7 @@
 #include "../../include/server.h"
 
 
-int clientInit(char *portNb) {
-    if (my_portCheck(portNb) == -1) {
-        return -1;
-    }
-    int port = my_atoi(portNb);
-    if (port == -1) {
-        return -1;
-    }
-
-    int n;
+int clientInit() {
     char bufferC[BUFFER_SIZE], bufferS[BUFFER_SIZE];
     int socketCli;
     struct sockaddr_in addr;
@@ -26,7 +17,7 @@ int clientInit(char *portNb) {
         return -1;
     }
 
-    addr.sin_port = htons(port);
+    addr.sin_port = htons(PORT);
     addr.sin_family = AF_INET;
     addr.sin_addr.s_addr = inet_addr("127.0.0.1");
 

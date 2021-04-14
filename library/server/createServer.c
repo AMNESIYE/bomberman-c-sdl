@@ -32,7 +32,7 @@ int read_client(int client) {
 
     n = 0;
     memset(bufferC, '\0', BUFFER_SIZE);
-    puts("read1");
+
     while ((n = recv(client, bufferC, BUFFER_SIZE, 0)) >= 0) {
         if (n == 0) {
             return -1;
@@ -45,7 +45,6 @@ int read_client(int client) {
             memset(bufferC, '\0', BUFFER_SIZE);
             break;
         }
-        puts("read2");
     }
     return 0;
 }
@@ -64,15 +63,7 @@ int nbDisconnectedClient(int *clients[], int nbClient) {
     return 1;
 }
 
-int serverInit(char* portNb) {
-    if (my_portCheck(portNb) == -1) {
-        return -1;
-    }
-    int port = my_atoi(portNb);
-    if (port == -1) {
-        return -1;
-    }
-
+int serverInit() {
     int socketSrv;
     int client1;
     int client2, client3, client4;
@@ -90,7 +81,7 @@ int serverInit(char* portNb) {
         return -1;
     }
 
-    server.sin_port = htons(port);
+    server.sin_port = htons(PORT);
     server.sin_family = AF_INET;
     server.sin_addr.s_addr = inet_addr("0.0.0.0");
 
@@ -107,7 +98,7 @@ int serverInit(char* portNb) {
         client1 = accept(socketSrv, (struct sockaddr *) &server, &client_addr_len);
         puts("Client hôte connecté.");
 
-        nbClient = 4; // A bind pour choisir le nombre de clients
+        nbClient = 2; // A bind pour choisir le nombre de clients
 
         for (int i = 1; i < nbClient; i++) {
             *clients[i] = accept(socketSrv, (struct sockaddr *) &server, &client_addr_len);

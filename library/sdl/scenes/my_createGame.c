@@ -57,6 +57,7 @@ int my_createGame(SDL_Window *window, SDL_Renderer *renderer) {
                         colorPlay[2] = 0;
                         serverInitialized++;
                         system("gnome-terminal -- ./bomberman --serv");
+                        system("");
                         my_refreshCreateGame(renderer, buttonBack, buttonPlay, buttonServer, colorPlay);
                     }
                     break;
