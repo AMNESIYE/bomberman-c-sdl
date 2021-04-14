@@ -13,6 +13,7 @@
 #include <stdio.h>
 
 int my_atoi(char *str);
+
 int my_portCheck(char *portNb);
 
 

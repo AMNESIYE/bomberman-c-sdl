@@ -8,70 +8,57 @@
 #include "../../../include/game.h"
 #include "../../../include/objects.h"
 
-/*void my_initializePlayScene(SDL_Window *window) {
-    my_drawText(window, 0, 0, 800, 600, 255, 0, 0, "It's playGame Scene");
-    //my_drawRectangle(window, 0, 99, 600, 1, 0, 0, 0);
-    my_drawImage(window, 0, 0, 30, 30, "./library/assets/bomb.bmp");
-}*/
+void my_setupOverlay(SDL_Renderer *renderer) {
+    my_drawLine(renderer, 0, 99, 600, 99, 0, 0, 0);
+}
 
-/*void my_refreshPlayScene(SDL_Window *window, struct character charTable[]) {
+void my_refreshPlayScene(SDL_Renderer *renderer, struct character charTable[], int playersNumber) {
     SDL_Log("Entering refresh scene");
-    //my_clearWindows(window);
-    my_initializePlayScene(window);
-    for (int i = 0; i < 2; i++) {
-        SDL_Log("Refreshing character");
-        my_drawRectangle(window, charTable[i].position.x, charTable[i].position.y, charTable[i].hitbox.charWidth,
-                         charTable[i].hitbox.charHeight, charTable[i].colors.red, charTable[i].colors.green,
-                         charTable[i].colors.blue);
+
+    my_clearWindows(renderer);
+    my_setupOverlay(renderer);
+    for (int i = 0; i < playersNumber; i++) {
+        if (charTable[i].hitbox.w == 30 && charTable[i].hitbox.h == 30) {
+            my_drawRectangle(renderer, charTable[i].hitbox, charTable[i].colors.red, charTable[i].colors.green,
+                             charTable[i].colors.blue);
+        }
     }
-}*/
+    SDL_RenderPresent(renderer);
+}
 
-/*void my_initializeCharactersPosition(struct character charTable[]) {
-    charTable[0].position.x = 30;
-    charTable[0].position.y = 130;
+void my_initializeCharactersPosition(struct character charTable[]) {
+    charTable[0].hitbox.x = 30;
+    charTable[0].hitbox.y = 130;
 
-    charTable[1].position.x = 540;
-    charTable[1].position.y = 130;
+    charTable[1].hitbox.x = 540;
+    charTable[1].hitbox.y = 130;
 
-    charTable[2].position.x = 30;
-    charTable[2].position.y = 640;
+    if (charTable[2].hitbox.w == 30 && charTable[2].hitbox.h == 30) {
+        charTable[2].hitbox.x = 30;
+        charTable[2].hitbox.y = 640;
+    }
 
-    charTable[3].position.x = 540;
-    charTable[3].position.y = 640;
-}*/
+    if (charTable[3].hitbox.w == 30 && charTable[3].hitbox.h == 30) {
+        charTable[3].hitbox.x = 540;
+        charTable[3].hitbox.y = 640;
+    }
+}
 
 int my_playGame(SDL_Window *window, SDL_Renderer *renderer) {
-    my_clearWindows(renderer);
+    int playersNumber = 2; // A variabiliser
 
-    SDL_Rect player1 = { 0, 0, 30, 30};
-
-    SDL_Rect image = { 30, 0, 30, 30};
-
-    my_drawRectangle(renderer, player1, 0, 0, 0);
-    SDL_RenderPresent(renderer);
-    SDL_Event event;
-    SDL_RenderPresent(renderer);
-
-    /*struct character charTable[] = {my_initCharacter(MY_CHARACTER), my_initCharacter(ENEMY_CHARACTER),
+    struct character charTable[] = {my_initCharacter(MY_CHARACTER), my_initCharacter(ENEMY_CHARACTER),
                                     my_initCharacter(BLANK_CHARACTER), my_initCharacter(BLANK_CHARACTER)};
-    struct character *charTableInitialized = charTable;
-    my_initializeCharactersPosition(charTableInitialized);*/
+    struct character *charTableI = charTable;
+    my_initializeCharactersPosition(charTableI);
+
+    my_refreshPlayScene(renderer, charTableI, playersNumber);
+
     int thereIsAChange = 0;
 
-    //my_refreshPlayScene(window, charTableInitialized);
-    //SDL_UpdateWindowSurface(window);
+    SDL_Event event;
 
-    /*SDL_Surface* screen = SDL_CreateRGBSurface(0, 30, 30, 32, 0, 0, 0, 0);
-    SDL_Rect rect;
-    rect.x = 0;
-    rect.y = 0;
-    rect.w = 30;
-    rect.h = 30;
-    SDL_FillRect(screen, NULL, SDL_MapRGB(screen->format, 0, 0, 0));*/
-    /*my_drawRectangle(renderer, 0, 0, 30, 30, 0,0, 0);
-    SDL_RenderPresent(renderer);*/
     while (1) {
-        //SDL_Log("tick");
         int start = SDL_GetTicks();
         while (SDL_PollEvent(&event)) {
             switch (event.type) {
@@ -89,7 +76,22 @@ int my_playGame(SDL_Window *window, SDL_Renderer *renderer) {
                     switch (event.key.keysym.sym) {
                         case SDLK_RIGHT:
                             SDL_Log("Go right.");
-                            player1.x += 30;
+                            charTableI[0].hitbox.x += 30;
+                            thereIsAChange++;
+                            break;
+                        case SDLK_LEFT:
+                            SDL_Log("Go left.");
+                            charTableI[0].hitbox.x -= 30;
+                            thereIsAChange++;
+                            break;
+                        case SDLK_UP:
+                            SDL_Log("Go up.");
+                            charTableI[0].hitbox.y -= 30;
+                            thereIsAChange++;
+                            break;
+                        case SDLK_DOWN:
+                            SDL_Log("Go down.");
+                            charTableI[0].hitbox.y += 30;
                             thereIsAChange++;
                             break;
                     }
@@ -97,9 +99,7 @@ int my_playGame(SDL_Window *window, SDL_Renderer *renderer) {
             }
         }
         if (thereIsAChange == 1) {
-            my_clearWindows(renderer);
-            my_drawRectangle(renderer, player1, 0, 0, 0);
-            SDL_RenderPresent(renderer);
+            my_refreshPlayScene(renderer, charTableI, playersNumber);
             thereIsAChange--;
         }
         int end = SDL_GetTicks() - start;
