@@ -15,7 +15,7 @@ void my_refreshCreateGame(SDL_Renderer* renderer, SDL_Rect buttonBack[], SDL_Rec
 
     my_drawText(renderer, buttonBack[1], 0, 0, 0, "Back");
     my_drawText(renderer, buttonPlay[1], 0, 0, 0, "Play");
-    my_drawText(renderer, buttonServer[1], 0, 0, 0, "Serv");
+    my_drawText(renderer, buttonServer[1], 0, 0, 0, "2 players");
     SDL_RenderPresent(renderer);
 }
 
@@ -56,8 +56,7 @@ int my_createGame(SDL_Window *window, SDL_Renderer *renderer) {
                         colorPlay[1] = 150;
                         colorPlay[2] = 0;
                         serverInitialized++;
-                        system("gnome-terminal -- ./bomberman --serv");
-                        system("");
+                        system("gnome-terminal -- ./bomberman --serv 2");
                         my_refreshCreateGame(renderer, buttonBack, buttonPlay, buttonServer, colorPlay);
                     }
                     break;

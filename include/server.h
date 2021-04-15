@@ -28,7 +28,7 @@ enum _requestType {
     GET_PLAYER_1
 };
 
-int serverInit();
+int serverInit(int numberPlayers);
 int clientInit();
 
 
