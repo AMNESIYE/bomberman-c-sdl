@@ -71,11 +71,3 @@ struct wall *my_genMap(char *path) {
     }
     
 }
-
-
-void printWall (struct wall *wall , int size) {
-    for (int i = 0 ; i < size ; i++) {
-        struct wall tmp = wall[i];
-        printf("Position x : %i y : %i \n"  , tmp.hitbox.x , tmp.hitbox.y);
-    }
-}
