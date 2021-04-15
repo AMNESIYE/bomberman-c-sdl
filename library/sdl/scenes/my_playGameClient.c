@@ -27,7 +27,7 @@ void my_refreshPlayScene(SDL_Renderer *renderer, struct character charTable[], i
     my_clearWindows(renderer);
     my_setupOverlay(renderer);
     for (int i = 0; i < playersNumber; i++) {
-        if (charTable[i].hitbox.w == 30 && charTable[i].hitbox.h == 30) {
+        if (charTable[i].hitbox.w == 40 && charTable[i].hitbox.h == 40) {
             if (charTable[i].skin != NULL) {
                 my_drawImage(renderer, charTable[i].hitbox, charTable[i].skin);
             } else {
@@ -40,23 +40,23 @@ void my_refreshPlayScene(SDL_Renderer *renderer, struct character charTable[], i
 }
 
 void my_initializeCharactersPosition(struct character charTable[]) {
-    charTable[0].hitbox.x = 30;
-    charTable[0].hitbox.y = 130;
+    charTable[0].hitbox.x = 40;
+    charTable[0].hitbox.y = 140;
     charTable[0].name = "player1";
 
-    charTable[1].hitbox.x = 540;
-    charTable[1].hitbox.y = 130;
+    charTable[1].hitbox.x = 520;
+    charTable[1].hitbox.y = 140;
     charTable[0].name = "player2";
 
-    if (charTable[2].hitbox.w == 30 && charTable[2].hitbox.h == 30) {
-        charTable[2].hitbox.x = 30;
-        charTable[2].hitbox.y = 640;
+    if (charTable[2].hitbox.w == 40 && charTable[2].hitbox.h == 40) {
+        charTable[2].hitbox.x = 40;
+        charTable[2].hitbox.y = 620;
         charTable[0].name = "player3";
     }
 
-    if (charTable[3].hitbox.w == 30 && charTable[3].hitbox.h == 30) {
-        charTable[3].hitbox.x = 540;
-        charTable[3].hitbox.y = 640;
+    if (charTable[3].hitbox.w == 40 && charTable[3].hitbox.h == 40) {
+        charTable[3].hitbox.x = 520;
+        charTable[3].hitbox.y = 620;
         charTable[0].name = "player4";
     }
 }
