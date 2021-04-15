@@ -78,6 +78,8 @@ int my_playGameClient(SDL_Window *window, SDL_Renderer *renderer, char *name) {
     if (connect(socketCli, (struct sockaddr *) &addr, sizeof(addr)) < 0) {
         return 1;
     }
+
+
     // Fin partie client
     SDL_Thread *thread = NULL;
     int playersNumber = 2; // A variabiliser
@@ -89,16 +91,35 @@ int my_playGameClient(SDL_Window *window, SDL_Renderer *renderer, char *name) {
 
     my_refreshPlayScene(renderer, charTableI, playersNumber);
 
-    int thereIsAChange = 0;
-
     SDL_Event event;
 
     int baseTick;
+
+    // Set Client_ID here
+    int clientID;
+
+    strcpy(bufferC, "CLIENT_ID\n");
+    if (send(socketCli, bufferC, strlen(bufferC), MSG_NOSIGNAL) < 0) {
+        puts("L'envoi a échoué.");
+        close(socketCli);
+        return -1;
+    }
+    printf("\tEnvoyé: %s", bufferC);
+    if (recv(socketCli, bufferS, BUFFER_SIZE, 0) < 0) {
+        SDL_Log("CLIENT_ID -> Recv Failed");
+    }
+    printf("\tReçu: %s", bufferS);
+    clientID = bufferS[0] - '0';
+    printf("THIS CLIENT ID IS N°%i\n", clientID);
+    // END
 
 
     while (1) {
         thread = SDL_CreateThread(TestThread, name, NULL);
         baseTick = SDL_GetTicks();
+
+        memset(bufferC, '\0', BUFFER_SIZE);
+        memset(bufferS, '\0', BUFFER_SIZE);
 
         while (SDL_PollEvent(&event)) {
             switch (event.type) {
@@ -108,44 +129,89 @@ int my_playGameClient(SDL_Window *window, SDL_Renderer *renderer, char *name) {
                     return 0;
                 case SDL_KEYDOWN:
                     switch (event.key.keysym.sym) {
-                        case SDLK_RIGHT:
-                            charTableI[0].hitbox.x += 30;
-                            thereIsAChange++;
-                            strcpy(bufferC, "right\n");
+                        case SDLK_UP:
+                            strcpy(bufferC, "SET_UP\n");
                             if (send(socketCli, bufferC, strlen(bufferC), MSG_NOSIGNAL) < 0) {
-                                puts("L'envoi a échoué.");
                                 close(socketCli);
                                 return -1;
                             }
-                            printf("\tEnvoyé: %s\n", bufferC);
-                            memset(bufferC, '\0', BUFFER_SIZE);
                             if (recv(socketCli, bufferS, BUFFER_SIZE, 0) < 0) {
-                                SDL_Log("joinGame -> Recv Failed");
+                                SDL_Log("SDLK_UP -> Recv Failed");
                             }
-                            printf("\tReçu: %s", bufferS);
-                            memset(bufferS, '\0', BUFFER_SIZE);
-                            printf("\tEnvoyé: %s\n", bufferC);
                             break;
-                        case SDLK_LEFT:
-                            charTableI[0].hitbox.x -= 30;
-                            thereIsAChange++;
-                            break;
-                        case SDLK_UP:
-                            charTableI[0].hitbox.y -= 30;
-                            thereIsAChange++;
+                        case SDLK_RIGHT:
+                            strcpy(bufferC, "SET_RIGHT\n");
+                            if (send(socketCli, bufferC, strlen(bufferC), MSG_NOSIGNAL) < 0) {
+                                close(socketCli);
+                                return -1;
+                            }
+                            if (recv(socketCli, bufferS, BUFFER_SIZE, 0) < 0) {
+                                SDL_Log("SDLK_RIGHT -> Recv Failed");
+                            }
                             break;
                         case SDLK_DOWN:
-                            charTableI[0].hitbox.y += 30;
-                            thereIsAChange++;
+                            strcpy(bufferC, "SET_DOWN\n");
+                            if (send(socketCli, bufferC, strlen(bufferC), MSG_NOSIGNAL) < 0) {
+                                close(socketCli);
+                                return -1;
+                            }
+                            if (recv(socketCli, bufferS, BUFFER_SIZE, 0) < 0) {
+                                SDL_Log("SDLK_DOWN -> Recv Failed");
+                            }
+                            break;
+                        case SDLK_LEFT:
+                            strcpy(bufferC, "SET_LEFT\n");
+                            if (send(socketCli, bufferC, strlen(bufferC), MSG_NOSIGNAL) < 0) {
+                                close(socketCli);
+                                return -1;
+                            }
+                            if (recv(socketCli, bufferS, BUFFER_SIZE, 0) < 0) {
+                                SDL_Log("SDLK_LEFT -> Recv Failed");
+                            }
                             break;
                     }
                     break;
             }
         }
-        if (thereIsAChange == 1) {
-            my_refreshPlayScene(renderer, charTableI, playersNumber);
-            thereIsAChange--;
+
+        strcpy(bufferC, "GET_PLAYER_1_x\n");
+        if (send(socketCli, bufferC, strlen(bufferC), MSG_NOSIGNAL) < 0) {
+            puts("L'envoi a échoué.");
+            close(socketCli);
+            return -1;
         }
+        //x
+        if (recv(socketCli, bufferS, BUFFER_SIZE, 0) < 0) {
+            SDL_Log("GET_PLAYER_x -> Recv Failed");
+        }
+        for (int i = 0; bufferS[i] != '\0'; i++) {
+            if (bufferS[i] == '\n'){
+                bufferS[i] = '\0';
+            }
+            if (bufferS[i] == '\0')
+                break;
+        }
+        charTableI[0].hitbox.x = atoi(bufferS);
+        //y
+        strcpy(bufferC, "GET_PLAYER_1_y\n");
+        if (send(socketCli, bufferC, strlen(bufferC), MSG_NOSIGNAL) < 0) {
+            puts("L'envoi a échoué.");
+            close(socketCli);
+            return -1;
+        }
+        if (recv(socketCli, bufferS, BUFFER_SIZE, 0) < 0) {
+            SDL_Log("GET_PLAYER_1_y -> Recv Failed");
+        }
+        for (int i = 0; bufferS[i] != '\0'; i++) {
+            if (bufferS[i] == '\n'){
+                bufferS[i] = '\0';
+            }
+            if (bufferS[i] == '\0')
+                break;
+        }
+        charTableI[0].hitbox.y = atoi(bufferS);
+
+        my_refreshPlayScene(renderer, charTableI, playersNumber);
 
         if ((1000 / FPS) > SDL_GetTicks() - baseTick) {
             SDL_Delay(1000 / FPS - (SDL_GetTicks() - baseTick));

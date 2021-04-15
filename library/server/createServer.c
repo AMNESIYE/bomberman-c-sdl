@@ -7,12 +7,31 @@
 
 #include "../../include/server.h"
 #include "../../include/basical.h"
+#include "../../include/objects.h"
+
+static void my_initializeCharactersPosition(struct character charTable[]) {
+    charTable[0].hitbox.x = 30;
+    charTable[0].hitbox.y = 130;
+    charTable[0].name = "player1";
+
+    charTable[1].hitbox.x = 540;
+    charTable[1].hitbox.y = 130;
+    charTable[0].name = "player2";
+
+    if (charTable[2].hitbox.w == 30 && charTable[2].hitbox.h == 30) {
+        charTable[2].hitbox.x = 30;
+        charTable[2].hitbox.y = 640;
+        charTable[0].name = "player3";
+    }
+
+    if (charTable[3].hitbox.w == 30 && charTable[3].hitbox.h == 30) {
+        charTable[3].hitbox.x = 540;
+        charTable[3].hitbox.y = 640;
+        charTable[0].name = "player4";
+    }
+}
 
 int write_client(int client, char *bufferS) {
-
-    /*char bufferS[BUFFER_SIZE];
-    strcpy(bufferS, "OK\n");*/
-
     if (send(client, bufferS, strlen(bufferS), MSG_DONTWAIT) >= 0) {
         printf("\tEnvoyé: %s", bufferS);
         return 1;
@@ -22,7 +41,31 @@ int write_client(int client, char *bufferS) {
     }
 }
 
-int read_client(int client) {
+static char* ask_DB(char* bufferC, struct character charTable[], int client) {
+    if (strcmp(bufferC, "CLIENT_ID\n") == 0) {
+        strcpy(bufferC, "1\n");
+    } else if (strcmp(bufferC, "GET_PLAYER_1_x\n") == 0){
+        char str[12];
+        sprintf(str, "%d", charTable[0].hitbox.x);
+        strcpy(bufferC, strcat(str, "\n"));
+    } else if (strcmp(bufferC, "GET_PLAYER_1_y\n") == 0){
+        char str[12];
+        sprintf(str, "%d", charTable[0].hitbox.y);
+        strcpy(bufferC, strcat(str, "\n"));
+    } else if (strcmp(bufferC, "SET_UP\n") == 0){
+        charTable[0].hitbox.y -= 30;
+    } else if (strcmp(bufferC, "SET_RIGHT\n") == 0){
+        charTable[0].hitbox.x += 30;
+    } else if (strcmp(bufferC, "SET_DOWN\n") == 0){
+        charTable[0].hitbox.y += 30;
+    } else if (strcmp(bufferC, "SET_LEFT\n") == 0){
+        charTable[0].hitbox.x -= 30;
+    }
+    write_client(client, bufferC);
+    return bufferC;
+}
+
+int read_client(int client, struct character charTable[]) {
     int n;
     char bufferC[BUFFER_SIZE];
 
@@ -39,7 +82,7 @@ int read_client(int client) {
         }
         printf("\tReçu: %s", bufferC);
 
-        write_client(client, bufferC);
+        strcpy(bufferC, ask_DB(bufferC, charTable, client));
 
         if (bufferC[n - 1] == '\n') {
             memset(bufferC, '\0', BUFFER_SIZE);
@@ -98,6 +141,11 @@ int serverInit() {
         client1 = accept(socketSrv, (struct sockaddr *) &server, &client_addr_len);
         puts("Client hôte connecté.");
 
+        struct character charTable[] = {my_initCharacter(MY_CHARACTER), my_initCharacter(ENEMY_CHARACTER),
+                                        my_initCharacter(BLANK_CHARACTER), my_initCharacter(BLANK_CHARACTER)};
+        struct character *charTableI = charTable;
+        my_initializeCharactersPosition(charTableI);
+
         nbClient = 2; // A bind pour choisir le nombre de clients
 
         for (int i = 1; i < nbClient; i++) {
@@ -130,7 +178,7 @@ int serverInit() {
 
             for (int i = 0; i < nbClient; i++) {
                 if (FD_ISSET(*clients[i], &readfs)) {
-                    if (read_client(*clients[i]) == -1) {
+                    if (read_client(*clients[i], charTableI) == -1) {
                         printf("Client n°%i déconnecté", i);
                         close(*clients[i]);
                         *clients[i] = -1;

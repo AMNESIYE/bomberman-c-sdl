@@ -23,6 +23,11 @@
 #include <pthread.h>
 #include <string.h>
 
+enum _requestType {
+    CLIENT_ID,
+    GET_PLAYER_1
+};
+
 int serverInit();
 int clientInit();
 
