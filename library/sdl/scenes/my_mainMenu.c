@@ -6,6 +6,7 @@
 */
 
 #include "../../../include/game.h"
+#include "../../../include/basical.h"
 
 void my_initializeMainMenu(SDL_Renderer *renderer) {
     SDL_Log("Main Menu -> Generate button.");

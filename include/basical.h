@@ -11,10 +11,13 @@
 
 #include <stdlib.h>
 #include <stdio.h>
+#include <string.h>
 
 int my_atoi(char *str);
 
 int my_portCheck(char *portNb);
+
+struct wall *my_genMap(char *path);
 
 
 #endif
