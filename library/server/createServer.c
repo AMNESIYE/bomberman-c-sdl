@@ -43,7 +43,9 @@ int write_client(int client, char *bufferS) {
 
 static char* ask_DB(char* bufferC, struct character charTable[], int client) {
     if (strcmp(bufferC, "CLIENT_ID\n") == 0) {
-        strcpy(bufferC, "1\n");
+        char str[12];
+        sprintf(str, "%d", client);
+        strcpy(bufferC, strcat(str, "\n"));
     } else if (strcmp(bufferC, "GET_PLAYER_1_x\n") == 0){
         char str[12];
         sprintf(str, "%d", charTable[0].hitbox.x);
@@ -52,14 +54,38 @@ static char* ask_DB(char* bufferC, struct character charTable[], int client) {
         char str[12];
         sprintf(str, "%d", charTable[0].hitbox.y);
         strcpy(bufferC, strcat(str, "\n"));
+    } else if (strcmp(bufferC, "GET_PLAYER_2_x\n") == 0){
+        char str[12];
+        sprintf(str, "%d", charTable[1].hitbox.x);
+        strcpy(bufferC, strcat(str, "\n"));
+    } else if (strcmp(bufferC, "GET_PLAYER_2_y\n") == 0){
+        char str[12];
+        sprintf(str, "%d", charTable[1].hitbox.y);
+        strcpy(bufferC, strcat(str, "\n"));
     } else if (strcmp(bufferC, "SET_UP\n") == 0){
-        charTable[0].hitbox.y -= 30;
+        for (int i = 0; charTable[i].hitbox.w == 30; i++) {
+            if (charTable[i].client.clientID == client) {
+                charTable[i].hitbox.y -= 30;
+            }
+        }
     } else if (strcmp(bufferC, "SET_RIGHT\n") == 0){
-        charTable[0].hitbox.x += 30;
+        for (int i = 0; charTable[i].hitbox.w == 30; i++) {
+            if (charTable[i].client.clientID == client) {
+                charTable[i].hitbox.x += 30;
+            }
+        }
     } else if (strcmp(bufferC, "SET_DOWN\n") == 0){
-        charTable[0].hitbox.y += 30;
+        for (int i = 0; charTable[i].hitbox.w == 30; i++) {
+            if (charTable[i].client.clientID == client) {
+                charTable[i].hitbox.y += 30;
+            }
+        }
     } else if (strcmp(bufferC, "SET_LEFT\n") == 0){
-        charTable[0].hitbox.x -= 30;
+        for (int i = 0; charTable[i].hitbox.w == 30; i++) {
+            if (charTable[i].client.clientID == client) {
+                charTable[i].hitbox.x -= 30;
+            }
+        }
     }
     write_client(client, bufferC);
     return bufferC;
@@ -106,7 +132,7 @@ int nbDisconnectedClient(int *clients[], int nbClient) {
     return 1;
 }
 
-int serverInit() {
+int serverInit(int numberPlayers) {
     int socketSrv;
     int client1;
     int client2, client3, client4;
@@ -144,19 +170,22 @@ int serverInit() {
         struct character charTable[] = {my_initCharacter(MY_CHARACTER), my_initCharacter(ENEMY_CHARACTER),
                                         my_initCharacter(BLANK_CHARACTER), my_initCharacter(BLANK_CHARACTER)};
         struct character *charTableI = charTable;
-        my_initializeCharactersPosition(charTableI);
 
-        nbClient = 2; // A bind pour choisir le nombre de clients
+        nbClient = numberPlayers; // A bind pour choisir le nombre de clients
+        charTableI[0].client.clientID = client1;
 
         for (int i = 1; i < nbClient; i++) {
             *clients[i] = accept(socketSrv, (struct sockaddr *) &server, &client_addr_len);
             puts("Nouveau client connecté.");
+            charTableI[i].client.clientID = *clients[i];
             if (i < nbClient) {
                 puts("En attente de reponse d'un nouveau client...");
             } else {
                 puts("La partie démarre !");
             }
         }
+
+        my_initializeCharactersPosition(charTableI);
 
         for (int i = 0; i < nbClient; i++) {
             if (*clients[i] < 0) {

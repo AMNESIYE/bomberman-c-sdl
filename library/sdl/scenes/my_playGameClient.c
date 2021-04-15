@@ -22,7 +22,7 @@ void my_setupOverlay(SDL_Renderer *renderer) {
 }
 
 void my_refreshPlayScene(SDL_Renderer *renderer, struct character charTable[], int playersNumber) {
-    SDL_Log("PlayScene -> Entering refresh scene");
+    //SDL_Log("PlayScene -> Entering refresh scene");
 
     my_clearWindows(renderer);
     my_setupOverlay(renderer);
@@ -59,6 +59,17 @@ void my_initializeCharactersPosition(struct character charTable[]) {
         charTable[3].hitbox.y = 640;
         charTable[0].name = "player4";
     }
+}
+
+int atoi_n(char* bufferS) {
+    for (int i = 0; bufferS[i] != '\0'; i++) {
+        if (bufferS[i] == '\n'){
+            bufferS[i] = '\0';
+        }
+        if (bufferS[i] == '\0')
+            break;
+    }
+    return atoi(bufferS);
 }
 
 int my_playGameClient(SDL_Window *window, SDL_Renderer *renderer, char *name) {
@@ -104,13 +115,11 @@ int my_playGameClient(SDL_Window *window, SDL_Renderer *renderer, char *name) {
         close(socketCli);
         return -1;
     }
-    printf("\tEnvoyé: %s", bufferC);
     if (recv(socketCli, bufferS, BUFFER_SIZE, 0) < 0) {
         SDL_Log("CLIENT_ID -> Recv Failed");
     }
-    printf("\tReçu: %s", bufferS);
-    clientID = bufferS[0] - '0';
-    printf("THIS CLIENT ID IS N°%i\n", clientID);
+    clientID = atoi_n(bufferS);
+    printf("PLAY_GAME_CLIENT -> THIS CLIENT ID IS N°%i\n", clientID);
     // END
 
 
@@ -173,26 +182,18 @@ int my_playGameClient(SDL_Window *window, SDL_Renderer *renderer, char *name) {
                     break;
             }
         }
-
+        //x1
         strcpy(bufferC, "GET_PLAYER_1_x\n");
         if (send(socketCli, bufferC, strlen(bufferC), MSG_NOSIGNAL) < 0) {
             puts("L'envoi a échoué.");
             close(socketCli);
             return -1;
         }
-        //x
         if (recv(socketCli, bufferS, BUFFER_SIZE, 0) < 0) {
             SDL_Log("GET_PLAYER_x -> Recv Failed");
         }
-        for (int i = 0; bufferS[i] != '\0'; i++) {
-            if (bufferS[i] == '\n'){
-                bufferS[i] = '\0';
-            }
-            if (bufferS[i] == '\0')
-                break;
-        }
-        charTableI[0].hitbox.x = atoi(bufferS);
-        //y
+        charTableI[0].hitbox.x = atoi_n(bufferS);
+        //y1
         strcpy(bufferC, "GET_PLAYER_1_y\n");
         if (send(socketCli, bufferC, strlen(bufferC), MSG_NOSIGNAL) < 0) {
             puts("L'envoi a échoué.");
@@ -202,14 +203,30 @@ int my_playGameClient(SDL_Window *window, SDL_Renderer *renderer, char *name) {
         if (recv(socketCli, bufferS, BUFFER_SIZE, 0) < 0) {
             SDL_Log("GET_PLAYER_1_y -> Recv Failed");
         }
-        for (int i = 0; bufferS[i] != '\0'; i++) {
-            if (bufferS[i] == '\n'){
-                bufferS[i] = '\0';
-            }
-            if (bufferS[i] == '\0')
-                break;
+        charTableI[0].hitbox.y = atoi_n(bufferS);
+
+        //x2
+        strcpy(bufferC, "GET_PLAYER_2_x\n");
+        if (send(socketCli, bufferC, strlen(bufferC), MSG_NOSIGNAL) < 0) {
+            puts("L'envoi a échoué.");
+            close(socketCli);
+            return -1;
         }
-        charTableI[0].hitbox.y = atoi(bufferS);
+        if (recv(socketCli, bufferS, BUFFER_SIZE, 0) < 0) {
+            SDL_Log("GET_PLAYER_x -> Recv Failed");
+        }
+        charTableI[1].hitbox.x = atoi_n(bufferS);
+        //y2
+        strcpy(bufferC, "GET_PLAYER_2_y\n");
+        if (send(socketCli, bufferC, strlen(bufferC), MSG_NOSIGNAL) < 0) {
+            puts("L'envoi a échoué.");
+            close(socketCli);
+            return -1;
+        }
+        if (recv(socketCli, bufferS, BUFFER_SIZE, 0) < 0) {
+            SDL_Log("GET_PLAYER_1_y -> Recv Failed");
+        }
+        charTableI[1].hitbox.y = atoi_n(bufferS);
 
         my_refreshPlayScene(renderer, charTableI, playersNumber);
 

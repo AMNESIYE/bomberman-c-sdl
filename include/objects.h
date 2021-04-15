@@ -18,6 +18,10 @@ enum _characterType {
 
 struct character {
 
+    struct client {
+        int clientID;
+    };
+
     struct characterStats {
         int lifePoints;
     };
@@ -29,6 +33,7 @@ struct character {
     };
 
     SDL_Rect hitbox;
+    struct client client;
     struct characterColors colors;
     struct characterStats stats;
     char* skin;
