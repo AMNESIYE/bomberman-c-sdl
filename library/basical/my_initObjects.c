@@ -13,12 +13,12 @@
 #include <SDL2/SDL_ttf.h>
 
 struct character my_initBaseCharacter(struct character character) {
-    character.hitbox.w = 30;
-    character.hitbox.h = 30;
+    character.hitbox.w = 40;
+    character.hitbox.h = 40;
     character.stats.lifePoints = 10;
     character.hitbox.x = 0;
     character.hitbox.y = 0;
-    character.skin = "./library/assets/mini-bomberman.bmp";
+    character.skin = "./library/assets/bomberman_40.bmp";
     return character;
 }
 

@@ -40,6 +40,12 @@ struct character {
     char* name;
 };
 
+struct wall {
+    int breakeable;
+    SDL_Rect hitbox;
+    char* skin;
+};
+
 struct character my_initCharacter(enum _characterType characterType);
 
 #endif

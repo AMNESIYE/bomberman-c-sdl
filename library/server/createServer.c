@@ -10,23 +10,23 @@
 #include "../../include/objects.h"
 
 static void my_initializeCharactersPosition(struct character charTable[]) {
-    charTable[0].hitbox.x = 30;
-    charTable[0].hitbox.y = 130;
+    charTable[0].hitbox.x = 40;
+    charTable[0].hitbox.y = 140;
     charTable[0].name = "player1";
 
-    charTable[1].hitbox.x = 540;
-    charTable[1].hitbox.y = 130;
+    charTable[1].hitbox.x = 520;
+    charTable[1].hitbox.y = 140;
     charTable[0].name = "player2";
 
-    if (charTable[2].hitbox.w == 30 && charTable[2].hitbox.h == 30) {
-        charTable[2].hitbox.x = 30;
-        charTable[2].hitbox.y = 640;
+    if (charTable[2].hitbox.w == 40 && charTable[2].hitbox.h == 40) {
+        charTable[2].hitbox.x = 40;
+        charTable[2].hitbox.y = 620;
         charTable[0].name = "player3";
     }
 
-    if (charTable[3].hitbox.w == 30 && charTable[3].hitbox.h == 30) {
-        charTable[3].hitbox.x = 540;
-        charTable[3].hitbox.y = 640;
+    if (charTable[3].hitbox.w == 40 && charTable[3].hitbox.h == 40) {
+        charTable[3].hitbox.x = 520;
+        charTable[3].hitbox.y = 620;
         charTable[0].name = "player4";
     }
 }
@@ -63,27 +63,27 @@ static char* ask_DB(char* bufferC, struct character charTable[], int client) {
         sprintf(str, "%d", charTable[1].hitbox.y);
         strcpy(bufferC, strcat(str, "\n"));
     } else if (strcmp(bufferC, "SET_UP\n") == 0){
-        for (int i = 0; charTable[i].hitbox.w == 30; i++) {
+        for (int i = 0; charTable[i].hitbox.w == 40; i++) {
             if (charTable[i].client.clientID == client) {
-                charTable[i].hitbox.y -= 30;
+                charTable[i].hitbox.y -= 40;
             }
         }
     } else if (strcmp(bufferC, "SET_RIGHT\n") == 0){
-        for (int i = 0; charTable[i].hitbox.w == 30; i++) {
+        for (int i = 0; charTable[i].hitbox.w == 40; i++) {
             if (charTable[i].client.clientID == client) {
-                charTable[i].hitbox.x += 30;
+                charTable[i].hitbox.x += 40;
             }
         }
     } else if (strcmp(bufferC, "SET_DOWN\n") == 0){
-        for (int i = 0; charTable[i].hitbox.w == 30; i++) {
+        for (int i = 0; charTable[i].hitbox.w == 40; i++) {
             if (charTable[i].client.clientID == client) {
-                charTable[i].hitbox.y += 30;
+                charTable[i].hitbox.y += 40;
             }
         }
     } else if (strcmp(bufferC, "SET_LEFT\n") == 0){
-        for (int i = 0; charTable[i].hitbox.w == 30; i++) {
+        for (int i = 0; charTable[i].hitbox.w == 40; i++) {
             if (charTable[i].client.clientID == client) {
-                charTable[i].hitbox.x -= 30;
+                charTable[i].hitbox.x -= 40;
             }
         }
     }
