@@ -9,11 +9,11 @@
 #include "../../include/objects.h"
 #include "../../include/basical.h"
 
-struct wall *my_genMap(char *path) {  
+void my_genMap(char *path, struct wall w[]) {
     FILE *fp;
     char str[16];
     char temp[16];
-    struct wall w[225];
+    //struct wall w[225];
     int countWall = 0;
     struct wall tmpWall;
     int valid = 0;
@@ -44,7 +44,7 @@ struct wall *my_genMap(char *path) {
                 }
             }
             if (valid == 0) {
-                tmpPos.y = nbLines * 40;
+                tmpPos.y = nbLines * 40 + 100;
                 for (int i = 0; i < 15 ; i++) {
                     tmpPos.x = 40 * i;
                     if (temp[i] == '#') {
@@ -54,10 +54,10 @@ struct wall *my_genMap(char *path) {
                         w[countWall] = tmpWall;
                         countWall++;
                     }
-                    else if (temp[i] == "W"){
+                    else if (temp[i] == 'W'){
                         tmpWall.breakeable = 1;
                         tmpWall.hitbox = tmpPos;
-                        tmpWall.skin = "./library/assets/block/block (60).bmp";
+                        tmpWall.skin = "./library/assets/block/block (63).bmp";
                         w[countWall] = tmpWall;
                         countWall++;
                     }
@@ -67,7 +67,7 @@ struct wall *my_genMap(char *path) {
             }  
         }
         fclose(fp);
-        return w;
+        //return w;
     }
     
 }

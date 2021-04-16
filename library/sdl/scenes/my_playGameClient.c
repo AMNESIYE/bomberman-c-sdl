@@ -8,6 +8,7 @@
 #include "../../../include/game.h"
 #include "../../../include/objects.h"
 #include "../../../include/server.h"
+#include "../../../include/basical.h"
 
 static int TestThread() {
     int count = 0;
@@ -89,7 +90,8 @@ int my_playGameClient(SDL_Window *window, SDL_Renderer *renderer, char *name) {
 
     struct wall wallTable[225];
     struct wall *wallTableI = wallTable;
-    my_initWalls(wallTableI);
+    my_genMap("./library/assets/maps/map.txt", wallTableI);
+    //my_initWalls(wallTableI);
 
     my_refreshPlayScene(renderer, charTableI, wallTable, playersNumber);
 
