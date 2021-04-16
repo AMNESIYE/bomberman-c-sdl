@@ -50,5 +50,6 @@ struct wall {
 struct character my_initCharacter(enum _characterType characterType);
 int my_checkCollision(struct character character, struct wall walls[], char input);
 void my_initializeCharactersPosition(struct character charTable[]);
+void my_initWalls(struct wall walls[]);
 
 #endif

@@ -22,17 +22,21 @@ void my_setupOverlay(SDL_Renderer *renderer) {
     my_drawLine(renderer, 0, 99, 600, 99, 0, 0, 0);
 }
 
-void my_setupWall(SDL_Renderer* renderer, struct wall wallTable[]) {
+void my_setupWall(SDL_Renderer *renderer, struct wall wallTable[]) {
     for (int i = 0; i < 225; i++) {
         if (wallTable[i].hitbox.w == 40) {
-            my_drawImage(renderer, wallTable[i].hitbox, wallTable[i].skin);
+            if (wallTable[i].breakable == 0)
+                wallTable[i].skin = "./library/assets/block/block (74).bmp";
+            else if (wallTable[i].breakable == 1)
+                wallTable[i].skin = "./library/assets/block/block (3).bmp";
+            if (wallTable[i].broken != 1)
+                my_drawImage(renderer, wallTable[i].hitbox, wallTable[i].skin);
         }
     }
 }
 
-void my_refreshPlayScene(SDL_Renderer *renderer, struct character charTable[], struct wall wallTable[], int playersNumber) {
-    //SDL_Log("PlayScene -> Entering refresh scene");
-
+void
+my_refreshPlayScene(SDL_Renderer *renderer, struct character charTable[], struct wall wallTable[], int playersNumber) {
     my_clearWindows(renderer);
     my_setupOverlay(renderer);
     my_setupWall(renderer, wallTable);
@@ -49,9 +53,9 @@ void my_refreshPlayScene(SDL_Renderer *renderer, struct character charTable[], s
     SDL_RenderPresent(renderer);
 }
 
-int atoi_n(char* bufferS) {
+int atoi_n(char *bufferS) {
     for (int i = 0; bufferS[i] != '\0'; i++) {
-        if (bufferS[i] == '\n'){
+        if (bufferS[i] == '\n') {
             bufferS[i] = '\0';
         }
         if (bufferS[i] == '\0')
@@ -221,6 +225,9 @@ int my_playGameClient(SDL_Window *window, SDL_Renderer *renderer, char *name) {
         }
         charTableI[1].hitbox.y = atoi_n(bufferS);
         //map A BIND pour envoyer et recevoir données map - découper CSV
+        //
+        //
+        //
         strcpy(bufferC, "MAP1\n");
         if (send(socketCli, bufferC, strlen(bufferC), MSG_NOSIGNAL) < 0) {
             puts("L'envoi a échoué.");
@@ -231,7 +238,35 @@ int my_playGameClient(SDL_Window *window, SDL_Renderer *renderer, char *name) {
             SDL_Log("GET_MAP -> Recv Failed");
         }
         printf("oui:%s", bufferS);
+        for (int i = 0; i < 15; i++) {
+            char sub[2];
+            memcpy(sub, &bufferS[i], 1);
+            sub[1] = '\0';
+            wallTable[i].broken = atoi(sub);
+        }
+        //L2
+        strcpy(bufferC, "MAP2\n");
+        if (send(socketCli, bufferC, strlen(bufferC), MSG_NOSIGNAL) < 0) {
+            puts("L'envoi a échoué.");
+            close(socketCli);
+            return -1;
+        }
+        if (recv(socketCli, bufferS, BUFFER_SIZE, 0) < 0) {
+            SDL_Log("GET_MAP -> Recv Failed");
+        }
+        printf("oui:%s", bufferS);
+        for (int i = 15; i < 30; i++) {
+            char sub[2];
+            memcpy(sub, &bufferS[i], 1);
+            sub[1] = '\0';
+            wallTable[i].broken = atoi(sub);
+        }
 
+
+
+        //
+        //
+        //
         my_refreshPlayScene(renderer, charTableI, wallTable, playersNumber);
 
         if ((1000 / FPS) > SDL_GetTicks() - baseTick) {

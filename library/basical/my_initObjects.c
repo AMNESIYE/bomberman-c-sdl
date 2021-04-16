@@ -85,7 +85,7 @@ struct character my_initCharacter(enum _characterType characterType) {
     }
 }
 
-/*void my_initWalls(struct wall walls[]) {
+void my_initWalls(struct wall walls[]) {
     int j = 0;
     for (int i = 0; i < 15; i++, j++) {
         walls[j].hitbox.x = i * 40;
@@ -93,7 +93,7 @@ struct character my_initCharacter(enum _characterType characterType) {
         walls[j].hitbox.w = 40;
         walls[j].hitbox.h = 40;
         walls[j].skin = "./library/assets/block/block (74).bmp";
-        walls[j].breakeable = 0;
+        walls[j].breakable = 1;
     }
     for (int i = 0; i < 15; i++, j++) {
         if (j == 15 || j == 29) {
@@ -102,7 +102,7 @@ struct character my_initCharacter(enum _characterType characterType) {
             walls[j].hitbox.w = 40;
             walls[j].hitbox.h = 40;
             walls[j].skin = "./library/assets/block/block (74).bmp";
-            walls[j].breakeable = 0;
+            walls[j].breakable = 0;
         }
 
     }
@@ -113,7 +113,7 @@ struct character my_initCharacter(enum _characterType characterType) {
             walls[j].hitbox.w = 40;
             walls[j].hitbox.h = 40;
             walls[j].skin = "./library/assets/block/block (74).bmp";
-            walls[j].breakeable = 0;
+            walls[j].breakable = 0;
         }
 
     }
@@ -124,7 +124,7 @@ struct character my_initCharacter(enum _characterType characterType) {
             walls[j].hitbox.w = 40;
             walls[j].hitbox.h = 40;
             walls[j].skin = "./library/assets/block/block (74).bmp";
-            walls[j].breakeable = 0;
+            walls[j].breakable = 0;
         }
 
     }
@@ -135,7 +135,7 @@ struct character my_initCharacter(enum _characterType characterType) {
             walls[j].hitbox.w = 40;
             walls[j].hitbox.h = 40;
             walls[j].skin = "./library/assets/block/block (74).bmp";
-            walls[j].breakeable = 0;
+            walls[j].breakable = 0;
         }
 
     }
@@ -146,7 +146,7 @@ struct character my_initCharacter(enum _characterType characterType) {
             walls[j].hitbox.w = 40;
             walls[j].hitbox.h = 40;
             walls[j].skin = "./library/assets/block/block (74).bmp";
-            walls[j].breakeable = 0;
+            walls[j].breakable = 0;
         }
 
     }
@@ -157,7 +157,7 @@ struct character my_initCharacter(enum _characterType characterType) {
             walls[j].hitbox.w = 40;
             walls[j].hitbox.h = 40;
             walls[j].skin = "./library/assets/block/block (74).bmp";
-            walls[j].breakeable = 0;
+            walls[j].breakable = 0;
         }
 
     }
@@ -168,7 +168,7 @@ struct character my_initCharacter(enum _characterType characterType) {
             walls[j].hitbox.w = 40;
             walls[j].hitbox.h = 40;
             walls[j].skin = "./library/assets/block/block (74).bmp";
-            walls[j].breakeable = 0;
+            walls[j].breakable = 0;
         }
 
     }
@@ -179,7 +179,7 @@ struct character my_initCharacter(enum _characterType characterType) {
             walls[j].hitbox.w = 40;
             walls[j].hitbox.h = 40;
             walls[j].skin = "./library/assets/block/block (74).bmp";
-            walls[j].breakeable = 0;
+            walls[j].breakable = 0;
         }
 
     }
@@ -190,7 +190,7 @@ struct character my_initCharacter(enum _characterType characterType) {
             walls[j].hitbox.w = 40;
             walls[j].hitbox.h = 40;
             walls[j].skin = "./library/assets/block/block (74).bmp";
-            walls[j].breakeable = 0;
+            walls[j].breakable = 0;
         }
 
     }
@@ -201,7 +201,7 @@ struct character my_initCharacter(enum _characterType characterType) {
             walls[j].hitbox.w = 40;
             walls[j].hitbox.h = 40;
             walls[j].skin = "./library/assets/block/block (74).bmp";
-            walls[j].breakeable = 0;
+            walls[j].breakable = 0;
         }
 
     }
@@ -212,7 +212,7 @@ struct character my_initCharacter(enum _characterType characterType) {
             walls[j].hitbox.w = 40;
             walls[j].hitbox.h = 40;
             walls[j].skin = "./library/assets/block/block (74).bmp";
-            walls[j].breakeable = 0;
+            walls[j].breakable = 0;
         }
 
     }
@@ -223,7 +223,7 @@ struct character my_initCharacter(enum _characterType characterType) {
             walls[j].hitbox.w = 40;
             walls[j].hitbox.h = 40;
             walls[j].skin = "./library/assets/block/block (74).bmp";
-            walls[j].breakeable = 0;
+            walls[j].breakable = 0;
         }
 
     }
@@ -234,7 +234,7 @@ struct character my_initCharacter(enum _characterType characterType) {
             walls[j].hitbox.w = 40;
             walls[j].hitbox.h = 40;
             walls[j].skin = "./library/assets/block/block (74).bmp";
-            walls[j].breakeable = 0;
+            walls[j].breakable = 0;
         }
 
     }
@@ -244,7 +244,7 @@ struct character my_initCharacter(enum _characterType characterType) {
         walls[j].hitbox.w = 40;
         walls[j].hitbox.h = 40;
         walls[j].skin = "./library/assets/block/block (74).bmp";
-        walls[j].breakeable = 0;
+        walls[j].breakable = 0;
     }
 
-}*/
+}
