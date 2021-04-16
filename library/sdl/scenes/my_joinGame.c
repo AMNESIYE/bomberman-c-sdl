@@ -7,24 +7,32 @@
 
 #include "../../../include/game.h"
 
-static void my_refreshJoinGame(SDL_Renderer* renderer, SDL_Rect buttonBack[], SDL_Rect buttonPlay[]) {
+static void my_refreshJoinGame(SDL_Renderer* renderer) {
     my_clearWindows(renderer);
+    SDL_Rect buttonBack[2] = {{15, 15, 100, 50 },
+                              {40 , 25, 50,  30}};
+    SDL_Rect buttonPlay[2] = {{30,  500, 250, 75},
+                              {130, 525, 50,  30}};
+
     my_drawRectangle(renderer, buttonBack[0], 150, 0, 0);
     my_drawRectangle(renderer, buttonPlay[0], 0, 150, 0);
 
     my_drawText(renderer, buttonBack[1], 0, 0, 0, "Back");
     my_drawText(renderer, buttonPlay[1], 0, 0, 0, "Play");
+
+    SDL_Rect blockPos = {550 , 625 , 50 , 75};
+    for (int i = 0; i < 12; i++) {
+        my_drawImage(renderer, blockPos , "./library/assets/block/block (75).bmp");
+        blockPos.x = blockPos.x - 50;
+    }
     SDL_RenderPresent(renderer);
 }
 
 int my_joinGame(SDL_Window *window, SDL_Renderer *renderer) {
     TTF_Init();
     SDL_Event event;
-    SDL_Rect buttonBack[2] = {{330, 605, 250, 75},
-                              {430, 625, 50,  30}};
-    SDL_Rect buttonPlay[2] = {{30,  605, 250, 75},
-                              {130, 625, 50,  30}};
-    my_refreshJoinGame(renderer, buttonBack, buttonPlay);
+
+    my_refreshJoinGame(renderer);
 
     while (1) {
         while (SDL_PollEvent(&event)) {
@@ -35,12 +43,12 @@ int my_joinGame(SDL_Window *window, SDL_Renderer *renderer) {
                     my_exitWindows(window, renderer);
                     return 0;
                 case SDL_MOUSEBUTTONDOWN:
-                    if (event.button.x >= 330 && event.button.x <= 330 + 250 && event.button.y >= 605 &&
-                        event.button.y <= 605 + 75) {
+                    if (event.button.x >= 15 && event.button.x <= 15 + 100 && event.button.y >= 15 &&
+                        event.button.y <= 15 + 50) {
                         return 1;
                     } else if (event.button.x >= 30 && event.button.x <= 30 + 250 &&
-                               event.button.y >= 605 &&
-                               event.button.y <= 605 + 75) {
+                               event.button.y >= 500 &&
+                               event.button.y <= 500 + 75) {
                         return 5;
                     }
                     break;

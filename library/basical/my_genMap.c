@@ -9,6 +9,21 @@
 #include "../../include/objects.h"
 #include "../../include/basical.h"
 
+
+static void log_Array(struct wall *w , int size) {
+    struct wall tmp; 
+    for (int i = 0 ; i < size ; i++) {
+        tmp = w[i];
+        if (i % 15 == 0) {
+            printf("\n");
+        }
+        printf("%i" , tmp.breakable);
+
+    }
+    return;
+}
+
+
 void my_genMap(char *path, struct wall w[]) {
     FILE *fp;
     char str[16];
@@ -63,12 +78,21 @@ void my_genMap(char *path, struct wall w[]) {
                         w[countWall] = tmpWall;
                         countWall++;
                     }
+                    else if (temp[i] == ' '){
+                        tmpWall.breakable = 2;
+                        tmpWall.broken = 0;
+                        tmpWall.skin = NULL;
+                        tmpWall.hitbox = tmpPos;
+                        w[countWall] = tmpWall;
+                        countWall++;
+                    }
 
                 }
                 nbLines++;
             }  
         }
         fclose(fp);
+        log_Array(w , countWall);
         //return w;
     }
     

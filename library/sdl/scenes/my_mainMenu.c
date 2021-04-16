@@ -25,18 +25,48 @@ void my_initializeMainMenu(SDL_Renderer *renderer) {
         my_drawImage(renderer, blockPos , "./library/assets/block/block (75).bmp");
         blockPos.x = blockPos.x - 50;
     }
-    //drawRectangle
-    SDL_Rect rect[3] = {{50, 250, 250, 75},
-                        {50, 350, 250, 75},
-                        {50, 450, 250, 75}};
-    my_drawRectangle(renderer, rect[0], 0, 150, 0);
-    my_drawRectangle(renderer, rect[1], 0, 0, 150);
-    my_drawRectangle(renderer, rect[2], 150, 0, 0);
+    //quit//
+    SDL_Rect quitPos = {250, 450 , 50, 50};
+    for (int i = 0; i < 5; i++) {
+        my_drawImage(renderer, quitPos , "./library/assets/block/block (31).bmp");
+        quitPos.x = quitPos.x - 50;
+    }
+    quitPos.x = 250;
+    quitPos.y = quitPos.y + 25;
+    for (int i = 0; i < 5; i++) {
+        my_drawImage(renderer, quitPos , "./library/assets/block/block (31).bmp");
+        quitPos.x = quitPos.x - 50;
+    }
+    //join//
+    SDL_Rect joinPos = {250, 350 , 50, 50};
+    for (int i = 0; i < 5; i++) {
+        my_drawImage(renderer, joinPos , "./library/assets/block/block (30).bmp");
+        joinPos.x = joinPos.x - 50;
+    }
+    joinPos.x = 250;
+    joinPos.y = joinPos.y + 25;
+    for (int i = 0; i < 5; i++) {
+        my_drawImage(renderer, joinPos , "./library/assets/block/block (30).bmp");
+        joinPos.x = joinPos.x - 50;
+    }
+    //create
+    SDL_Rect createPos = {250, 250 , 50, 50};
+    for (int i = 0; i < 5; i++) {
+        my_drawImage(renderer, createPos , "./library/assets/block/block (32).bmp");
+        createPos.x = createPos.x - 50;
+    }
+    createPos.x = 250;
+    createPos.y = createPos.y + 25;
+    for (int i = 0; i < 5; i++) {
+        my_drawImage(renderer, createPos , "./library/assets/block/block (32).bmp");
+        createPos.x = createPos.x - 50;
+    }
+    
 
     //drawText
-    SDL_Rect text[3] = {{140, 270, 70, 30},
-                        {150, 370, 50, 30},
-                        {150, 470, 50, 30}};
+    SDL_Rect text[3] = {{140, 260, 70, 30},
+                        {150, 360, 50, 30},
+                        {150, 460, 50, 30}};
     my_drawText(renderer, text[0], 0, 0, 0, "Create");
     my_drawText(renderer, text[1], 0, 0, 0, "Join");
     my_drawText(renderer, text[2], 0, 0, 0, "Quit");
