@@ -9,6 +9,7 @@
 #include <stdio.h>
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_ttf.h>
+#include <string.h>
 
 enum _characterType {
     MY_CHARACTER,
@@ -47,5 +48,8 @@ struct wall {
 };
 
 struct character my_initCharacter(enum _characterType characterType);
+void my_initWalls(struct wall walls[]);
+int my_checkCollision(struct character character, struct wall walls[], char input);
+void my_initializeCharactersPosition(struct character charTable[]);
 
 #endif

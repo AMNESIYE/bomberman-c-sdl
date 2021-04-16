@@ -7,7 +7,10 @@
 
 #include "../../../include/game.h"
 
-void my_refreshCreateGame(SDL_Renderer* renderer, SDL_Rect buttonBack[], SDL_Rect buttonPlay[], SDL_Rect buttonServer[], int colorPlay[]) {
+//block (74).bmp
+
+void my_refreshCreateGame(SDL_Renderer *renderer, SDL_Rect buttonBack[], SDL_Rect buttonPlay[], SDL_Rect buttonServer[],
+                          int colorPlay[]) {
     my_clearWindows(renderer);
     my_drawRectangle(renderer, buttonBack[0], 150, 0, 0);
     my_drawRectangle(renderer, buttonPlay[0], colorPlay[0], colorPlay[1], colorPlay[2]);
