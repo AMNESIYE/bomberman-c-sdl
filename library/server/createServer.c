@@ -9,30 +9,8 @@
 #include "../../include/basical.h"
 #include "../../include/objects.h"
 
-static void my_initializeCharactersPosition(struct character charTable[]) {
-    charTable[0].hitbox.x = 40;
-    charTable[0].hitbox.y = 140;
-    charTable[0].name = "player1";
-
-    charTable[1].hitbox.x = 520;
-    charTable[1].hitbox.y = 140;
-    charTable[0].name = "player2";
-
-    if (charTable[2].hitbox.w == 40 && charTable[2].hitbox.h == 40) {
-        charTable[2].hitbox.x = 40;
-        charTable[2].hitbox.y = 620;
-        charTable[0].name = "player3";
-    }
-
-    if (charTable[3].hitbox.w == 40 && charTable[3].hitbox.h == 40) {
-        charTable[3].hitbox.x = 520;
-        charTable[3].hitbox.y = 620;
-        charTable[0].name = "player4";
-    }
-}
-
 int write_client(int client, char *bufferS) {
-    if (send(client, bufferS, strlen(bufferS), MSG_DONTWAIT) >= 0) {
+    if (send(client, bufferS, strlen(bufferS), 0) >= 0) {
         printf("\tEnvoyé: %s", bufferS);
         return 1;
     } else {
@@ -41,57 +19,63 @@ int write_client(int client, char *bufferS) {
     }
 }
 
-static char* ask_DB(char* bufferC, struct character charTable[], int client) {
+static char *ask_DB(char *bufferC, struct character charTable[], struct wall walls[], int client) {
     if (strcmp(bufferC, "CLIENT_ID\n") == 0) {
         char str[12];
         sprintf(str, "%d", client);
         strcpy(bufferC, strcat(str, "\n"));
-    } else if (strcmp(bufferC, "GET_PLAYER_1_x\n") == 0){
+    } else if (strcmp(bufferC, "GET_PLAYER_1_x\n") == 0) {
         char str[12];
         sprintf(str, "%d", charTable[0].hitbox.x);
         strcpy(bufferC, strcat(str, "\n"));
-    } else if (strcmp(bufferC, "GET_PLAYER_1_y\n") == 0){
+    } else if (strcmp(bufferC, "GET_PLAYER_1_y\n") == 0) {
         char str[12];
         sprintf(str, "%d", charTable[0].hitbox.y);
         strcpy(bufferC, strcat(str, "\n"));
-    } else if (strcmp(bufferC, "GET_PLAYER_2_x\n") == 0){
+    } else if (strcmp(bufferC, "GET_PLAYER_2_x\n") == 0) {
         char str[12];
         sprintf(str, "%d", charTable[1].hitbox.x);
         strcpy(bufferC, strcat(str, "\n"));
-    } else if (strcmp(bufferC, "GET_PLAYER_2_y\n") == 0){
+    } else if (strcmp(bufferC, "GET_PLAYER_2_y\n") == 0) {
         char str[12];
         sprintf(str, "%d", charTable[1].hitbox.y);
         strcpy(bufferC, strcat(str, "\n"));
-    } else if (strcmp(bufferC, "SET_UP\n") == 0){
+    } else if (strcmp(bufferC, "SET_UP\n") == 0) {
         for (int i = 0; charTable[i].hitbox.w == 40; i++) {
             if (charTable[i].client.clientID == client) {
-                charTable[i].hitbox.y -= 40;
+                if (my_checkCollision(charTable[i], walls, 'u') == 0)
+                    charTable[i].hitbox.y -= 40;
             }
         }
-    } else if (strcmp(bufferC, "SET_RIGHT\n") == 0){
+    } else if (strcmp(bufferC, "SET_RIGHT\n") == 0) {
         for (int i = 0; charTable[i].hitbox.w == 40; i++) {
             if (charTable[i].client.clientID == client) {
-                charTable[i].hitbox.x += 40;
+                if (my_checkCollision(charTable[i], walls, 'r') == 0)
+                    charTable[i].hitbox.x += 40;
             }
         }
-    } else if (strcmp(bufferC, "SET_DOWN\n") == 0){
+    } else if (strcmp(bufferC, "SET_DOWN\n") == 0) {
         for (int i = 0; charTable[i].hitbox.w == 40; i++) {
             if (charTable[i].client.clientID == client) {
-                charTable[i].hitbox.y += 40;
+                if (my_checkCollision(charTable[i], walls, 'd') == 0)
+                    charTable[i].hitbox.y += 40;
             }
         }
-    } else if (strcmp(bufferC, "SET_LEFT\n") == 0){
+    } else if (strcmp(bufferC, "SET_LEFT\n") == 0) {
         for (int i = 0; charTable[i].hitbox.w == 40; i++) {
             if (charTable[i].client.clientID == client) {
-                charTable[i].hitbox.x -= 40;
+                if (my_checkCollision(charTable[i], walls, 'l') == 0)
+                    charTable[i].hitbox.x -= 40;
             }
         }
+    } else if (strcmp(bufferC, "GET_MAP\n") == 0) {
+        strcpy(bufferC, "oui\n");
     }
     write_client(client, bufferC);
     return bufferC;
 }
 
-int read_client(int client, struct character charTable[]) {
+int read_client(int client, struct character charTable[], struct wall walls[]) {
     int n;
     char bufferC[BUFFER_SIZE];
 
@@ -108,7 +92,7 @@ int read_client(int client, struct character charTable[]) {
         }
         printf("\tReçu: %s", bufferC);
 
-        strcpy(bufferC, ask_DB(bufferC, charTable, client));
+        strcpy(bufferC, ask_DB(bufferC, charTable, walls, client));
 
         if (bufferC[n - 1] == '\n') {
             memset(bufferC, '\0', BUFFER_SIZE);
@@ -194,6 +178,10 @@ int serverInit(int numberPlayers) {
             }
         }
 
+        struct wall wallTable[225];
+        struct wall *wallTableI = wallTable;
+        my_initWalls(wallTableI);
+
         while (1) {
             tick.tv_sec = 1;
             tick.tv_usec = 0;
@@ -207,7 +195,7 @@ int serverInit(int numberPlayers) {
 
             for (int i = 0; i < nbClient; i++) {
                 if (FD_ISSET(*clients[i], &readfs)) {
-                    if (read_client(*clients[i], charTableI) == -1) {
+                    if (read_client(*clients[i], charTableI, wallTableI) == -1) {
                         printf("Client n°%i déconnecté", i);
                         close(*clients[i]);
                         *clients[i] = -1;

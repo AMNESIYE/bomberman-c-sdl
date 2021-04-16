@@ -11,6 +11,7 @@ SRC		=	basical/my_portCheck.c	\
 			basical/my_atoi.c \
 			basical/my_checkColor.c \
 			basical/my_initObjects.c \
+			basical/my_checkCollision.c \
 			basical/my_genMap.c \
 			sdl/my_createWindows.c \
 			sdl/my_exitWindows.c \

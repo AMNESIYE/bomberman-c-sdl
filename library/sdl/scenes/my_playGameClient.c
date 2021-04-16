@@ -21,11 +21,20 @@ void my_setupOverlay(SDL_Renderer *renderer) {
     my_drawLine(renderer, 0, 99, 600, 99, 0, 0, 0);
 }
 
-void my_refreshPlayScene(SDL_Renderer *renderer, struct character charTable[], int playersNumber) {
+void my_setupWall(SDL_Renderer* renderer, struct wall wallTable[]) {
+    for (int i = 0; i < 225; i++) {
+        if (wallTable[i].hitbox.w == 40) {
+            my_drawImage(renderer, wallTable[i].hitbox, wallTable[i].skin);
+        }
+    }
+}
+
+void my_refreshPlayScene(SDL_Renderer *renderer, struct character charTable[], struct wall wallTable[], int playersNumber) {
     //SDL_Log("PlayScene -> Entering refresh scene");
 
     my_clearWindows(renderer);
     my_setupOverlay(renderer);
+    my_setupWall(renderer, wallTable);
     for (int i = 0; i < playersNumber; i++) {
         if (charTable[i].hitbox.w == 40 && charTable[i].hitbox.h == 40) {
             if (charTable[i].skin != NULL) {
@@ -37,28 +46,6 @@ void my_refreshPlayScene(SDL_Renderer *renderer, struct character charTable[], i
         }
     }
     SDL_RenderPresent(renderer);
-}
-
-void my_initializeCharactersPosition(struct character charTable[]) {
-    charTable[0].hitbox.x = 40;
-    charTable[0].hitbox.y = 140;
-    charTable[0].name = "player1";
-
-    charTable[1].hitbox.x = 520;
-    charTable[1].hitbox.y = 140;
-    charTable[0].name = "player2";
-
-    if (charTable[2].hitbox.w == 40 && charTable[2].hitbox.h == 40) {
-        charTable[2].hitbox.x = 40;
-        charTable[2].hitbox.y = 620;
-        charTable[0].name = "player3";
-    }
-
-    if (charTable[3].hitbox.w == 40 && charTable[3].hitbox.h == 40) {
-        charTable[3].hitbox.x = 520;
-        charTable[3].hitbox.y = 620;
-        charTable[0].name = "player4";
-    }
 }
 
 int atoi_n(char* bufferS) {
@@ -100,7 +87,11 @@ int my_playGameClient(SDL_Window *window, SDL_Renderer *renderer, char *name) {
     struct character *charTableI = charTable;
     my_initializeCharactersPosition(charTableI);
 
-    my_refreshPlayScene(renderer, charTableI, playersNumber);
+    struct wall wallTable[225];
+    struct wall *wallTableI = wallTable;
+    my_initWalls(wallTableI);
+
+    my_refreshPlayScene(renderer, charTableI, wallTable, playersNumber);
 
     SDL_Event event;
 
@@ -227,8 +218,20 @@ int my_playGameClient(SDL_Window *window, SDL_Renderer *renderer, char *name) {
             SDL_Log("GET_PLAYER_1_y -> Recv Failed");
         }
         charTableI[1].hitbox.y = atoi_n(bufferS);
+        //map A BIND pour envoyer et recevoir données map - découper CSV
+        strcpy(bufferC, "GET_MAP\n");
+        if (send(socketCli, bufferC, strlen(bufferC), MSG_NOSIGNAL) < 0) {
+            puts("L'envoi a échoué.");
+            close(socketCli);
+            return -1;
+        }
+        if (recv(socketCli, bufferS, BUFFER_SIZE, 0) < 0) {
+            SDL_Log("GET_MAP -> Recv Failed");
+        }
+        puts(bufferS);
+        //charTableI[1].hitbox.y = atoi_n(bufferS);
 
-        my_refreshPlayScene(renderer, charTableI, playersNumber);
+        my_refreshPlayScene(renderer, charTableI, wallTable, playersNumber);
 
         if ((1000 / FPS) > SDL_GetTicks() - baseTick) {
             SDL_Delay(1000 / FPS - (SDL_GetTicks() - baseTick));
