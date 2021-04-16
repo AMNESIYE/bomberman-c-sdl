@@ -57,7 +57,7 @@ void my_genMap(char *path, struct wall w[]) {
                     else if (temp[i] == 'W'){
                         tmpWall.breakeable = 1;
                         tmpWall.hitbox = tmpPos;
-                        tmpWall.skin = "./library/assets/block/block (63).bmp";
+                        tmpWall.skin = "./library/assets/block/block (3).bmp";
                         w[countWall] = tmpWall;
                         countWall++;
                     }
