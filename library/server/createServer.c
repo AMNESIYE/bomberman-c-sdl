@@ -12,6 +12,7 @@
 int write_client(int client, char *bufferS) {
     if (send(client, bufferS, strlen(bufferS), 0) >= 0) {
         printf("\tEnvoyé: %s", bufferS);
+        memset(bufferS, '\0', BUFFER_SIZE);
         return 1;
     } else {
         puts("\tLe retour d'envoi a échoué.");
@@ -24,52 +25,62 @@ static char *ask_DB(char *bufferC, struct character charTable[], struct wall wal
         char str[12];
         sprintf(str, "%d", client);
         strcpy(bufferC, strcat(str, "\n"));
-    } else if (strcmp(bufferC, "GET_PLAYER_1_x\n") == 0) {
+    } else if (strcmp(bufferC, "P1x\n") == 0) {
         char str[12];
         sprintf(str, "%d", charTable[0].hitbox.x);
         strcpy(bufferC, strcat(str, "\n"));
-    } else if (strcmp(bufferC, "GET_PLAYER_1_y\n") == 0) {
+    } else if (strcmp(bufferC, "P1y\n") == 0) {
         char str[12];
         sprintf(str, "%d", charTable[0].hitbox.y);
         strcpy(bufferC, strcat(str, "\n"));
-    } else if (strcmp(bufferC, "GET_PLAYER_2_x\n") == 0) {
+    } else if (strcmp(bufferC, "P2x\n") == 0) {
         char str[12];
         sprintf(str, "%d", charTable[1].hitbox.x);
         strcpy(bufferC, strcat(str, "\n"));
-    } else if (strcmp(bufferC, "GET_PLAYER_2_y\n") == 0) {
+    } else if (strcmp(bufferC, "P2y\n") == 0) {
         char str[12];
         sprintf(str, "%d", charTable[1].hitbox.y);
         strcpy(bufferC, strcat(str, "\n"));
-    } else if (strcmp(bufferC, "SET_UP\n") == 0) {
+    } else if (strcmp(bufferC, "UP\n") == 0) {
         for (int i = 0; charTable[i].hitbox.w == 40; i++) {
             if (charTable[i].client.clientID == client) {
                 if (my_checkCollision(charTable[i], walls, 'u') == 0)
                     charTable[i].hitbox.y -= 40;
             }
         }
-    } else if (strcmp(bufferC, "SET_RIGHT\n") == 0) {
+    } else if (strcmp(bufferC, "RIGHT\n") == 0) {
         for (int i = 0; charTable[i].hitbox.w == 40; i++) {
             if (charTable[i].client.clientID == client) {
                 if (my_checkCollision(charTable[i], walls, 'r') == 0)
                     charTable[i].hitbox.x += 40;
             }
         }
-    } else if (strcmp(bufferC, "SET_DOWN\n") == 0) {
+    } else if (strcmp(bufferC, "DOWN\n") == 0) {
         for (int i = 0; charTable[i].hitbox.w == 40; i++) {
             if (charTable[i].client.clientID == client) {
                 if (my_checkCollision(charTable[i], walls, 'd') == 0)
                     charTable[i].hitbox.y += 40;
             }
         }
-    } else if (strcmp(bufferC, "SET_LEFT\n") == 0) {
+    } else if (strcmp(bufferC, "LEFT\n") == 0) {
         for (int i = 0; charTable[i].hitbox.w == 40; i++) {
             if (charTable[i].client.clientID == client) {
                 if (my_checkCollision(charTable[i], walls, 'l') == 0)
                     charTable[i].hitbox.x -= 40;
             }
         }
-    } else if (strcmp(bufferC, "GET_MAP\n") == 0) {
-        strcpy(bufferC, "oui\n");
+    } else if (strcmp(bufferC, "MAP1\n") == 0) {
+        char bufferT[BUFFER_SIZE];
+        memset(bufferT, '\0', BUFFER_SIZE);
+        for (int i = 15; i < 30; i++) {
+            char str[12];
+            sprintf(str, "%d", walls[i].breakable);
+            printf("walls[%i]: %i!", i, walls[i].breakable);
+            printf("str:%s ", str);
+            strcpy(bufferT, strcat(bufferT, str));
+            printf("cat:%s ", bufferT);
+        }
+        strcpy(bufferC, strcat(bufferT, "\n"));
     }
     write_client(client, bufferC);
     return bufferC;
@@ -86,7 +97,7 @@ int read_client(int client, struct character charTable[], struct wall walls[]) {
     n = 0;
     memset(bufferC, '\0', BUFFER_SIZE);
 
-    while ((n = recv(client, bufferC, BUFFER_SIZE, 0)) >= 0) {
+    while ((n = recv(client, bufferC, BUFFER_SIZE, MSG_DONTWAIT)) >= 0) {
         if (n == 0) {
             return -1;
         }
@@ -180,7 +191,7 @@ int serverInit(int numberPlayers) {
 
         struct wall wallTable[225];
         struct wall *wallTableI = wallTable;
-        my_initWalls(wallTableI);
+        my_genMap("./library/assets/maps/map.txt", wallTableI);
 
         while (1) {
             tick.tv_sec = 1;

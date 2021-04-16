@@ -41,13 +41,13 @@ struct character {
 };
 
 struct wall {
-    int breakeable;
+    int breakable;
     SDL_Rect hitbox;
     char* skin;
+    int broken;
 };
 
 struct character my_initCharacter(enum _characterType characterType);
-void my_initWalls(struct wall walls[]);
 int my_checkCollision(struct character character, struct wall walls[], char input);
 void my_initializeCharactersPosition(struct character charTable[]);
 

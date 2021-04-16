@@ -132,7 +132,7 @@ int my_playGameClient(SDL_Window *window, SDL_Renderer *renderer, char *name) {
                 case SDL_KEYDOWN:
                     switch (event.key.keysym.sym) {
                         case SDLK_UP:
-                            strcpy(bufferC, "SET_UP\n");
+                            strcpy(bufferC, "UP\n");
                             if (send(socketCli, bufferC, strlen(bufferC), MSG_NOSIGNAL) < 0) {
                                 close(socketCli);
                                 return -1;
@@ -142,7 +142,7 @@ int my_playGameClient(SDL_Window *window, SDL_Renderer *renderer, char *name) {
                             }
                             break;
                         case SDLK_RIGHT:
-                            strcpy(bufferC, "SET_RIGHT\n");
+                            strcpy(bufferC, "RIGHT\n");
                             if (send(socketCli, bufferC, strlen(bufferC), MSG_NOSIGNAL) < 0) {
                                 close(socketCli);
                                 return -1;
@@ -152,7 +152,7 @@ int my_playGameClient(SDL_Window *window, SDL_Renderer *renderer, char *name) {
                             }
                             break;
                         case SDLK_DOWN:
-                            strcpy(bufferC, "SET_DOWN\n");
+                            strcpy(bufferC, "DOWN\n");
                             if (send(socketCli, bufferC, strlen(bufferC), MSG_NOSIGNAL) < 0) {
                                 close(socketCli);
                                 return -1;
@@ -162,7 +162,7 @@ int my_playGameClient(SDL_Window *window, SDL_Renderer *renderer, char *name) {
                             }
                             break;
                         case SDLK_LEFT:
-                            strcpy(bufferC, "SET_LEFT\n");
+                            strcpy(bufferC, "LEFT\n");
                             if (send(socketCli, bufferC, strlen(bufferC), MSG_NOSIGNAL) < 0) {
                                 close(socketCli);
                                 return -1;
@@ -176,7 +176,7 @@ int my_playGameClient(SDL_Window *window, SDL_Renderer *renderer, char *name) {
             }
         }
         //x1
-        strcpy(bufferC, "GET_PLAYER_1_x\n");
+        strcpy(bufferC, "P1x\n");
         if (send(socketCli, bufferC, strlen(bufferC), MSG_NOSIGNAL) < 0) {
             puts("L'envoi a échoué.");
             close(socketCli);
@@ -187,7 +187,7 @@ int my_playGameClient(SDL_Window *window, SDL_Renderer *renderer, char *name) {
         }
         charTableI[0].hitbox.x = atoi_n(bufferS);
         //y1
-        strcpy(bufferC, "GET_PLAYER_1_y\n");
+        strcpy(bufferC, "P1y\n");
         if (send(socketCli, bufferC, strlen(bufferC), MSG_NOSIGNAL) < 0) {
             puts("L'envoi a échoué.");
             close(socketCli);
@@ -199,7 +199,7 @@ int my_playGameClient(SDL_Window *window, SDL_Renderer *renderer, char *name) {
         charTableI[0].hitbox.y = atoi_n(bufferS);
 
         //x2
-        strcpy(bufferC, "GET_PLAYER_2_x\n");
+        strcpy(bufferC, "P2x\n");
         if (send(socketCli, bufferC, strlen(bufferC), MSG_NOSIGNAL) < 0) {
             puts("L'envoi a échoué.");
             close(socketCli);
@@ -210,7 +210,7 @@ int my_playGameClient(SDL_Window *window, SDL_Renderer *renderer, char *name) {
         }
         charTableI[1].hitbox.x = atoi_n(bufferS);
         //y2
-        strcpy(bufferC, "GET_PLAYER_2_y\n");
+        strcpy(bufferC, "P2y\n");
         if (send(socketCli, bufferC, strlen(bufferC), MSG_NOSIGNAL) < 0) {
             puts("L'envoi a échoué.");
             close(socketCli);
@@ -221,7 +221,7 @@ int my_playGameClient(SDL_Window *window, SDL_Renderer *renderer, char *name) {
         }
         charTableI[1].hitbox.y = atoi_n(bufferS);
         //map A BIND pour envoyer et recevoir données map - découper CSV
-        strcpy(bufferC, "GET_MAP\n");
+        strcpy(bufferC, "MAP1\n");
         if (send(socketCli, bufferC, strlen(bufferC), MSG_NOSIGNAL) < 0) {
             puts("L'envoi a échoué.");
             close(socketCli);
@@ -230,8 +230,7 @@ int my_playGameClient(SDL_Window *window, SDL_Renderer *renderer, char *name) {
         if (recv(socketCli, bufferS, BUFFER_SIZE, 0) < 0) {
             SDL_Log("GET_MAP -> Recv Failed");
         }
-        puts(bufferS);
-        //charTableI[1].hitbox.y = atoi_n(bufferS);
+        printf("oui:%s", bufferS);
 
         my_refreshPlayScene(renderer, charTableI, wallTable, playersNumber);
 
