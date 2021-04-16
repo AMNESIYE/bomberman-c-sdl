@@ -48,14 +48,16 @@ void my_genMap(char *path, struct wall w[]) {
                 for (int i = 0; i < 15 ; i++) {
                     tmpPos.x = 40 * i;
                     if (temp[i] == '#') {
-                        tmpWall.breakeable = 0;
+                        tmpWall.breakable = 0;
+                        tmpWall.broken = 0;
                         tmpWall.hitbox = tmpPos;
                         tmpWall.skin = "./library/assets/block/block (74).bmp";
                         w[countWall] = tmpWall;
                         countWall++;
                     }
                     else if (temp[i] == 'W'){
-                        tmpWall.breakeable = 1;
+                        tmpWall.breakable = 1;
+                        tmpWall.broken = 0;
                         tmpWall.hitbox = tmpPos;
                         tmpWall.skin = "./library/assets/block/block (3).bmp";
                         w[countWall] = tmpWall;

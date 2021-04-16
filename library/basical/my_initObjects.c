@@ -85,7 +85,7 @@ struct character my_initCharacter(enum _characterType characterType) {
     }
 }
 
-void my_initWalls(struct wall walls[]) {
+/*void my_initWalls(struct wall walls[]) {
     int j = 0;
     for (int i = 0; i < 15; i++, j++) {
         walls[j].hitbox.x = i * 40;
@@ -247,4 +247,4 @@ void my_initWalls(struct wall walls[]) {
         walls[j].breakeable = 0;
     }
 
-}
+}*/
