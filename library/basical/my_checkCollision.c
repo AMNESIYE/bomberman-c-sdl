@@ -13,7 +13,9 @@ int my_checkCollision(struct character character, struct wall walls[], char inpu
             case 'u':
                 if (walls[i].hitbox.x == character.hitbox.x && walls[i].hitbox.y == (character.hitbox.y - 40)) {
                     if (walls[i].breakable == 1) {
-                        walls[i].broken = 1;
+                        walls[i].breakable = 2;
+                        return 0;
+                    } else if (walls[i].breakable == 2) {
                         return 0;
                     } else {
                         return 1;
@@ -23,7 +25,9 @@ int my_checkCollision(struct character character, struct wall walls[], char inpu
             case 'r':
                 if (walls[i].hitbox.y == character.hitbox.y && walls[i].hitbox.x == (character.hitbox.x + 40)) {
                     if (walls[i].breakable == 1) {
-                        walls[i].broken = 1;
+                        walls[i].breakable = 2;
+                        return 0;
+                    } else if (walls[i].breakable == 2) {
                         return 0;
                     } else {
                         return 1;
@@ -33,7 +37,9 @@ int my_checkCollision(struct character character, struct wall walls[], char inpu
             case 'd':
                 if (walls[i].hitbox.x == character.hitbox.x && walls[i].hitbox.y == (character.hitbox.y + 40)) {
                     if (walls[i].breakable == 1) {
-                        walls[i].broken = 1;
+                        walls[i].breakable = 2;
+                        return 0;
+                    } else if (walls[i].breakable == 2) {
                         return 0;
                     } else {
                         return 1;
@@ -43,7 +49,9 @@ int my_checkCollision(struct character character, struct wall walls[], char inpu
             case 'l':
                 if (walls[i].hitbox.y == character.hitbox.y && walls[i].hitbox.x == (character.hitbox.x - 40)) {
                     if (walls[i].breakable == 1) {
-                        walls[i].broken = 1;
+                        walls[i].breakable = 2;
+                        return 0;
+                    } else if (walls[i].breakable == 2) {
                         return 0;
                     } else {
                         return 1;

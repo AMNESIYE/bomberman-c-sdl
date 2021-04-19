@@ -29,7 +29,8 @@ void my_setupWall(SDL_Renderer *renderer, struct wall wallTable[]) {
                 wallTable[i].skin = "./library/assets/block/block (74).bmp";
             else if (wallTable[i].breakable == 1)
                 wallTable[i].skin = "./library/assets/block/block (3).bmp";
-            if (wallTable[i].broken != 1)
+            if (wallTable[i].breakable == 2)
+                wallTable[i].skin = "";
                 my_drawImage(renderer, wallTable[i].hitbox, wallTable[i].skin);
         }
     }
@@ -228,6 +229,7 @@ int my_playGameClient(SDL_Window *window, SDL_Renderer *renderer, char *name) {
         //
         //
         //
+        //L1
         strcpy(bufferC, "MAP1\n");
         if (send(socketCli, bufferC, strlen(bufferC), MSG_NOSIGNAL) < 0) {
             puts("L'envoi a échoué.");
@@ -238,11 +240,11 @@ int my_playGameClient(SDL_Window *window, SDL_Renderer *renderer, char *name) {
             SDL_Log("GET_MAP -> Recv Failed");
         }
         printf("oui:%s", bufferS);
-        for (int i = 0; i < 15; i++) {
+        for (int i = 0, j = 0; i < 15; i++, j++) {
             char sub[2];
-            memcpy(sub, &bufferS[i], 1);
-            sub[1] = '\0';
-            wallTable[i].broken = atoi(sub);
+            strncpy(sub, bufferS + j, 1);
+            printf("b1:%s ", sub);
+            wallTable[i].breakable = atoi(sub);
         }
         //L2
         strcpy(bufferC, "MAP2\n");
@@ -255,11 +257,232 @@ int my_playGameClient(SDL_Window *window, SDL_Renderer *renderer, char *name) {
             SDL_Log("GET_MAP -> Recv Failed");
         }
         printf("oui:%s", bufferS);
-        for (int i = 15; i < 30; i++) {
+        for (int i = 15, j = 0; i < 30; i++, j++) {
             char sub[2];
-            memcpy(sub, &bufferS[i], 1);
-            sub[1] = '\0';
-            wallTable[i].broken = atoi(sub);
+            strncpy(sub, bufferS + j, 1);
+            printf("b2:%s ", sub);
+            wallTable[i].breakable = atoi(sub);
+        }
+        //L3
+        strcpy(bufferC, "MAP3\n");
+        if (send(socketCli, bufferC, strlen(bufferC), MSG_NOSIGNAL) < 0) {
+            puts("L'envoi a échoué.");
+            close(socketCli);
+            return -1;
+        }
+        if (recv(socketCli, bufferS, BUFFER_SIZE, 0) < 0) {
+            SDL_Log("GET_MAP -> Recv Failed");
+        }
+        printf("oui:%s", bufferS);
+        for (int i = 30, j = 0; i < 45; i++, j++) {
+            char sub[2];
+            strncpy(sub, bufferS + j, 1);
+            printf("b3:%s ", sub);
+            wallTable[i].breakable = atoi(sub);
+        }
+        //L4
+        strcpy(bufferC, "MAP4\n");
+        if (send(socketCli, bufferC, strlen(bufferC), MSG_NOSIGNAL) < 0) {
+            puts("L'envoi a échoué.");
+            close(socketCli);
+            return -1;
+        }
+        if (recv(socketCli, bufferS, BUFFER_SIZE, 0) < 0) {
+            SDL_Log("GET_MAP -> Recv Failed");
+        }
+        printf("oui:%s", bufferS);
+        for (int i = 45, j = 0; i < 60; i++, j++) {
+            char sub[2];
+            strncpy(sub, bufferS + j, 1);
+            printf("b4:%s ", sub);
+            wallTable[i].breakable = atoi(sub);
+        }
+        //L5
+        strcpy(bufferC, "MAP5\n");
+        if (send(socketCli, bufferC, strlen(bufferC), MSG_NOSIGNAL) < 0) {
+            puts("L'envoi a échoué.");
+            close(socketCli);
+            return -1;
+        }
+        if (recv(socketCli, bufferS, BUFFER_SIZE, 0) < 0) {
+            SDL_Log("GET_MAP -> Recv Failed");
+        }
+        printf("oui:%s", bufferS);
+        for (int i = 60, j = 0; i < 75; i++, j++) {
+            char sub[2];
+            strncpy(sub, bufferS + j, 1);
+            printf("b5:%s ", sub);
+            wallTable[i].breakable = atoi(sub);
+        }
+        //L6
+        strcpy(bufferC, "MAP6\n");
+        if (send(socketCli, bufferC, strlen(bufferC), MSG_NOSIGNAL) < 0) {
+            puts("L'envoi a échoué.");
+            close(socketCli);
+            return -1;
+        }
+        if (recv(socketCli, bufferS, BUFFER_SIZE, 0) < 0) {
+            SDL_Log("GET_MAP -> Recv Failed");
+        }
+        printf("oui:%s", bufferS);
+        for (int i = 75, j = 0; i < 90; i++, j++) {
+            char sub[2];
+            strncpy(sub, bufferS + j, 1);
+            printf("b6:%s ", sub);
+            wallTable[i].breakable = atoi(sub);
+        }
+        //L7
+        strcpy(bufferC, "MAP7\n");
+        if (send(socketCli, bufferC, strlen(bufferC), MSG_NOSIGNAL) < 0) {
+            puts("L'envoi a échoué.");
+            close(socketCli);
+            return -1;
+        }
+        if (recv(socketCli, bufferS, BUFFER_SIZE, 0) < 0) {
+            SDL_Log("GET_MAP -> Recv Failed");
+        }
+        printf("oui:%s", bufferS);
+        for (int i = 90, j = 0; i < 105; i++, j++) {
+            char sub[2];
+            strncpy(sub, bufferS + j, 1);
+            printf("b7:%s ", sub);
+            wallTable[i].breakable = atoi(sub);
+        }
+        //L8
+        strcpy(bufferC, "MAP8\n");
+        if (send(socketCli, bufferC, strlen(bufferC), MSG_NOSIGNAL) < 0) {
+            puts("L'envoi a échoué.");
+            close(socketCli);
+            return -1;
+        }
+        if (recv(socketCli, bufferS, BUFFER_SIZE, 0) < 0) {
+            SDL_Log("GET_MAP -> Recv Failed");
+        }
+        printf("oui:%s", bufferS);
+        for (int i = 105, j = 0; i < 120; i++, j++) {
+            char sub[2];
+            strncpy(sub, bufferS + j, 1);
+            printf("b8:%s ", sub);
+            wallTable[i].breakable = atoi(sub);
+        }
+        //L9
+        strcpy(bufferC, "MAP9\n");
+        if (send(socketCli, bufferC, strlen(bufferC), MSG_NOSIGNAL) < 0) {
+            puts("L'envoi a échoué.");
+            close(socketCli);
+            return -1;
+        }
+        if (recv(socketCli, bufferS, BUFFER_SIZE, 0) < 0) {
+            SDL_Log("GET_MAP -> Recv Failed");
+        }
+        printf("oui:%s", bufferS);
+        for (int i = 120, j = 0; i < 135; i++, j++) {
+            char sub[2];
+            strncpy(sub, bufferS + j, 1);
+            printf("b9:%s ", sub);
+            wallTable[i].breakable = atoi(sub);
+        }
+        //L10
+        strcpy(bufferC, "MAP10\n");
+        if (send(socketCli, bufferC, strlen(bufferC), MSG_NOSIGNAL) < 0) {
+            puts("L'envoi a échoué.");
+            close(socketCli);
+            return -1;
+        }
+        if (recv(socketCli, bufferS, BUFFER_SIZE, 0) < 0) {
+            SDL_Log("GET_MAP -> Recv Failed");
+        }
+        printf("oui:%s", bufferS);
+        for (int i = 135, j = 0; i < 150; i++, j++) {
+            char sub[2];
+            strncpy(sub, bufferS + j, 1);
+            printf("b10:%s ", sub);
+            wallTable[i].breakable = atoi(sub);
+        }
+        //L10
+        strcpy(bufferC, "MAP11\n");
+        if (send(socketCli, bufferC, strlen(bufferC), MSG_NOSIGNAL) < 0) {
+            puts("L'envoi a échoué.");
+            close(socketCli);
+            return -1;
+        }
+        if (recv(socketCli, bufferS, BUFFER_SIZE, 0) < 0) {
+            SDL_Log("GET_MAP -> Recv Failed");
+        }
+        printf("oui:%s", bufferS);
+        for (int i = 150, j = 0; i < 165; i++, j++) {
+            char sub[2];
+            strncpy(sub, bufferS + j, 1);
+            printf("b11:%s ", sub);
+            wallTable[i].breakable = atoi(sub);
+        }
+        //L12
+        strcpy(bufferC, "MAP12\n");
+        if (send(socketCli, bufferC, strlen(bufferC), MSG_NOSIGNAL) < 0) {
+            puts("L'envoi a échoué.");
+            close(socketCli);
+            return -1;
+        }
+        if (recv(socketCli, bufferS, BUFFER_SIZE, 0) < 0) {
+            SDL_Log("GET_MAP -> Recv Failed");
+        }
+        printf("oui:%s", bufferS);
+        for (int i = 165, j = 0; i < 180; i++, j++) {
+            char sub[2];
+            strncpy(sub, bufferS + j, 1);
+            printf("b12:%s ", sub);
+            wallTable[i].breakable = atoi(sub);
+        }
+        //L13
+        strcpy(bufferC, "MAP13\n");
+        if (send(socketCli, bufferC, strlen(bufferC), MSG_NOSIGNAL) < 0) {
+            puts("L'envoi a échoué.");
+            close(socketCli);
+            return -1;
+        }
+        if (recv(socketCli, bufferS, BUFFER_SIZE, 0) < 0) {
+            SDL_Log("GET_MAP -> Recv Failed");
+        }
+        printf("oui:%s", bufferS);
+        for (int i = 180, j = 0; i < 195; i++, j++) {
+            char sub[2];
+            strncpy(sub, bufferS + j, 1);
+            printf("b13:%s ", sub);
+            wallTable[i].breakable = atoi(sub);
+        }
+        //L14
+        strcpy(bufferC, "MAP14\n");
+        if (send(socketCli, bufferC, strlen(bufferC), MSG_NOSIGNAL) < 0) {
+            puts("L'envoi a échoué.");
+            close(socketCli);
+            return -1;
+        }
+        if (recv(socketCli, bufferS, BUFFER_SIZE, 0) < 0) {
+            SDL_Log("GET_MAP -> Recv Failed");
+        }
+        printf("oui:%s", bufferS);
+        for (int i = 195, j = 0; i < 210; i++, j++) {
+            char sub[2];
+            strncpy(sub, bufferS + j, 1);
+            printf("b14:%s ", sub);
+            wallTable[i].breakable = atoi(sub);
+        }
+        //L10
+        strcpy(bufferC, "MAP15\n");
+        if (send(socketCli, bufferC, strlen(bufferC), MSG_NOSIGNAL) < 0) {
+            puts("L'envoi a échoué.");
+            close(socketCli);
+            return -1;
+        }
+        if (recv(socketCli, bufferS, BUFFER_SIZE, 0) < 0) {
+            SDL_Log("GET_MAP -> Recv Failed");
+        }
+        printf("oui:%s", bufferS);
+        for (int i = 210, j = 0; i < 225; i++, j++) {
+            char sub[2];
+            strncpy(sub, bufferS + j, 1);
+            printf("b15:%s ", sub);
+            wallTable[i].breakable = atoi(sub);
         }
 
 

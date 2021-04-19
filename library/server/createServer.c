@@ -20,33 +20,40 @@ int write_client(int client, char *bufferS) {
     }
 }
 
-int ask_Map(char* bufferC) {
+int ask_Map(char *bufferC) {
     switch (bufferC[3]) {
         case '1':
-            return 0;
+            switch (bufferC[4]) {
+                case '0':
+                    return 9;
+                case '1':
+                    return 10;
+                case '2':
+                    return 11;
+                case '3':
+                    return 12;
+                case '4':
+                    return 13;
+                case '5':
+                    return 14;
+                default:
+                    return 0;
+            }
         case '2':
-            printf("ask_MAP OK\n");
             return 1;
         case '3':
-            printf("ask_MAP OK\n");
             return 2;
         case '4':
-            printf("ask_MAP OK\n");
             return 3;
         case '5':
-            printf("ask_MAP OK\n");
             return 4;
         case '6':
-            printf("ask_MAP OK\n");
             return 5;
         case '7':
-            printf("ask_MAP OK\n");
             return 6;
         case '8':
-            printf("ask_MAP OK\n");
             return 7;
         case '9':
-            printf("ask_MAP OK\n");
             return 8;
         default:
             return -1;
@@ -112,7 +119,7 @@ static char *ask_DB(char *bufferC, struct character charTable[], struct wall wal
         }
         for (int i = range * 15; i < range * 15 + 15; i++) {
             char str[12];
-            sprintf(str, "%d", walls[i].broken);
+            sprintf(str, "%d", walls[i].breakable);
             strcpy(bufferT, strcat(bufferT, str));
         }
         strcpy(bufferC, strcat(bufferT, "\n"));

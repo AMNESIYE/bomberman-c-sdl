@@ -64,7 +64,6 @@ void my_genMap(char *path, struct wall w[]) {
                     tmpPos.x = 40 * i;
                     if (temp[i] == '#') {
                         tmpWall.breakable = 0;
-                        tmpWall.broken = 0;
                         tmpWall.hitbox = tmpPos;
                         tmpWall.skin = "./library/assets/block/block (74).bmp";
                         w[countWall] = tmpWall;
@@ -72,7 +71,6 @@ void my_genMap(char *path, struct wall w[]) {
                     }
                     else if (temp[i] == 'W'){
                         tmpWall.breakable = 1;
-                        tmpWall.broken = 0;
                         tmpWall.hitbox = tmpPos;
                         tmpWall.skin = "./library/assets/block/block (3).bmp";
                         w[countWall] = tmpWall;
@@ -80,7 +78,6 @@ void my_genMap(char *path, struct wall w[]) {
                     }
                     else if (temp[i] == ' '){
                         tmpWall.breakable = 2;
-                        tmpWall.broken = 0;
                         tmpWall.skin = NULL;
                         tmpWall.hitbox = tmpPos;
                         w[countWall] = tmpWall;
