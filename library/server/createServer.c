@@ -20,6 +20,46 @@ int write_client(int client, char *bufferS) {
     }
 }
 
+int ask_Map(char *bufferC) {
+    switch (bufferC[3]) {
+        case '1':
+            switch (bufferC[4]) {
+                case '0':
+                    return 9;
+                case '1':
+                    return 10;
+                case '2':
+                    return 11;
+                case '3':
+                    return 12;
+                case '4':
+                    return 13;
+                case '5':
+                    return 14;
+                default:
+                    return 0;
+            }
+        case '2':
+            return 1;
+        case '3':
+            return 2;
+        case '4':
+            return 3;
+        case '5':
+            return 4;
+        case '6':
+            return 5;
+        case '7':
+            return 6;
+        case '8':
+            return 7;
+        case '9':
+            return 8;
+        default:
+            return -1;
+    }
+}
+
 static char *ask_DB(char *bufferC, struct character charTable[], struct wall walls[], int client) {
     if (strcmp(bufferC, "CLIENT_ID\n") == 0) {
         char str[12];
@@ -69,16 +109,18 @@ static char *ask_DB(char *bufferC, struct character charTable[], struct wall wal
                     charTable[i].hitbox.x -= 40;
             }
         }
-    } else if (strcmp(bufferC, "MAP1\n") == 0) {
+    } else if (strncmp(bufferC, "MAP", 3) == 0) {
         char bufferT[BUFFER_SIZE];
         memset(bufferT, '\0', BUFFER_SIZE);
-        for (int i = 15; i < 30; i++) {
+        int range = ask_Map(bufferC);
+        if (range == -1) {
+            write_client(client, bufferC);
+            return bufferC;
+        }
+        for (int i = range * 15; i < range * 15 + 15; i++) {
             char str[12];
             sprintf(str, "%d", walls[i].breakable);
-            printf("walls[%i]: %i!", i, walls[i].breakable);
-            printf("str:%s ", str);
             strcpy(bufferT, strcat(bufferT, str));
-            printf("cat:%s ", bufferT);
         }
         strcpy(bufferC, strcat(bufferT, "\n"));
     }
