@@ -58,7 +58,6 @@ int my_checkCollision(struct character character, struct wall walls[], char inpu
                     }
                 }
                 break;
-
         }
     }
     return 0;

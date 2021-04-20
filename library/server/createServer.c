@@ -9,7 +9,15 @@
 #include "../../include/basical.h"
 #include "../../include/objects.h"
 
-int write_client(int client, char *bufferS) {
+static int TestThread() {
+    int count = 0;
+
+    // Si un truc à faire/compter pour le thread
+
+    return count;
+}
+
+static int write_client(int client, char *bufferS) {
     if (send(client, bufferS, strlen(bufferS), 0) >= 0) {
         printf("\tEnvoyé: %s", bufferS);
         memset(bufferS, '\0', BUFFER_SIZE);
@@ -20,7 +28,7 @@ int write_client(int client, char *bufferS) {
     }
 }
 
-int ask_Map(char *bufferC) {
+static int ask_Map(char *bufferC) {
     switch (bufferC[3]) {
         case '1':
             switch (bufferC[4]) {
@@ -128,7 +136,7 @@ static char *ask_DB(char *bufferC, struct character charTable[], struct wall wal
     return bufferC;
 }
 
-int read_client(int client, struct character charTable[], struct wall walls[]) {
+static int read_client(int client, struct character charTable[], struct wall walls[]) {
     int n;
     char bufferC[BUFFER_SIZE];
 
@@ -155,11 +163,11 @@ int read_client(int client, struct character charTable[], struct wall walls[]) {
     return 0;
 }
 
-int askClientNumber() {
+static int askClientNumber() {
     return 1;
 }
 
-int nbDisconnectedClient(int *clients[], int nbClient) {
+static int nbDisconnectedClient(int *clients[], int nbClient) {
     for (int i = 0, y = 0; i < nbClient; i++) {
         if (*clients[i] == -1)
             y++;
@@ -175,6 +183,8 @@ int serverInit(int numberPlayers) {
     int client2, client3, client4;
     int nbClient;
     int *clients[] = {&client1, &client2, &client3, &client4};
+
+    SDL_Thread *thread = NULL;
 
     socklen_t client_addr_len;
     struct sockaddr_in server;
@@ -200,6 +210,8 @@ int serverInit(int numberPlayers) {
 
     puts("En attente de clients...");
     while (1) {
+        thread = SDL_CreateThread(TestThread, "server", NULL);
+
         puts("En attente de reponse du client hôte...");
         client1 = accept(socketSrv, (struct sockaddr *) &server, &client_addr_len);
         puts("Client hôte connecté.");
@@ -263,5 +275,6 @@ int serverInit(int numberPlayers) {
         }
     }
     close(socketSrv);
+    SDL_WaitThread(thread, NULL);
     return 1;
 }

@@ -34,7 +34,7 @@ void my_initializeCharactersPosition(struct character charTable[]) {
     }
 }
 
-struct character my_initBaseCharacter(struct character character) {
+static struct character my_initBaseCharacter(struct character character) {
     character.hitbox.w = 40;
     character.hitbox.h = 40;
     character.stats.lifePoints = 10;
@@ -44,7 +44,7 @@ struct character my_initBaseCharacter(struct character character) {
     return character;
 }
 
-struct character my_initMyCharacter() {
+static struct character my_initMyCharacter() {
     struct character character;
     character = my_initBaseCharacter(character);
     character.colors.red = 147;
@@ -53,7 +53,7 @@ struct character my_initMyCharacter() {
     return character;
 }
 
-struct character my_initEnemyCharacter() {
+static struct character my_initEnemyCharacter() {
     struct character character;
     character = my_initBaseCharacter(character);
     character.colors.red = 220;
@@ -62,7 +62,7 @@ struct character my_initEnemyCharacter() {
     return character;
 }
 
-struct character my_initBlankCharacter() {
+static struct character my_initBlankCharacter() {
     struct character character;
     character = my_initBaseCharacter(character);
     character.colors.red = 255;
@@ -85,7 +85,7 @@ struct character my_initCharacter(enum _characterType characterType) {
     }
 }
 
-void my_initWalls(struct wall walls[]) {
+/*void my_initWalls(struct wall walls[]) {
     int j = 0;
     for (int i = 0; i < 15; i++, j++) {
         walls[j].hitbox.x = i * 40;
@@ -247,4 +247,4 @@ void my_initWalls(struct wall walls[]) {
         walls[j].breakable = 0;
     }
 
-}
+}*/
