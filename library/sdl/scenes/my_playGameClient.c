@@ -18,9 +18,34 @@ static int TestThread() {
     return count;
 }
 
+
+void my_deathOverlay(SDL_Renderer *renderer) {
+    SDL_Rect deathText = {215, 10, 200, 75 };
+    my_drawText(renderer , deathText , 150 , 0 , 0 , "Vous etes mort");
+    SDL_Rect deathBlock = {0 , 40 , 25 , 25};
+    for (int i = 0 ; i < 8; i++) {
+        my_drawImage(renderer , deathBlock , "./library/assets/block/block (75).bmp");
+        deathBlock.x = deathBlock.x + 25;
+    }
+    deathBlock.x = deathBlock.x + 225;
+    for (int i = 0 ; i < 9 ; i++) {
+        my_drawImage(renderer , deathBlock , "./library/assets/block/block (75).bmp");
+        deathBlock.x = deathBlock.x + 25;
+    }
+}
+
+void my_waitingScreen(SDL_Renderer *renderer) {
+    SDL_Rect waitText = {190, 10, 250, 75 };
+    my_drawText(renderer , waitText , 150 , 0 , 0 , "En Attente de joueur...");
+    
+}
 void my_setupOverlay(SDL_Renderer *renderer) {
     my_drawLine(renderer, 0, 99, 600, 99, 0, 0, 0);
-}
+    my_waitingScreen(renderer);
+    
+ }
+
+
 
 void my_setupWall(SDL_Renderer *renderer, struct wall wallTable[]) {
     for (int i = 0; i < 225; i++) {
