@@ -41,8 +41,6 @@ void my_waitingScreen(SDL_Renderer *renderer) {
 }
 void my_setupOverlay(SDL_Renderer *renderer) {
     my_drawLine(renderer, 0, 99, 600, 99, 0, 0, 0);
-    my_waitingScreen(renderer);
-    
  }
 
 
