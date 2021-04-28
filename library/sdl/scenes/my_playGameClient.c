@@ -120,7 +120,7 @@ static int atoi_n(char *bufferS) {
     return atoi(bufferS);
 }
 
-int my_playGameClient(SDL_Window *window, SDL_Renderer *renderer, char *name) {
+int my_playGameClient(SDL_Window *window, SDL_Renderer *renderer, char *name, char *ip) {
     char bufferC[BUFFER_SIZE], bufferS[BUFFER_SIZE];
     int socketCli;
     struct sockaddr_in addr;

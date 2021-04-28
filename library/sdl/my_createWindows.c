@@ -67,7 +67,6 @@ int my_createWindows(int sizeX, int sizeY) {
                 break;
 
         }
-        SDL_Log(ipAdress);
         SDL_UpdateWindowSurface(window);
     }
     my_exitWindows(window, renderer);
