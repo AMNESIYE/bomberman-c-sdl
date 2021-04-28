@@ -22,6 +22,7 @@ enum _characterType {
 
 struct client {
     int clientID;
+    int terminated;
 };
 
 struct characterStats {
@@ -61,6 +62,5 @@ struct character my_initCharacter(enum _characterType characterType);
 int my_checkPlayerCollision(struct character character, struct wall walls[], char input);
 void explodeBombCollision(struct character charTable[], struct wall walls[], int charBombIndex, int bombIndex);
 void my_initializeCharactersPosition(struct character charTable[]);
-//void my_initWalls(struct wall walls[]);
 
 #endif

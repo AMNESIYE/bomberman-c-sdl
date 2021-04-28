@@ -13,6 +13,7 @@ SRC		=	basical/my_portCheck.c	\
 			basical/my_initObjects.c \
 			basical/my_checkCollision.c \
 			basical/my_genMap.c \
+			client/my_requestMapToServer.c \
 			sdl/my_createWindows.c \
 			sdl/my_exitWindows.c \
 			sdl/draws/my_drawRectangle.c \
@@ -25,7 +26,6 @@ SRC		=	basical/my_portCheck.c	\
 			sdl/scenes/my_createGame.c \
 			sdl/scenes/my_playGameClient.c \
 			server/createServer.c \
-			client/createClient.c \
 
 				
 

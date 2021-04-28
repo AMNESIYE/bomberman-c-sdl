@@ -22,7 +22,7 @@
 #include <sys/time.h>
 #include <pthread.h>
 
-
+int my_requestMapToServer(struct wall wallTable[], char *bufferC, char *bufferS, int socketCli, char *request, int start, int end);
 
 
 #endif

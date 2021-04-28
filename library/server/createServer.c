@@ -102,7 +102,7 @@ void updateMapWithBombs(struct character charTable[], struct wall walls[]) {
     }
 }
 
-static char *ask_DB(char *bufferC, struct character charTable[], struct wall walls[], int client) {
+static char *ask_DB(char *bufferC, struct character charTable[], struct wall walls[], int client, int nbClient) {
     if (strcmp(bufferC, "CLIENT_ID\n") == 0) {
         char str[12];
         sprintf(str, "%d", client);
@@ -122,6 +122,22 @@ static char *ask_DB(char *bufferC, struct character charTable[], struct wall wal
     } else if (strcmp(bufferC, "P2y\n") == 0) {
         char str[12];
         sprintf(str, "%d", charTable[1].hitbox.y);
+        strcpy(bufferC, strcat(str, "\n"));
+    } else if (strcmp(bufferC, "P3x\n") == 0) {
+        char str[12];
+        sprintf(str, "%d", charTable[2].hitbox.x);
+        strcpy(bufferC, strcat(str, "\n"));
+    } else if (strcmp(bufferC, "P3y\n") == 0) {
+        char str[12];
+        sprintf(str, "%d", charTable[2].hitbox.y);
+        strcpy(bufferC, strcat(str, "\n"));
+    } else if (strcmp(bufferC, "P4x\n") == 0) {
+        char str[12];
+        sprintf(str, "%d", charTable[3].hitbox.x);
+        strcpy(bufferC, strcat(str, "\n"));
+    } else if (strcmp(bufferC, "P4y\n") == 0) {
+        char str[12];
+        sprintf(str, "%d", charTable[3].hitbox.y);
         strcpy(bufferC, strcat(str, "\n"));
     } else if (strcmp(bufferC, "UP\n") == 0) {
         for (int i = 0; charTable[i].hitbox.w == 40; i++) {
@@ -163,8 +179,6 @@ static char *ask_DB(char *bufferC, struct character charTable[], struct wall wal
                         break;
                     }
                 }
-                /*if (my_checkPlayerCollision(charTable[i], walls, 'l') == 0)
-                    charTable[i].hitbox.x -= 40;*/
             }
         }
     } else if (strncmp(bufferC, "MAP", 3) == 0) {
@@ -184,14 +198,23 @@ static char *ask_DB(char *bufferC, struct character charTable[], struct wall wal
         strcpy(bufferC, strcat(bufferT, "\n"));
     } else if (strcmp(bufferC, "AMIA\n") == 0) {
         char str[12];
-        sprintf(str, "%d", charTable[0].stats.lifePoints);
+        for (int i = 0; charTable[i].hitbox.w == 40; i++) {
+            if (charTable[i].client.clientID == client) {
+                sprintf(str, "%d", charTable[i].stats.lifePoints);
+                break;
+            }
+        }
+        strcpy(bufferC, strcat(str, "\n"));
+    } else if (strcmp(bufferC, "NBPLAYS\n") == 0) {
+        char str[12];
+        sprintf(str, "%d", nbClient);
         strcpy(bufferC, strcat(str, "\n"));
     }
     write_client(client, bufferC);
     return bufferC;
 }
 
-static int read_client(int client, struct character charTable[], struct wall walls[]) {
+static int read_client(int client, struct character charTable[], struct wall walls[], int nbClient) {
     int n;
     char bufferC[BUFFER_SIZE];
 
@@ -208,7 +231,7 @@ static int read_client(int client, struct character charTable[], struct wall wal
         }
         printf("\tReçu: %s", bufferC);
 
-        strcpy(bufferC, ask_DB(bufferC, charTable, walls, client));
+        strcpy(bufferC, ask_DB(bufferC, charTable, walls, client, nbClient));
 
         if (bufferC[n - 1] == '\n') {
             memset(bufferC, '\0', BUFFER_SIZE);
@@ -318,7 +341,7 @@ int serverInit(int numberPlayers) {
 
             for (int i = 0; i < nbClient; i++) {
                 if (FD_ISSET(*clients[i], &readfs)) {
-                    if (read_client(*clients[i], charTableI, wallTableI) == -1) {
+                    if (read_client(*clients[i], charTableI, wallTableI, nbClient) == -1) {
                         printf("Client n°%i déconnecté", i);
                         close(*clients[i]);
                         *clients[i] = -1;

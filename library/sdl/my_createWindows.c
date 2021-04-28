@@ -53,6 +53,18 @@ int my_createWindows(int sizeX, int sizeY) {
                 SDL_Log("Redirection -> Play Client.");
                 run = my_playGameClient(window, renderer, "client" , ipAdress);
                 break;
+            case 6:
+                SDL_Log("Redirection -> Won Game.");
+                run = my_mainMenu(window, renderer);
+                break;
+            case 7:
+                SDL_Log("Redirection -> Lost Game.");
+                run = my_mainMenu(window, renderer);
+                break;
+            case 8:
+                SDL_Log("Redirection -> Bad IP.");
+                run = my_mainMenu(window, renderer);
+                break;
 
         }
         SDL_Log(ipAdress);
