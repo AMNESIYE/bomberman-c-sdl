@@ -63,13 +63,21 @@ void my_setupWall(SDL_Renderer *renderer, struct wall wallTable[]) {
     }
 }
 
+void checkCharLife(struct character charTable[], int playersNumber) {
+    for (int i = 0; i < playersNumber; i++) {
+        if (charTable[i].hitbox.y == 0)
+            charTable[i].stats.lifePoints = 0;
+    }
+}
+
 void
 my_refreshPlayScene(SDL_Renderer *renderer, struct character charTable[], struct wall wallTable[], int playersNumber) {
     my_clearWindows(renderer);
     my_setupOverlay(renderer);
     my_setupWall(renderer, wallTable);
+    checkCharLife(charTable, playersNumber);
     for (int i = 0; i < playersNumber; i++) {
-        if (charTable[i].hitbox.w == 40 && charTable[i].hitbox.h == 40) {
+        if (charTable[i].hitbox.w == 40 && charTable[i].hitbox.h == 40 && charTable[i].stats.lifePoints > 0) {
             if (charTable[i].skin != NULL) {
                 my_drawImage(renderer, charTable[i].hitbox, charTable[i].skin);
             } else {
@@ -525,7 +533,18 @@ int my_playGameClient(SDL_Window *window, SDL_Renderer *renderer, char *name) {
         }
         charTableI[1].hitbox.y = atoi_n(bufferS);
 
-
+        // Am i alive ?
+        strcpy(bufferC, "AMIA\n");
+        if (send(socketCli, bufferC, strlen(bufferC), MSG_NOSIGNAL) < 0) {
+            puts("L'envoi a échoué.");
+            close(socketCli);
+            return -1;
+        }
+        if (recv(socketCli, bufferS, BUFFER_SIZE, 0) < 0) {
+            SDL_Log("GET_PLAYER_1_y -> Recv Failed");
+        }
+        printf("Alive ? %s", bufferS);
+        //charTableI[1].hitbox.y = atoi_n(bufferS);
 
         //
         //
