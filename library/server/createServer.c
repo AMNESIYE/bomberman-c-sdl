@@ -9,7 +9,15 @@
 #include "../../include/basical.h"
 #include "../../include/objects.h"
 
-int write_client(int client, char *bufferS) {
+static int TestThread() {
+    int count = 0;
+
+    // Si un truc à faire/compter pour le thread
+
+    return count;
+}
+
+static int write_client(int client, char *bufferS) {
     if (send(client, bufferS, strlen(bufferS), 0) >= 0) {
         printf("\tEnvoyé: %s", bufferS);
         memset(bufferS, '\0', BUFFER_SIZE);
@@ -20,7 +28,7 @@ int write_client(int client, char *bufferS) {
     }
 }
 
-int ask_Map(char *bufferC) {
+static int ask_Map(char *bufferC) {
     switch (bufferC[3]) {
         case '1':
             switch (bufferC[4]) {
@@ -60,6 +68,40 @@ int ask_Map(char *bufferC) {
     }
 }
 
+void updateMapWithBombs(struct character charTable[], struct wall walls[]) {
+    for (int k = 0; k < 225; k++) {
+        for (int i = 0; i < 4; i++) {
+            if (charTable[i].hitbox.w == 40) {
+                for (int j = 0; j < 2; j++) {
+                    if (charTable[i].bombs[j].hitbox.x == walls[k].hitbox.x &&
+                        charTable[i].bombs[j].hitbox.y == walls[k].hitbox.y) {
+                        if (charTable[i].bombs[j].exploded == 0) {
+                            if ((clock() - charTable[i].bombs[j].timer) >= BOMB_TIMER_SEC * 100000) {
+                                walls[k].breakable = 2;
+                                charTable[i].bombs[j].exploded = 1;
+                                explodeBombCollision(charTable, walls, i, j);
+                                continue;
+                            } else {
+                                for (int t = 0; t < BOMB_TIMER_SEC; t++) {
+                                    if (clock() - charTable[i].bombs[j].timer <=
+                                        (t * 100000)) {
+                                        if (t % 2 == 0)
+                                            walls[k].breakable = 5;
+                                        else
+                                            walls[k].breakable = 4;
+                                        break;
+                                    }
+                                }
+
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
 static char *ask_DB(char *bufferC, struct character charTable[], struct wall walls[], int client) {
     if (strcmp(bufferC, "CLIENT_ID\n") == 0) {
         char str[12];
@@ -84,32 +126,49 @@ static char *ask_DB(char *bufferC, struct character charTable[], struct wall wal
     } else if (strcmp(bufferC, "UP\n") == 0) {
         for (int i = 0; charTable[i].hitbox.w == 40; i++) {
             if (charTable[i].client.clientID == client) {
-                if (my_checkCollision(charTable[i], walls, 'u') == 0)
+                if (my_checkPlayerCollision(charTable[i], walls, 'u') == 0)
                     charTable[i].hitbox.y -= 40;
             }
         }
     } else if (strcmp(bufferC, "RIGHT\n") == 0) {
         for (int i = 0; charTable[i].hitbox.w == 40; i++) {
             if (charTable[i].client.clientID == client) {
-                if (my_checkCollision(charTable[i], walls, 'r') == 0)
+                if (my_checkPlayerCollision(charTable[i], walls, 'r') == 0)
                     charTable[i].hitbox.x += 40;
             }
         }
     } else if (strcmp(bufferC, "DOWN\n") == 0) {
         for (int i = 0; charTable[i].hitbox.w == 40; i++) {
             if (charTable[i].client.clientID == client) {
-                if (my_checkCollision(charTable[i], walls, 'd') == 0)
+                if (my_checkPlayerCollision(charTable[i], walls, 'd') == 0)
                     charTable[i].hitbox.y += 40;
             }
         }
     } else if (strcmp(bufferC, "LEFT\n") == 0) {
         for (int i = 0; charTable[i].hitbox.w == 40; i++) {
             if (charTable[i].client.clientID == client) {
-                if (my_checkCollision(charTable[i], walls, 'l') == 0)
+                if (my_checkPlayerCollision(charTable[i], walls, 'l') == 0)
                     charTable[i].hitbox.x -= 40;
             }
         }
+    } else if (strcmp(bufferC, "BOMB\n") == 0) {
+        for (int i = 0; charTable[i].hitbox.w == 40; i++) {
+            if (charTable[i].client.clientID == client) {
+                for (int j = 0; j < 3; j++) {
+                    if (charTable[i].bombs[j].exploded == 1) {
+                        charTable[i].bombs[j].timer = clock();
+                        charTable[i].bombs[j].exploded = 0;
+                        charTable[i].bombs[j].hitbox.x = charTable[i].hitbox.x;
+                        charTable[i].bombs[j].hitbox.y = charTable[i].hitbox.y;
+                        break;
+                    }
+                }
+                /*if (my_checkPlayerCollision(charTable[i], walls, 'l') == 0)
+                    charTable[i].hitbox.x -= 40;*/
+            }
+        }
     } else if (strncmp(bufferC, "MAP", 3) == 0) {
+        updateMapWithBombs(charTable, walls);
         char bufferT[BUFFER_SIZE];
         memset(bufferT, '\0', BUFFER_SIZE);
         int range = ask_Map(bufferC);
@@ -123,12 +182,26 @@ static char *ask_DB(char *bufferC, struct character charTable[], struct wall wal
             strcpy(bufferT, strcat(bufferT, str));
         }
         strcpy(bufferC, strcat(bufferT, "\n"));
-    }
+    } /*else if (strcmp(bufferC, "BOMBS") == 0) {
+        char bufferT[BUFFER_SIZE];
+        memset(bufferT, '\0', BUFFER_SIZE);
+        int range = ask_Map(bufferC);
+        if (range == -1) {
+            write_client(client, bufferC);
+            return bufferC;
+        }
+        for (int i = range * 15; i < range * 15 + 15; i++) {
+            char str[12];
+            sprintf(str, "%d", walls[i].breakable);
+            strcpy(bufferT, strcat(bufferT, str));
+        }
+        strcpy(bufferC, strcat(bufferT, "\n"));
+    }*/
     write_client(client, bufferC);
     return bufferC;
 }
 
-int read_client(int client, struct character charTable[], struct wall walls[]) {
+static int read_client(int client, struct character charTable[], struct wall walls[]) {
     int n;
     char bufferC[BUFFER_SIZE];
 
@@ -155,11 +228,11 @@ int read_client(int client, struct character charTable[], struct wall walls[]) {
     return 0;
 }
 
-int askClientNumber() {
+static int askClientNumber() {
     return 1;
 }
 
-int nbDisconnectedClient(int *clients[], int nbClient) {
+static int nbDisconnectedClient(int *clients[], int nbClient) {
     for (int i = 0, y = 0; i < nbClient; i++) {
         if (*clients[i] == -1)
             y++;
@@ -175,6 +248,10 @@ int serverInit(int numberPlayers) {
     int client2, client3, client4;
     int nbClient;
     int *clients[] = {&client1, &client2, &client3, &client4};
+
+    time_t globalTimer;
+
+    SDL_Thread *thread = NULL;
 
     socklen_t client_addr_len;
     struct sockaddr_in server;
@@ -200,6 +277,8 @@ int serverInit(int numberPlayers) {
 
     puts("En attente de clients...");
     while (1) {
+        thread = SDL_CreateThread(TestThread, "server", NULL);
+
         puts("En attente de reponse du client hôte...");
         client1 = accept(socketSrv, (struct sockaddr *) &server, &client_addr_len);
         puts("Client hôte connecté.");
@@ -236,6 +315,7 @@ int serverInit(int numberPlayers) {
         my_genMap("./library/assets/maps/map.txt", wallTableI);
 
         while (1) {
+            globalTimer = clock();
             tick.tv_sec = 1;
             tick.tv_usec = 0;
             FD_ZERO(&readfs);
@@ -259,9 +339,11 @@ int serverInit(int numberPlayers) {
             if (*clients[0] == -1 || nbDisconnectedClient(clients, nbClient) == -1) {
                 break;
             }
-            puts("tick");
+            printf("tick: %li", globalTimer);
         }
+        SDL_WaitThread(thread, NULL);
     }
     close(socketSrv);
+    SDL_WaitThread(thread, NULL);
     return 1;
 }
