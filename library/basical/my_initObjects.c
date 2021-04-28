@@ -41,6 +41,16 @@ static struct character my_initBaseCharacter(struct character character) {
     character.hitbox.x = 0;
     character.hitbox.y = 0;
     character.skin = "./library/assets/bomberman_40.bmp";
+    for (int i = 0; i < 2; i++) {
+        character.bombs[i].skin = "./library/assets/bomb40.bmp";
+        character.bombs[i].timer = clock();
+        character.bombs[i].exploded = 1;
+        character.bombs[i].hitbox.x = 0;
+        character.bombs[i].hitbox.y = 0;
+        character.bombs[i].hitbox.w = 40;
+        character.bombs[i].hitbox.h = 40;
+    }
+
     return character;
 }
 
