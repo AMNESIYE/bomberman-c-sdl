@@ -5,7 +5,6 @@
 **      headers for server functions 
 */
 
-
 #ifndef MY_H_CLIENT
 #define MY_H_CLIENT
 
@@ -23,13 +22,6 @@
 #include <pthread.h>
 #include <string.h>
 
-enum _requestType {
-    CLIENT_ID,
-    GET_PLAYER_1
-};
-
 int serverInit(int numberPlayers);
-int clientInit();
-
 
 #endif
