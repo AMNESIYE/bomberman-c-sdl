@@ -70,7 +70,6 @@ void my_initializeMainMenu(SDL_Renderer *renderer) {
     my_drawText(renderer, text[0], 0, 0, 0, "Create");
     my_drawText(renderer, text[1], 0, 0, 0, "Join");
     my_drawText(renderer, text[2], 0, 0, 0, "Quit");
-
     SDL_RenderPresent(renderer);
 }
 

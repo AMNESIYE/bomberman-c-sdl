@@ -6,9 +6,54 @@
 */
 
 #include "../../../include/game.h"
+#include "../../../include/basical.h"
+#include "../../../include/client.h"
+#include "../../../include/server.h"
 
-static void my_refreshJoinGame(SDL_Renderer* renderer) {
+
+static void my_drawNumPad(SDL_Renderer *renderer) {
+    SDL_Rect NumPad[12] = {{165 , 100 , 75 , 75} , {265 , 100 , 75 , 75} , {365 , 100 , 75 , 75},
+                           {165 , 200 , 75 , 75} , {265 , 200 , 75 , 75} , {365 , 200 , 75 , 75},
+                           {165 , 300 , 75 , 75} , {265 , 300 , 75 , 75} , {365 , 300 , 75, 75},
+                           {165 , 400 , 175, 75} , {365 , 400 , 75 , 75} , {65 , 100 , 75 , 75}};
+    SDL_Rect TextNumPad[12] = {{165 , 100 , 75 , 75} , {265 , 100 , 75 , 75} , {365 , 100 , 75 , 75},
+                               {165 , 200 , 75 , 75} , {265 , 200 , 75 , 75} , {365 , 200 , 75 , 75},
+                               {165 , 300 , 75 , 75} , {265 , 300 , 75 , 75} , {365 , 300 , 75, 75},
+                               {165 , 400 , 175, 75} , {365 , 400 , 75 , 75} , {65 , 100 , 75 , 75}};
+
+    for (int i = 0; i < 12; i++) {
+        my_drawRectangle(renderer , NumPad[i] , 0 , 0 , 255);
+    }
+    my_drawText(renderer , TextNumPad[0] , 0 , 0 , 0 , "1");
+    my_drawText(renderer , TextNumPad[1] , 0 , 0 , 0 , "2");
+    my_drawText(renderer , TextNumPad[2] , 0 , 0 , 0 , "3");
+    my_drawText(renderer , TextNumPad[3] , 0 , 0 , 0 , "4");
+    my_drawText(renderer , TextNumPad[4] , 0 , 0 , 0 , "5");
+    my_drawText(renderer , TextNumPad[5] , 0 , 0 , 0 , "6");
+    my_drawText(renderer , TextNumPad[6] , 0 , 0 , 0 , "7");
+    my_drawText(renderer , TextNumPad[7] , 0 , 0 , 0 , "8");
+    my_drawText(renderer , TextNumPad[8] , 0 , 0 , 0 , "9");
+    my_drawText(renderer , TextNumPad[9] , 0 , 0 , 0 , "0");
+    my_drawText(renderer , TextNumPad[10] , 0 , 0 , 0 , ".");
+    my_drawText(renderer , TextNumPad[11] , 0 , 0 , 0 , "DEL");
+}
+static void my_writeIp(SDL_Renderer* renderer , char* ip) {
+    SDL_Rect TextIp = {150 , 25 , (50 + (strlen(ip) * 15)), 50};
+    my_drawText(renderer , TextIp , 0 , 0 ,0 , ip);
+}
+static int isValidIpAddress(char *ipAddress)
+{
+    struct sockaddr_in sa;
+    int result = inet_pton(AF_INET, ipAddress, &(sa.sin_addr));
+    return result != 0;
+}
+
+static void my_refreshJoinGame(SDL_Renderer* renderer , char* ip , int error) {
     my_clearWindows(renderer);
+    if (error == 1) {
+        SDL_Rect TextError = {215 ,585, 150 , 25};
+        my_drawText(renderer , TextError , 255 , 0 , 0 , "Bad Address Ip");
+    }
     SDL_Rect buttonBack = {430 , 525, 50,  30};
     SDL_Rect buttonPlay = {130, 525, 50,  30};    
     SDL_Rect playPos = {230 , 500 , 50 , 75};
@@ -29,15 +74,69 @@ static void my_refreshJoinGame(SDL_Renderer* renderer) {
     }
     my_drawText(renderer, buttonBack , 0, 0, 0, "Back");
     my_drawText(renderer, buttonPlay , 0, 0, 0, "Play");
+    my_drawNumPad(renderer);
+    my_writeIp(renderer , ip);
     SDL_RenderPresent(renderer);
 }
+static int my_validAddress(char *ipAddress)
+{
+    struct sockaddr_in sa;
+    int result = inet_pton(AF_INET, ipAddress, &(sa.sin_addr));
+    return result != 0;
+}
 
-int my_joinGame(SDL_Window *window, SDL_Renderer *renderer) {
+
+
+static char* my_numPadClik(SDL_Event event) {
+    switch(event.type) {
+        case SDL_MOUSEBUTTONDOWN:
+            if (event.button.x >= 165 && event.button.x <= 165 + 75 && event.button.y >= 100 && event.button.y <= 100 + 75) {
+                return "1";
+            }
+            else if (event.button.x >= 65 && event.button.x <= 65 + 75 && event.button.y >= 100 && event.button.y <= 100 + 75) {
+                return "D";
+            }
+            else if (event.button.x >= 265 && event.button.x <= 265 + 75 && event.button.y >= 100 && event.button.y <= 100 + 75) {
+                return "2";
+            }
+            else if (event.button.x >= 365 && event.button.x <= 365 + 75 && event.button.y >= 100 && event.button.y <= 100 + 75) {
+                return "3";
+            }
+            else if (event.button.x >= 165 && event.button.x <= 165 + 75 && event.button.y >= 200 && event.button.y <= 200 + 75) {
+                return "4";
+            }
+            else if (event.button.x >= 265 && event.button.x <= 265 + 75 && event.button.y >= 200 && event.button.y <= 200 + 75) {
+                return "5";
+            }
+            else if (event.button.x >= 365 && event.button.x <= 365 + 75 && event.button.y >= 200 && event.button.y <= 200 + 75) {
+                return "6";
+            }
+            else if (event.button.x >= 165 && event.button.x <= 165 + 75 && event.button.y >= 300 && event.button.y <= 300 + 75) {
+                return "7";
+            }
+            else if (event.button.x >= 265 && event.button.x <= 265 + 75 && event.button.y >= 300 && event.button.y <= 300 + 75) {
+                return "8";
+            }
+            else if (event.button.x >= 365 && event.button.x <= 365 + 75 && event.button.y >= 300 && event.button.y <= 300 + 75) {
+                return "9";
+            }
+            else if (event.button.x >= 165 && event.button.x <= 165 + 175 && event.button.y >= 400 && event.button.y <= 400 + 75) {
+                return "0";
+            }
+            else if (event.button.x >= 365 && event.button.x <= 365 + 75 && event.button.y >= 400 && event.button.y <= 400 + 75) {
+                return ".";
+            }
+            else {
+                return "#";
+            }
+    }
+}
+
+int my_joinGame(SDL_Window *window, SDL_Renderer *renderer , char *ip) {
     TTF_Init();
     SDL_Event event;
-
-    my_refreshJoinGame(renderer);
-
+    char *tmp;
+    my_refreshJoinGame(renderer , ip , 0);
     while (1) {
         while (SDL_PollEvent(&event)) {
             switch (event.type) {
@@ -47,13 +146,27 @@ int my_joinGame(SDL_Window *window, SDL_Renderer *renderer) {
                     my_exitWindows(window, renderer);
                     return 0;
                 case SDL_MOUSEBUTTONDOWN:
+                    tmp = my_numPadClik(event);
+                    if (tmp[0] != '#' && strlen(ip) <= 15) {
+                        if (tmp[0] == 'D') {
+                            memset(ip , '\0' , 15);
+                            my_refreshJoinGame(renderer , ip , 0);
+                        }
+                        else {
+                            strcat(ip , tmp);
+                            my_refreshJoinGame(renderer , ip , 0);
+                        }
+                    }
                     if (event.button.x >= 280 && event.button.x <= 280 + 250 && event.button.y >= 500 &&
                         event.button.y <= 500 + 75) {
                         return 1;
-                    } else if (event.button.x >= 30 && event.button.x <= 30 + 250 &&
-                               event.button.y >= 500 &&
-                               event.button.y <= 500 + 75) {
-                        return 5;
+                    } else if (event.button.x >= 30 && event.button.x <= 30 + 250 && event.button.y >= 500 && event.button.y <= 500 + 75) {
+                        if (my_validAddress(ip) == 1) {
+                            return 5;
+                        }
+                        else {
+                            my_refreshJoinGame(renderer , ip , 1);
+                        }
                     }
                     break;
             }

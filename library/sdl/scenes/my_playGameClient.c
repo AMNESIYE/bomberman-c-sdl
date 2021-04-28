@@ -101,7 +101,7 @@ int atoi_n(char *bufferS) {
 }
 
 
-int my_playGameClient(SDL_Window *window, SDL_Renderer *renderer, char *name) {
+int my_playGameClient(SDL_Window *window, SDL_Renderer *renderer, char *name , char *ip) {
     //Début Partie client
     char bufferC[BUFFER_SIZE], bufferS[BUFFER_SIZE];
     int socketCli;

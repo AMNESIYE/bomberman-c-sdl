@@ -15,6 +15,7 @@ int my_createWindows(int sizeX, int sizeY) {
     SDL_Window *window = NULL;
     SDL_Renderer *renderer = NULL;
     SDL_Event event;
+    char ipAdress[15] = "";
     SDL_CreateWindowAndRenderer(sizeX, sizeY, SDL_WINDOW_SHOWN, &window, &renderer);
     SDL_Log("SDL -> Initialization successfull.");
     int run = 1;
@@ -38,7 +39,7 @@ int my_createWindows(int sizeX, int sizeY) {
                 break;
             case 2:
                 SDL_Log("Redirection -> Join a game.");
-                run = my_joinGame(window, renderer);
+                run = my_joinGame(window, renderer , ipAdress);
                 break;
             case 3:
                 SDL_Log("Redirection -> Create a game.");
@@ -46,14 +47,15 @@ int my_createWindows(int sizeX, int sizeY) {
                 break;
             case 4:
                 SDL_Log("Redirection -> Play Host.");
-                run = my_playGameClient(window, renderer, "host");
+                run = my_playGameClient(window, renderer, "host" , "127.0.0.1");
                 break;
             case 5:
                 SDL_Log("Redirection -> Play Client.");
-                run = my_playGameClient(window, renderer, "client");
+                run = my_playGameClient(window, renderer, "client" , ipAdress);
                 break;
 
         }
+        SDL_Log(ipAdress);
         SDL_UpdateWindowSurface(window);
     }
     my_exitWindows(window, renderer);

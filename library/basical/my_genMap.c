@@ -37,7 +37,6 @@ void my_genMap(char *path, struct wall w[]) {
     fp = fopen(path , "r");
     if(fp == NULL) {
         printf("%s" , "Error opening file");
-        return NULL;
     }
     else {
         while (fgets(str, 16, fp)) {
@@ -90,7 +89,6 @@ void my_genMap(char *path, struct wall w[]) {
         }
         fclose(fp);
         log_Array(w , countWall);
-        //return w;
     }
     
 }

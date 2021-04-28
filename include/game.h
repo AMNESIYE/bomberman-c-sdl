@@ -40,8 +40,8 @@ int my_mainMenu(SDL_Window *window, SDL_Renderer *renderer);
 
 int my_createGame(SDL_Window *window, SDL_Renderer *renderer);
 
-int my_joinGame(SDL_Window *window, SDL_Renderer *renderer);
+int my_joinGame(SDL_Window *window, SDL_Renderer *renderer , char *ip);
 
-int my_playGameClient(SDL_Window *window, SDL_Renderer *renderer, char* name);
+int my_playGameClient(SDL_Window *window, SDL_Renderer *renderer, char* name , char* ip);
 
 #endif
