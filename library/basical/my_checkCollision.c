@@ -60,8 +60,10 @@ void explodeBombCollision(struct character charTable[], struct wall walls[], int
             else if (walls[i].breakable == 2) {
                 for (int k = 0; k < 4; k++) {
                     if (charTable[k].hitbox.x == charTable[charBombIndex].bombs[bombIndex].hitbox.x &&
-                            charTable[k].hitbox.y == (charTable[charBombIndex].bombs[bombIndex].hitbox.y - 40)) {
-                        charTable[k].hitbox.y = 0;
+                        charTable[k].hitbox.y == (charTable[charBombIndex].bombs[bombIndex].hitbox.y - 40)) {
+                        charTable[k].stats.lifePoints--;
+                        if (charTable[k].stats.lifePoints == 0)
+                            charTable[k].hitbox.y = 0;
                     }
                 }
                 for (int j = 0; j < 255; j++) {
@@ -69,6 +71,17 @@ void explodeBombCollision(struct character charTable[], struct wall walls[], int
                         walls[j].hitbox.y == (charTable[charBombIndex].bombs[bombIndex].hitbox.y - 80)) {
                         if (walls[j].breakable == 1)
                             walls[j].breakable = 2;
+                        else if (walls[i].breakable == 2) {
+                            for (int k = 0; k < 4; k++) {
+                                if (charTable[k].hitbox.x == charTable[charBombIndex].bombs[bombIndex].hitbox.x &&
+                                    charTable[k].hitbox.y ==
+                                    (charTable[charBombIndex].bombs[bombIndex].hitbox.y - 80)) {
+                                    charTable[k].stats.lifePoints--;
+                                    if (charTable[k].stats.lifePoints == 0)
+                                        charTable[k].hitbox.y = 0;
+                                }
+                            }
+                        }
                     }
                 }
             }
@@ -77,11 +90,30 @@ void explodeBombCollision(struct character charTable[], struct wall walls[], int
             if (walls[i].breakable == 1)
                 walls[i].breakable = 2;
             else if (walls[i].breakable == 2) {
+                for (int k = 0; k < 4; k++) {
+                    if (charTable[k].hitbox.x == charTable[charBombIndex].bombs[bombIndex].hitbox.x &&
+                        charTable[k].hitbox.y == (charTable[charBombIndex].bombs[bombIndex].hitbox.y + 40)) {
+                        charTable[k].stats.lifePoints--;
+                        if (charTable[k].stats.lifePoints == 0)
+                            charTable[k].hitbox.y = 0;
+                    }
+                }
                 for (int j = 0; j < 255; j++) {
                     if (walls[j].hitbox.x == charTable[charBombIndex].bombs[bombIndex].hitbox.x &&
                         walls[j].hitbox.y == (charTable[charBombIndex].bombs[bombIndex].hitbox.y + 80)) {
                         if (walls[j].breakable == 1)
                             walls[j].breakable = 2;
+                        else if (walls[i].breakable == 2) {
+                            for (int k = 0; k < 4; k++) {
+                                if (charTable[k].hitbox.x == charTable[charBombIndex].bombs[bombIndex].hitbox.x &&
+                                    charTable[k].hitbox.y ==
+                                    (charTable[charBombIndex].bombs[bombIndex].hitbox.y + 80)) {
+                                    charTable[k].stats.lifePoints--;
+                                    if (charTable[k].stats.lifePoints == 0)
+                                        charTable[k].hitbox.y = 0;
+                                }
+                            }
+                        }
                     }
                 }
             }
@@ -90,11 +122,30 @@ void explodeBombCollision(struct character charTable[], struct wall walls[], int
             if (walls[i].breakable == 1)
                 walls[i].breakable = 2;
             else if (walls[i].breakable == 2) {
+                for (int k = 0; k < 4; k++) {
+                    if (charTable[k].hitbox.y == charTable[charBombIndex].bombs[bombIndex].hitbox.y &&
+                        charTable[k].hitbox.x == (charTable[charBombIndex].bombs[bombIndex].hitbox.x - 40)) {
+                        charTable[k].stats.lifePoints--;
+                        if (charTable[k].stats.lifePoints == 0)
+                            charTable[k].hitbox.y = 0;
+                    }
+                }
                 for (int j = 0; j < 255; j++) {
                     if (walls[j].hitbox.y == charTable[charBombIndex].bombs[bombIndex].hitbox.y &&
                         walls[j].hitbox.x == (charTable[charBombIndex].bombs[bombIndex].hitbox.x - 80)) {
                         if (walls[j].breakable == 1)
                             walls[j].breakable = 2;
+                        else if (walls[i].breakable == 2) {
+                            for (int k = 0; k < 4; k++) {
+                                if (charTable[k].hitbox.y == charTable[charBombIndex].bombs[bombIndex].hitbox.y &&
+                                    charTable[k].hitbox.x ==
+                                    (charTable[charBombIndex].bombs[bombIndex].hitbox.x - 80)) {
+                                    charTable[k].stats.lifePoints--;
+                                    if (charTable[k].stats.lifePoints == 0)
+                                        charTable[k].hitbox.y = 0;
+                                }
+                            }
+                        }
                     }
                 }
             }
@@ -103,11 +154,30 @@ void explodeBombCollision(struct character charTable[], struct wall walls[], int
             if (walls[i].breakable == 1)
                 walls[i].breakable = 2;
             else if (walls[i].breakable == 2) {
+                for (int k = 0; k < 4; k++) {
+                    if (charTable[k].hitbox.y == charTable[charBombIndex].bombs[bombIndex].hitbox.y &&
+                        charTable[k].hitbox.x == (charTable[charBombIndex].bombs[bombIndex].hitbox.x + 40)) {
+                        charTable[k].stats.lifePoints--;
+                        if (charTable[k].stats.lifePoints == 0)
+                            charTable[k].hitbox.y = 0;
+                    }
+                }
                 for (int j = 0; j < 255; j++) {
                     if (walls[j].hitbox.y == charTable[charBombIndex].bombs[bombIndex].hitbox.y &&
                         walls[j].hitbox.x == (charTable[charBombIndex].bombs[bombIndex].hitbox.x + 80)) {
                         if (walls[j].breakable == 1)
                             walls[j].breakable = 2;
+                        else if (walls[i].breakable == 2) {
+                            for (int k = 0; k < 4; k++) {
+                                if (charTable[k].hitbox.y == charTable[charBombIndex].bombs[bombIndex].hitbox.y &&
+                                    charTable[k].hitbox.x ==
+                                    (charTable[charBombIndex].bombs[bombIndex].hitbox.x + 80)) {
+                                    charTable[k].stats.lifePoints--;
+                                    if (charTable[k].stats.lifePoints == 0)
+                                        charTable[k].hitbox.y = 0;
+                                }
+                            }
+                        }
                     }
                 }
             }

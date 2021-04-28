@@ -182,21 +182,11 @@ static char *ask_DB(char *bufferC, struct character charTable[], struct wall wal
             strcpy(bufferT, strcat(bufferT, str));
         }
         strcpy(bufferC, strcat(bufferT, "\n"));
-    } /*else if (strcmp(bufferC, "BOMBS") == 0) {
-        char bufferT[BUFFER_SIZE];
-        memset(bufferT, '\0', BUFFER_SIZE);
-        int range = ask_Map(bufferC);
-        if (range == -1) {
-            write_client(client, bufferC);
-            return bufferC;
-        }
-        for (int i = range * 15; i < range * 15 + 15; i++) {
-            char str[12];
-            sprintf(str, "%d", walls[i].breakable);
-            strcpy(bufferT, strcat(bufferT, str));
-        }
-        strcpy(bufferC, strcat(bufferT, "\n"));
-    }*/
+    } else if (strcmp(bufferC, "AMIA\n") == 0) {
+        char str[12];
+        sprintf(str, "%d", charTable[0].stats.lifePoints);
+        strcpy(bufferC, strcat(str, "\n"));
+    }
     write_client(client, bufferC);
     return bufferC;
 }
