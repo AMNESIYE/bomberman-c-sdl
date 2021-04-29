@@ -59,15 +59,21 @@ void my_refreshCreateGame(SDL_Renderer *renderer) {
         my_drawImage(renderer, fourPlayButtonPos , "./library/assets/block/block (30).bmp");
         fourPlayButtonPos.x = fourPlayButtonPos.x - 50;
     }
-    SDL_Rect textPos[4] = {{}
-
-                          };
+    SDL_Rect textPos[4] = {{415 , 535 , 50 , 30},{125 , 535 , 70 , 30},{125 , 435 , 70 , 30},{125 , 335 , 70 , 30}};
+    my_drawText(renderer , textPos[0] , 0 , 0 , 0 , "Back");
+    my_drawText(renderer , textPos[1] , 0 , 0 , 0 , "2 player");
+    my_drawText(renderer , textPos[2] , 0 , 0 , 0 , "3 player");
+    my_drawText(renderer , textPos[3] , 0 , 0 , 0 , "4 player");
+    SDL_Rect imagePos[2] = {{350, 300, 150, 200}, {0, 0, 600, 150}};
+    my_drawImage(renderer, imagePos[0] , "./library/assets/logo.bmp");
+    my_drawImage(renderer, imagePos[1] , "./library/assets/title.bmp");
     SDL_RenderPresent(renderer);
 }
 
 int my_createGame(SDL_Window *window, SDL_Renderer *renderer) {
     TTF_Init();
     SDL_Event event;
+    my_clearWindows(renderer);
     my_refreshCreateGame(renderer);
 
     int serverInitialized = 0;
