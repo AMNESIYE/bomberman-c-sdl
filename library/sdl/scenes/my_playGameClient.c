@@ -53,6 +53,23 @@ static void my_waitingScreen(SDL_Renderer *renderer) {
 
 static void my_setupOverlay(SDL_Renderer *renderer) {
     my_drawLine(renderer, 0, 99, 600, 99, 0, 0, 0);
+    SDL_Rect background = {0 , 100, 600 , 700};
+    SDL_Rect overlay = {0 , 0 , 600 , 100};
+    SDL_Rect lifeRect = {10 , 10 , 20 , 20};
+    SDL_Rect bombRect = {10 , 40 , 20 , 20};
+    my_drawImage(renderer, overlay , "./library/assets/background.bmp");
+    my_drawImage(renderer, background , "./library/assets/ground.bmp");
+    for(int i = 0; i < 5 ; i++ ){
+        my_drawImage(renderer, lifeRect , "./library/assets/life.bmp");
+        lifeRect.x = lifeRect.x + 25;
+    }
+    
+    for(int i = 0; i < 2; i++ ){
+        my_drawImage(renderer, bombRect , "./library/assets/bomb.bmp");
+        bombRect.x = bombRect.x + 25;
+    }
+    
+
 }
 
 static void my_setupWall(SDL_Renderer *renderer, struct wall wallTable[]) {
