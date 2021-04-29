@@ -16,25 +16,46 @@ static void my_drawNumPad(SDL_Renderer *renderer) {
                            {165 , 200 , 75 , 75} , {265 , 200 , 75 , 75} , {365 , 200 , 75 , 75},
                            {165 , 300 , 75 , 75} , {265 , 300 , 75 , 75} , {365 , 300 , 75, 75},
                            {165 , 400 , 175, 75} , {365 , 400 , 75 , 75} , {65 , 100 , 75 , 75}};
-    SDL_Rect TextNumPad[12] = {{165 , 100 , 75 , 75} , {265 , 100 , 75 , 75} , {365 , 100 , 75 , 75},
-                               {165 , 200 , 75 , 75} , {265 , 200 , 75 , 75} , {365 , 200 , 75 , 75},
-                               {165 , 300 , 75 , 75} , {265 , 300 , 75 , 75} , {365 , 300 , 75, 75},
-                               {165 , 400 , 175, 75} , {365 , 400 , 75 , 75} , {65 , 100 , 75 , 75}};
+    SDL_Rect TextNumPad[12] = {{180 , 110 , 50 , 50} , {280 , 110 , 50 , 50} , {380 , 110 , 50 , 50},
+                               {180 , 210 , 50 , 50} , {280 , 210 , 50 , 50} , {380 , 210 , 50 , 50},
+                               {180 , 310 , 50 , 50} , {280 , 310 , 50 , 50} , {380 , 310 , 50, 50},
+                               {230 , 410 , 50, 50} , {395 , 400 , 25 , 50} , {80 , 110 , 50 , 50}};
 
+    int xPos;
+    int yPos;
     for (int i = 0; i < 12; i++) {
-        my_drawRectangle(renderer , NumPad[i] , 0 , 0 , 255);
+        SDL_Rect padBlock = NumPad[i];
+        xPos = padBlock.x;
+        yPos = padBlock.y;
+        if( i == 11 ) {
+            for (int i = 0; i < 5; i++) {
+                my_drawImage(renderer, padBlock , "./library/assets/block/block (31).bmp");
+            }
+        } else {
+            for (int i = 0; i < 5; i++) {
+                my_drawImage(renderer, padBlock , "./library/assets/block/block (53).bmp");
+            }
+        }
+        
+        /*
+        playPos.x = 230;
+        playPos.y = playPos.y  + 25;
+        for (int i = 0; i < 5; i++) {
+            my_drawImage(renderer, playPos , "./library/assets/block/block (76).bmp");
+            playPos.x = playPos.x - 50;
+        }*/
     }
-    my_drawText(renderer , TextNumPad[0] , 0 , 0 , 0 , "1");
-    my_drawText(renderer , TextNumPad[1] , 0 , 0 , 0 , "2");
-    my_drawText(renderer , TextNumPad[2] , 0 , 0 , 0 , "3");
-    my_drawText(renderer , TextNumPad[3] , 0 , 0 , 0 , "4");
-    my_drawText(renderer , TextNumPad[4] , 0 , 0 , 0 , "5");
-    my_drawText(renderer , TextNumPad[5] , 0 , 0 , 0 , "6");
-    my_drawText(renderer , TextNumPad[6] , 0 , 0 , 0 , "7");
-    my_drawText(renderer , TextNumPad[7] , 0 , 0 , 0 , "8");
-    my_drawText(renderer , TextNumPad[8] , 0 , 0 , 0 , "9");
-    my_drawText(renderer , TextNumPad[9] , 0 , 0 , 0 , "0");
-    my_drawText(renderer , TextNumPad[10] , 0 , 0 , 0 , ".");
+    my_drawText(renderer , TextNumPad[0] , 100 , 0 , 0 , "1");
+    my_drawText(renderer , TextNumPad[1] , 100 , 0 , 0 , "2");
+    my_drawText(renderer , TextNumPad[2] , 100 , 0 , 0 , "3");
+    my_drawText(renderer , TextNumPad[3] , 100 , 0 , 0 , "4");
+    my_drawText(renderer , TextNumPad[4] , 100 , 0 , 0 , "5");
+    my_drawText(renderer , TextNumPad[5] , 100 , 0 , 0 , "6");
+    my_drawText(renderer , TextNumPad[6] , 100 , 0 , 0 , "7");
+    my_drawText(renderer , TextNumPad[7] , 100 , 0 , 0 , "8");
+    my_drawText(renderer , TextNumPad[8] , 100 , 0 , 0 , "9");
+    my_drawText(renderer , TextNumPad[9] , 100 , 0 , 0 , "0");
+    my_drawText(renderer , TextNumPad[10] , 100 , 0 , 0 , ".");
     my_drawText(renderer , TextNumPad[11] , 0 , 0 , 0 , "DEL");
 }
 static void my_writeIp(SDL_Renderer* renderer , char* ip) {
@@ -54,20 +75,33 @@ static void my_refreshJoinGame(SDL_Renderer* renderer , char* ip , int error) {
         SDL_Rect TextError = {215 ,585, 150 , 25};
         my_drawText(renderer , TextError , 255 , 0 , 0 , "Bad Address Ip");
     }
-    SDL_Rect buttonBack = {430 , 525, 50,  30};
-    SDL_Rect buttonPlay = {130, 525, 50,  30};    
-    SDL_Rect playPos = {230 , 500 , 50 , 75};
+    SDL_Rect buttonBack = {430 , 500, 50,  50};
+    SDL_Rect buttonPlay = {130, 500, 50,  50};    
+    //play button
+    SDL_Rect playPos = {230 , 500 , 50 , 50};
     for (int i = 0; i < 5; i++) {
         my_drawImage(renderer, playPos , "./library/assets/block/block (32).bmp");
         playPos.x = playPos.x - 50;
     }
-    SDL_Rect backPos = {530 , 500 , 50 , 75};
+    playPos.x = 230;
+    playPos.y = playPos.y  + 25;
     for (int i = 0; i < 5; i++) {
-        my_drawImage(renderer, backPos , "./library/assets/block/block (30).bmp");
+        my_drawImage(renderer, playPos , "./library/assets/block/block (32).bmp");
+        playPos.x = playPos.x - 50;
+    }
+    //back button
+    SDL_Rect backPos = {530 , 500 , 50 , 50};
+    for (int i = 0; i < 5; i++) {
+        my_drawImage(renderer, backPos , "./library/assets/block/block (31).bmp");
         backPos.x = backPos.x - 50;
     }
-
-    SDL_Rect blockPos = {550 , 625 , 50 , 75};
+    backPos.x = 530;
+    backPos.y = backPos.y + 25;
+    for (int i = 0; i < 5; i++) {
+        my_drawImage(renderer, backPos , "./library/assets/block/block (31).bmp");
+        backPos.x = backPos.x - 50;
+    }
+    SDL_Rect blockPos = {550 , 625 , 50 , 50};
     for (int i = 0; i < 12; i++) {
         my_drawImage(renderer, blockPos , "./library/assets/block/block (75).bmp");
         blockPos.x = blockPos.x - 50;

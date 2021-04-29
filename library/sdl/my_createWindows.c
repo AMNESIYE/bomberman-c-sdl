@@ -55,11 +55,11 @@ int my_createWindows(int sizeX, int sizeY) {
                 break;
             case 6:
                 SDL_Log("Redirection -> Won Game.");
-                run = my_mainMenu(window, renderer);
+                run = my_endGame(window, renderer, 1);
                 break;
             case 7:
                 SDL_Log("Redirection -> Lost Game.");
-                run = my_mainMenu(window, renderer);
+                run = my_endGame(window, renderer, 0);
                 break;
             case 8:
                 SDL_Log("Redirection -> Bad IP.");

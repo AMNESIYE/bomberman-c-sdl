@@ -44,4 +44,6 @@ int my_joinGame(SDL_Window *window, SDL_Renderer *renderer , char *ip);
 
 int my_playGameClient(SDL_Window *window, SDL_Renderer *renderer, char* name , char* ip);
 
+int my_endGame(SDL_Window *window, SDL_Renderer *renderer, int result);
+
 #endif
