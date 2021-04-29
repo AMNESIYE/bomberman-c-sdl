@@ -19,7 +19,7 @@ static int TestThread() {
 static int checkEndGame(int playersNumber, struct character charTable[]) {
     int deathCount = 0;
     for (int i = 0; i < playersNumber; i++) {
-        if (charTable[i].stats.lifePoints == 0)
+        if (charTable[i].stats.lifePoints <= 0)
             deathCount++;
     }
     if (deathCount >= playersNumber - 1)
@@ -51,24 +51,19 @@ static void my_waitingScreen(SDL_Renderer *renderer) {
 
 }
 
-static void my_setupOverlay(SDL_Renderer *renderer) {
+static void my_setupOverlay(SDL_Renderer *renderer, SDL_Rect overlayRect[], SDL_Rect overlayLife[], int lifePoints) {
     my_drawLine(renderer, 0, 99, 600, 99, 0, 0, 0);
-    SDL_Rect background = {0 , 100, 600 , 700};
-    SDL_Rect overlay = {0 , 0 , 600 , 100};
-    SDL_Rect lifeRect = {10 , 10 , 20 , 20};
-    SDL_Rect bombRect = {10 , 40 , 20 , 20};
-    my_drawImage(renderer, overlay , "./library/assets/background.bmp");
-    my_drawImage(renderer, background , "./library/assets/ground.bmp");
-    for(int i = 0; i < 5 ; i++ ){
-        my_drawImage(renderer, lifeRect , "./library/assets/life.bmp");
-        lifeRect.x = lifeRect.x + 25;
+    my_drawImage(renderer, overlayRect[1], "./library/assets/background.bmp");
+    my_drawImage(renderer, overlayRect[0], "./library/assets/ground.bmp");
+
+    for (int i = 0; i < lifePoints; i++) {
+        my_drawImage(renderer, overlayLife[i], "./library/assets/life.bmp");
     }
-    
-    for(int i = 0; i < 2; i++ ){
-        my_drawImage(renderer, bombRect , "./library/assets/bomb.bmp");
-        bombRect.x = bombRect.x + 25;
-    }
-    
+
+    /*for (int i = 0; i < 2; i++) {
+        my_drawImage(renderer, overlayRect[3], "./library/assets/bomb.bmp");
+        overlayRect[3].x = 10;
+    }*/
 
 }
 
@@ -100,9 +95,9 @@ void checkCharLife(struct character charTable[], int playersNumber) {
 static void
 my_refreshPlayScene(SDL_Renderer *renderer, struct character charTable[],
                     struct wall wallTable[], int playersNumber,
-                    int amIAlive, int allConnected) {
+                    int amIAlive, int allConnected, SDL_Rect overlayRect[], SDL_Rect overlayLife[], int lifePoints) {
     my_clearWindows(renderer);
-    my_setupOverlay(renderer);
+    my_setupOverlay(renderer, overlayRect, overlayLife, lifePoints);
     my_setupWall(renderer, wallTable);
     checkCharLife(charTable, playersNumber);
     for (int i = 0; i < playersNumber; i++) {
@@ -118,7 +113,7 @@ my_refreshPlayScene(SDL_Renderer *renderer, struct character charTable[],
             }
         }
     }
-    if (amIAlive == 0) {
+    if (amIAlive <= 0) {
         my_deathOverlay(renderer);
     }
     if (allConnected == 0)
@@ -137,7 +132,8 @@ static int atoi_n(char *bufferS) {
     return atoi(bufferS);
 }
 
-int my_playGameClient(SDL_Window *window, SDL_Renderer *renderer, char *name, char *ip) {
+int my_playGameClient(SDL_Window *window, SDL_Renderer *renderer, char *name,
+                      char *ip) {
     char bufferC[BUFFER_SIZE], bufferS[BUFFER_SIZE];
     int socketCli;
     struct sockaddr_in addr;
@@ -153,6 +149,15 @@ int my_playGameClient(SDL_Window *window, SDL_Renderer *renderer, char *name, ch
     if (connect(socketCli, (struct sockaddr *) &addr, sizeof(addr)) < 0) {
         return 8;
     }
+
+    SDL_Rect overlayRect[] = {{0,  100, 600, 700},
+                              {0,  0,   600, 100},
+                              {10, 40,  20,  20}};
+    SDL_Rect overlayLife[]  = {
+            {10, 10, 20, 20},
+            {35, 10, 20, 20},
+            {60, 10, 20, 20}
+    };
 
     int playersNumber = 4;
 
@@ -172,9 +177,10 @@ int my_playGameClient(SDL_Window *window, SDL_Renderer *renderer, char *name, ch
     int amIAlive = 1;
     int allConnected = 0;
     int endGame = 0;
+    int lifePoints = 3;
 
     my_refreshPlayScene(renderer, charTableI, wallTable, playersNumber,
-                        amIAlive, allConnected);
+                        amIAlive, allConnected, overlayRect, overlayLife, lifePoints);
 
     strcpy(bufferC, "NBPLAYS\n");
     if (send(socketCli, bufferC, strlen(bufferC), MSG_NOSIGNAL) < 0) {
@@ -290,35 +296,50 @@ int my_playGameClient(SDL_Window *window, SDL_Renderer *renderer, char *name, ch
             }
         }
 
-        if (my_requestMapToServer(wallTableI, bufferC, bufferS, socketCli, "MAP1\n", 0, 15) > 0)
+        if (my_requestMapToServer(wallTableI, bufferC, bufferS, socketCli,
+                                  "MAP1\n", 0, 15) > 0)
             return -1;
-        if (my_requestMapToServer(wallTableI, bufferC, bufferS, socketCli, "MAP2\n", 15, 30) > 0)
+        if (my_requestMapToServer(wallTableI, bufferC, bufferS, socketCli,
+                                  "MAP2\n", 15, 30) > 0)
             return -1;
-        if (my_requestMapToServer(wallTableI, bufferC, bufferS, socketCli, "MAP3\n", 30, 45) > 0)
+        if (my_requestMapToServer(wallTableI, bufferC, bufferS, socketCli,
+                                  "MAP3\n", 30, 45) > 0)
             return -1;
-        if (my_requestMapToServer(wallTableI, bufferC, bufferS, socketCli, "MAP4\n", 45, 60) > 0)
+        if (my_requestMapToServer(wallTableI, bufferC, bufferS, socketCli,
+                                  "MAP4\n", 45, 60) > 0)
             return -1;
-        if (my_requestMapToServer(wallTableI, bufferC, bufferS, socketCli, "MAP5\n", 60, 75) > 0)
+        if (my_requestMapToServer(wallTableI, bufferC, bufferS, socketCli,
+                                  "MAP5\n", 60, 75) > 0)
             return -1;
-        if (my_requestMapToServer(wallTableI, bufferC, bufferS, socketCli, "MAP6\n", 75, 90) > 0)
+        if (my_requestMapToServer(wallTableI, bufferC, bufferS, socketCli,
+                                  "MAP6\n", 75, 90) > 0)
             return -1;
-        if (my_requestMapToServer(wallTableI, bufferC, bufferS, socketCli, "MAP7\n", 90, 105) > 0)
+        if (my_requestMapToServer(wallTableI, bufferC, bufferS, socketCli,
+                                  "MAP7\n", 90, 105) > 0)
             return -1;
-        if (my_requestMapToServer(wallTableI, bufferC, bufferS, socketCli, "MAP8\n", 105, 120) > 0)
+        if (my_requestMapToServer(wallTableI, bufferC, bufferS, socketCli,
+                                  "MAP8\n", 105, 120) > 0)
             return -1;
-        if (my_requestMapToServer(wallTableI, bufferC, bufferS, socketCli, "MAP9\n", 120, 135) > 0)
+        if (my_requestMapToServer(wallTableI, bufferC, bufferS, socketCli,
+                                  "MAP9\n", 120, 135) > 0)
             return -1;
-        if (my_requestMapToServer(wallTableI, bufferC, bufferS, socketCli, "MAP10\n", 135, 150) > 0)
+        if (my_requestMapToServer(wallTableI, bufferC, bufferS, socketCli,
+                                  "MAP10\n", 135, 150) > 0)
             return -1;
-        if (my_requestMapToServer(wallTableI, bufferC, bufferS, socketCli, "MAP11\n", 150, 165) > 0)
+        if (my_requestMapToServer(wallTableI, bufferC, bufferS, socketCli,
+                                  "MAP11\n", 150, 165) > 0)
             return -1;
-        if (my_requestMapToServer(wallTableI, bufferC, bufferS, socketCli, "MAP12\n", 165, 180) > 0)
+        if (my_requestMapToServer(wallTableI, bufferC, bufferS, socketCli,
+                                  "MAP12\n", 165, 180) > 0)
             return -1;
-        if (my_requestMapToServer(wallTableI, bufferC, bufferS, socketCli, "MAP13\n", 180, 195) > 0)
+        if (my_requestMapToServer(wallTableI, bufferC, bufferS, socketCli,
+                                  "MAP13\n", 180, 195) > 0)
             return -1;
-        if (my_requestMapToServer(wallTableI, bufferC, bufferS, socketCli, "MAP14\n", 195, 210) > 0)
+        if (my_requestMapToServer(wallTableI, bufferC, bufferS, socketCli,
+                                  "MAP14\n", 195, 210) > 0)
             return -1;
-        if (my_requestMapToServer(wallTableI, bufferC, bufferS, socketCli, "MAP15\n", 210, 225) > 0)
+        if (my_requestMapToServer(wallTableI, bufferC, bufferS, socketCli,
+                                  "MAP15\n", 210, 225) > 0)
             return -1;
 
 
@@ -429,12 +450,13 @@ int my_playGameClient(SDL_Window *window, SDL_Renderer *renderer, char *name, ch
             SDL_Log("GET_PLAYER_1_y -> Recv Failed");
         }
         printf("Alive ? %s", bufferS);
+        lifePoints = atoi_n(bufferS);
         if (atoi_n(bufferS) == 0)
             amIAlive = 0;
 
         endGame = checkEndGame(playersNumber, charTableI);
         my_refreshPlayScene(renderer, charTableI, wallTable, playersNumber,
-                            amIAlive, allConnected);
+                            amIAlive, allConnected, overlayRect, overlayLife, lifePoints);
         if (endGame == 1) {
             if (amIAlive == 1)
                 return 6;

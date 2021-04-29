@@ -37,7 +37,7 @@ void my_initializeCharactersPosition(struct character charTable[]) {
 static struct character my_initBaseCharacter(struct character character) {
     character.hitbox.w = 40;
     character.hitbox.h = 40;
-    character.stats.lifePoints = 1;
+    character.stats.lifePoints = 3;
     character.client.terminated = 0;
     character.hitbox.x = 0;
     character.hitbox.y = 0;
