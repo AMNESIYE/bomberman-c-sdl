@@ -420,9 +420,9 @@ int my_playGameClient(SDL_Window *window, SDL_Renderer *renderer, char *name, ch
                             amIAlive, allConnected);
         if (endGame == 1) {
             if (amIAlive == 1)
-                return 1;
+                return 6;
             else
-                return 2;
+                return 7;
         }
 
         if ((1000 / FPS) > SDL_GetTicks() - baseTick) {
