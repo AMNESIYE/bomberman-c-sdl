@@ -131,7 +131,7 @@ int my_playGameClient(SDL_Window *window, SDL_Renderer *renderer, char *name, ch
 
     addr.sin_port = htons(PORT);
     addr.sin_family = AF_INET;
-    addr.sin_addr.s_addr = inet_addr("127.0.0.1");
+    addr.sin_addr.s_addr = inet_addr(ip);
 
     if (connect(socketCli, (struct sockaddr *) &addr, sizeof(addr)) < 0) {
         return 8;
@@ -139,7 +139,6 @@ int my_playGameClient(SDL_Window *window, SDL_Renderer *renderer, char *name, ch
 
     int playersNumber = 4;
 
-    // Fin partie client
     SDL_Thread *thread = NULL;
 
     struct character charTable[] = {my_initCharacter(MY_CHARACTER),
